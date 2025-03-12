@@ -4,7 +4,7 @@
 ### Colaboradores del Proyecto 
 - UsopKIng
 - 
-- 
+- Ramiro Pomacahua Choquemisa 
 - 
 
 # Clonacion del repositorio
