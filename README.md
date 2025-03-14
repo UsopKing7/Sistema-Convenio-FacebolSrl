@@ -17,7 +17,7 @@ pasos para clonar el repositorio
 
 # Actualizar el repo
 ```bash
-  git pull origin master
+  git pull 
 ```
 # para la instalacion de dependencias
 ```bash
