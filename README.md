@@ -14,6 +14,14 @@ pasos para clonar el repositorio
   git clone https://github.com/UsopKing7/Sistema-Convenio-FacebolSrl.git
   cd Sistema-Convenio-FacebolSrl
 ```
+# para la instalacion de dependencias
+```bash
+  npm install 
+```
+## Para iniciar el servidor
+```bash
+  npm run dev
+```
 
 ## 🚀 Características
 - ✅ CRUD de convenios (Crear, Leer, Actualizar, Eliminar).  
