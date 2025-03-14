@@ -14,6 +14,11 @@ pasos para clonar el repositorio
   git clone https://github.com/UsopKing7/Sistema-Convenio-FacebolSrl.git
   cd Sistema-Convenio-FacebolSrl
 ```
+
+# Actualizar el repo
+´´´bash
+  git pull origin master
+´´´
 # para la instalacion de dependencias
 ```bash
   npm install 
