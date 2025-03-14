@@ -5,6 +5,7 @@ import { midelware } from './routes/midelware.js';
 
 const app = express()
 app.use(express.json())
+app.disable('x-powered-by')
 
 app.use(midelware)
 
