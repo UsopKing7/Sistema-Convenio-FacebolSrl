@@ -16,9 +16,9 @@ pasos para clonar el repositorio
 ```
 
 # Actualizar el repo
-´´´bash
+```bash
   git pull origin master
-´´´
+```
 # para la instalacion de dependencias
 ```bash
   npm install 
