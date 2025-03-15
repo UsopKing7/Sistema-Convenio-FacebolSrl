@@ -1,29 +1,29 @@
 import { Router } from 'express'
 import { pool } from '../models/db.js'
-import { validacion } from '../routes/validacion.routes.js';
+import { validation } from '../routes/validation.routes.js';
 import bcrypt from 'bcrypt'
 
 export const createRouter = Router()
 
 createRouter.post('/', async(req, res) => {
   try {
-    const newCompani = validacion.parse(req.body)
-    const hashpasswd = await bcrypt.hash(newCompani.passwd, 10)
+    const newCompanies = validation.parse(req.body)
+    const hashPassword = await bcrypt.hash(newCompanies.password, 10)
 
     const [data] = await pool.query
-    ('INSERT INTO companies (nombre, gmail, phone, direccion, passwd, estado) VALUES (?, ?, ?, ?, ?, ?)',
+    ('INSERT INTO companies (name, email, phone, address, password, state) VALUES (?, ?, ?, ?, ?, ?)',
       [
-        newCompani.nombre,
-        newCompani.gmail,
-        newCompani.phone,
-        newCompani.direccion,
-        hashpasswd,
-        newCompani.estado
+        newCompanies.name,
+        newCompanies.email,
+        newCompanies.phone,
+        newCompanies.address,
+        hashPassword,
+        newCompanies.state
       ]
     )
 
-    res.status(201).json({ message: 'Empresa registrada con exito...', empresaId: data.insertId})
+    res.status(201).json({ message: 'successfully registered company', idCompanies: data.insertId})
   } catch (err) {
-    return res.status(400).json({ err: err.message || 'error en la solicitud'})
+    return res.status(400).json({ err: err.message || 'error in the request'})
   }
 })
