@@ -1,11 +1,12 @@
-POST http://localhost:3333/users/signup
+POST http://localhost:3333/register
 Content-Type: application/json
 
 {
-  "companies_id": 1,
-  "name": "calefdasd",
-  "email": "calegdasdonsale@gmail.com",
-  "password": "dadaasdopfg",
-  "rol": "admian"
+  "name": "google",
+  "email": "google@google.com",
+  "phone": "+0000000",
+  "address": "estado unidos",
+  "password": "dasjdfasbfa",
+  "state": true
 }
 
