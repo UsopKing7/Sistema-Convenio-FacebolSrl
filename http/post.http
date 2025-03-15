@@ -1,11 +1,11 @@
-POST http://localhost:3333/registro
+POST http://localhost:3333/users/signup
 Content-Type: application/json
 
 {
-  "nombre": "facebolsrl",
-  "gmail": "facebol@prueba.com",
-  "phone": "+00000000",
-  "direccion": "ballivian",
-  "passwd": "password123",
-  "estado": "activo"
+  "companies_id": 1,
+  "name": "nicolas",
+  "email": "nicolasguarachi888@gmail.com",
+  "password": "nicolas123",
+  "rol": "pasante"
 }
+
