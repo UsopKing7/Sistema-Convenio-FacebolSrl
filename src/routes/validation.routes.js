@@ -9,3 +9,8 @@ export const validation = z.object({
   password: z.string().min(8, 'contraseña muy corta'),
   state: z.boolean().default(true, 'se requiere estado booleano')
 })
+
+export const validationPatch = z.object({
+  address: z.string().min(5, 'dirrecion muy corta').optional(),
+  password: z.string().min(8, 'contraseña muy corta').optional()
+})
