@@ -1,12 +1,11 @@
-POST http://localhost:3333/register
+POST http://localhost:3333/users/signup
 Content-Type: application/json
 
 {
-  "name": "google",
-  "email": "google@google.com",
-  "phone": "+0000000",
-  "address": "estado unidos",
-  "password": "dasjdfasbfa",
-  "state": true
+  "companies_id": 1,
+  "name": "nicolas",
+  "email": "nicolasguarachi888@gmail.com",
+  "password": "hola1234",
+  "rol": "pasante"
 }
 

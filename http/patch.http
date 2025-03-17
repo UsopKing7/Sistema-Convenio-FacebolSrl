@@ -2,8 +2,7 @@ PATCH http://localhost:3333/users/update
 Content-Type: application/json
 
 {
-  "email": "cambio@gmail.com",
   "password": "cambiopassword",
   "rol": "conserje",
-  "id": 13
-}
+  "id": 1
+
