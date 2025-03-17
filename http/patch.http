@@ -5,4 +5,4 @@ Content-Type: application/json
   "password": "cambiopassword",
   "rol": "conserje",
   "id": 1
-
+}
