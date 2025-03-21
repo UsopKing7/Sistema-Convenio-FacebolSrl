@@ -1,11 +1,41 @@
+POST http://localhost:3333/register
+Content-Type: application/json
+
+{
+  "name": "facebook",
+  "email": "facebook@gmail.com",
+  "phone": "+0000000",
+  "address": "ballivian creo",
+  "password": "123456789",
+  "state": true
+}
+
+### 
+POST http://localhost:3333/login
+Content-Type: application/json
+
+{
+  "email": "facebook@gmail.com",
+  "password": "123456789"
+}
+
+### 
 POST http://localhost:3333/users/signup
 Content-Type: application/json
 
 {
-  "companies_id": 1,
-  "name": "nicolas",
-  "email": "nicolasguarachi888@gmail.com",
-  "password": "hola1234",
-  "rol": "pasante"
+ "companies_id": 3,
+ "name": "nicolas",
+ "email": "nicolasguarachi@gmail.com",
+ "password": "123456789",
+ "rol": "gerente"
 }
 
+###
+POST http://localhost:3333/login
+Content-Type: application/json
+
+{
+  "email": "nicolasguarachi@gmail.com",
+  "password": "123456789edad"
+}

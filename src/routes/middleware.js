@@ -10,6 +10,8 @@ import { usersRouter } from '../controllers/users-controllers/post-users-control
 import { PatchRouterUsers } from '../controllers/users-controllers/patch-users-controllers.routes.js'
 import { deleteUsers } from '../controllers/users-controllers/delete-users-controllers.routes.js'
 
+import { routerLogin } from '../controllers/login-controllers/login-companies-controllers.routes.js'
+
 import { Router } from 'express'
 
 export const middleware = Router()
@@ -24,3 +26,5 @@ middleware.use('/companies/delete', deleteCompanies)
 
 middleware.use('/companies/update', PatchRouterCompanies)
 middleware.use('/users/update', PatchRouterUsers)
+
+middleware.use('/login', routerLogin)
