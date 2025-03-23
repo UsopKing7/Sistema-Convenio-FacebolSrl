@@ -11,7 +11,6 @@ routerLogin.post("/", async (req, res) => {
   try {
     const loginPage = validationLogin.parse(req.body);
 
-    // 1️⃣ Buscar primero en users
     const [userExist] = await pool.query("SELECT * FROM users WHERE email = ?", [loginPage.email]);
 
     if (userExist.length > 0) {
@@ -25,7 +24,6 @@ routerLogin.post("/", async (req, res) => {
       return res.status(200).json({ message: "Login successful as user" });
     }
 
-    // 2️⃣ Si no está en users, buscar en companies
     const [companiesExists] = await pool.query("SELECT * FROM companies WHERE email = ?", [loginPage.email]);
 
     if (companiesExists.length > 0) {
@@ -39,7 +37,6 @@ routerLogin.post("/", async (req, res) => {
       return res.status(200).json({ message: "Login successful as company" });
     }
 
-    // 3️⃣ Si no existe en ninguna tabla
     return res.status(400).json({ message: "Account not found" });
 
   } catch (error) {
