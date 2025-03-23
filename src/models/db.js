@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createPool } from 'mysql2/promise'
+import pc from 'picocolors'
 
 export const pool = createPool({
   host: "localhost",
@@ -14,12 +15,12 @@ const testConnection = async () => {
   try {
     const connection = await pool.getConnection()
     console.log(
-      `[+] Connection to data bases complete`
+      pc.blue(`[+] Connection to data bases complete`)
     )
     connection.release()
   } catch (error) {
     console.log(
-      `[*] Error to connection to database`
+      pc.red(`[*] Error to connection to database`)
     )
   }
 }
