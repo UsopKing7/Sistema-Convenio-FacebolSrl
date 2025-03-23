@@ -25,3 +25,4 @@ const testConnection = async () => {
 }
 
 testConnection()
+export const SECRET_JWK_KEY = 'this-is-ah-awesome-secret-key'
