@@ -32,4 +32,4 @@ pasos para clonar el repositorio
 - ✅ CRUD de convenios (Crear, Leer, Actualizar, Eliminar).  
 - ✅ Arquitectura **MVC** con **Express y MySQL**.  
 - ✅ **EJS** para las vistas dinámicas.  
-- ✅ **CSS y Bootstrap** para la interfaz.
+- ✅ **CSS** para la interfaz.
