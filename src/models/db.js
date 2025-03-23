@@ -10,3 +10,18 @@ export const pool = createPool({
   database: "agreement_system"
 })
 
+const testConnection = async () => {
+  try {
+    const connection = await pool.getConnection()
+    console.log(
+      `[+] Connection to data bases complete`
+    )
+    connection.release()
+  } catch (error) {
+    console.log(
+      `[*] Error to connection to database`
+    )
+  }
+}
+
+testConnection()
