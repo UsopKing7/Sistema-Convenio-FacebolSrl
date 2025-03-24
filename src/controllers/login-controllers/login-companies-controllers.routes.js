@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { Router } from "express";
-import { validationLogin } from "../../routes/validation-login.routes.js";
-import { pool, SECRET_JWK_KEY } from "../../models/db.js";
-import bcrypt from "bcrypt";
-import jwk from "jsonwebtoken";
+import { Router } from "express"
+import { validationLogin } from "../../routes/validation-login.routes.js"
+import { pool, SECRET_JWK_KEY } from "../../models/db.js"
+import bcrypt from "bcrypt"
+import jwk from "jsonwebtoken"
 
-export const routerLogin = Router();
+export const routerLogin = Router()
 
 routerLogin.post("/", async (req, res) => {
   try {
