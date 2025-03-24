@@ -18,6 +18,9 @@ app.get('/', (req, res) => {
   res.render('login');
 });
 
+app.get('/registerEmpresa', (req, res) => {
+  res.render('register')
+})
 const PORT = process.env.PORT || 3333
 app.listen(PORT, () => {
   console.table({
