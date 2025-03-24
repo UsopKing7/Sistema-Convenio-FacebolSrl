@@ -12,7 +12,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        margin: 0;
+        margin: 0; 
       }
 
       .login-container {
@@ -75,11 +75,21 @@
         cursor: pointer;
         transition: 0.3s;
         font-weight: bold;
+        margin-top: 10px;
       }
 
       button:hover {
         background: #007bff;
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+      }
+
+      p {
+        color: white;
+      }
+
+      a {
+        text-decoration: none;
+        color: #1e90ff;
       }
 
       @keyframes fadeIn {
@@ -101,20 +111,24 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        const response = await fetch("http://localhost:3333/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          window.location.href = "/companies";
-        } else {
-          alert("Error: " + "the username or email not exists");
+        try {
+          const response = await fetch("http://localhost:3333/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+  
+          const data = await response.json();
+  
+          if (response.ok) {
+            window.location.href = "/companies";
+          } else {
+            throw new Error(data.message)
+          }
+        } catch (error) {
+          alert("Error: " + error.message)
         }
       };
     </script>
@@ -133,6 +147,8 @@
         </div>
         <button type="submit">Ingresar</button>
       </form>
+      <p>No tiene una cuenta</p>
+      <a href="registerEmpresa">Registrate aqui</a>
     </div>
   </body>
 </html>
