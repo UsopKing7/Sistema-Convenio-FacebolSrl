@@ -15,10 +15,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(middleware)
 
 app.get('/', (req, res) => {
+  console.log(req.url)
   res.render('login');
 });
 
 app.get('/registerEmpresa', (req, res) => {
+  console.log(req.url)
   res.render('register')
 })
 const PORT = process.env.PORT || 3333
