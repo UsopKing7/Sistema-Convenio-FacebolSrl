@@ -4,6 +4,7 @@ import { Router } from 'express'
 import { pool } from '../../models/db.js'
 import { validation }  from '../../routes/validation-users.routes.js'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export const usersRouter = Router()
 
@@ -16,7 +17,7 @@ usersRouter.post('/', async (req, res) => {
 
     if (company.length === 0) return res.status(404).json({ message: 'company not found "400"'})
 
-    const [data] = await pool.query('INSERT INTO users (companies_id, name, email, password, rol) VALUES (?, ?, ?, ?, ?)', 
+    await pool.query('INSERT INTO users (companies_id, name, email, password, rol) VALUES (?, ?, ?, ?, ?)', 
       [
         newUsers.companies_id,
         newUsers.name,
@@ -26,7 +27,16 @@ usersRouter.post('/', async (req, res) => {
       ]
     )
 
-    res.status(201).json({ message: 'successfully registered company', userID: data.insertId})
+    const token = jwt.sign({ 
+      email: nuevoUsuario.email,
+      isNew: true 
+    }, SECRET_JWK_KEY, { expiresIn: '1m' })
+
+    res.status(201).json({ 
+      message: "Registro exitoso",
+      token,
+      isNewUser: true
+    })
   } catch (error) {
     return res.status(500).json({ error: 'internal server error "500"', details: error.errors ?? error.message })
   }

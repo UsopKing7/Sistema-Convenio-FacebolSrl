@@ -4,15 +4,15 @@ import { Router } from "express"
 import { validationLogin } from "../../routes/validation-login.routes.js"
 import { pool, SECRET_JWK_KEY } from "../../models/db.js"
 import bcrypt from "bcrypt"
-import jwk from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 export const routerLogin = Router()
 
 routerLogin.post("/", async (req, res) => {
   try {
     const loginPage = validationLogin.parse(req.body);
-    const token = jwk.sign({ email: loginPage.email }, SECRET_JWK_KEY, {
-      expiresIn: "1h",
+    const token = jwt.sign({ email: loginPage.email }, SECRET_JWK_KEY, {
+      expiresIn: "1m",
     });
     const [userExist] = await pool.query(
       "SELECT * FROM users WHERE email = ?",
@@ -30,12 +30,12 @@ routerLogin.post("/", async (req, res) => {
         return res.status(400).json({ message: "Incorrect password" });
       }
 
-      res.cookie("acces_token", token, {
+      res.cookie("access_token", token, {
         httpOnly: true,
         sameSite: "strict",
-        maxAge: 1000 * 60 * 60
+        maxAge: 60000
       });
-      return res.status(200).json({ message: "Login successful as user", token });
+      return res.status(200).json({ message: "Login successful as user", token, expiresIn: "1 min" })
     }
 
     const [companiesExists] = await pool.query(
@@ -45,8 +45,8 @@ routerLogin.post("/", async (req, res) => {
 
     if (companiesExists.length > 0) {
       const company = companiesExists[0];
-      const token = jwk.sign({ email: loginPage.email }, SECRET_JWK_KEY, {
-        expiresIn: "1h",
+      const token = jwt.sign({ email: loginPage.email }, SECRET_JWK_KEY, {
+        expiresIn: "1m",
       });
       const validatePassword = await bcrypt.compare(
         loginPage.password,
@@ -57,12 +57,12 @@ routerLogin.post("/", async (req, res) => {
         return res.status(400).json({ message: "Incorrect password" });
       }
 
-      res.cookie("acces_token", token, {
+      res.cookie("access_token", token, {
         httpOnly: true,
         sameSite: "strict",
-        maxAge: 1000 * 60 * 60
+        maxAge: 60000
       });
-      return res.status(200).json({ message: "Login successful as user", token });
+      return res.status(200).json({ message: "Login successful as company", token });
     }
 
     return res.status(400).json({ message: "Account not found" });
