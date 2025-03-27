@@ -129,7 +129,6 @@
         }
       }
 
-      /* Efecto de brillo sutil en los bordes */
       .login-container::before {
         content: '';
         position: absolute;
@@ -137,10 +136,7 @@
         left: -2px;
         right: -2px;
         bottom: -2px;
-        background: linear-gradient(45deg, 
-                    rgba(100, 108, 255, 0.1), 
-                    rgba(255, 255, 255, 0.02), 
-                    rgba(100, 108, 255, 0.1));
+        background: linear-gradient(45deg, rgba(100, 108, 255, 0.1), rgba(255, 255, 255, 0.02), rgba(100, 108, 255, 0.1));
         z-index: -1;
         border-radius: 18px;
         pointer-events: none;
