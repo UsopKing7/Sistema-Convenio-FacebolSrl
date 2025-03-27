@@ -12,22 +12,27 @@ import { deleteUsers } from "../controllers/users-controllers/delete-users-contr
 
 import { routerLogin } from "../controllers/login-controllers/login-companies-controllers.routes.js";
 
-import { autheticationToken } from "./midelwareValidator.js";
+import { autheticationToken } from "./midelwareValidator.js"
+
+import { routerViewsLogin } from '../controllers/controller-views/views-controller-login.routes.js'
+import { routerViewsRegisterEmpresa } from '../controllers/controller-views/views-controllers-registerEmpresa.routes.js'
 
 import { Router } from "express";
 
 export const middleware = Router();
 
 // Rutas públicas
-middleware.use("/register", createRouter);
-middleware.use("/register/registrarUsers", usersRouter);
-middleware.use("/login", routerLogin);
+middleware.use("/register", createRouter)
+middleware.use("/register/registrarUsers", usersRouter)
+middleware.use("/login", routerLogin)
+middleware.use("/", routerViewsLogin)
+middleware.use("/registerEmpresa", routerViewsRegisterEmpresa)
 
 // Rutas protegidas
-middleware.use("/users", autheticationToken, getUsers);
-middleware.use("/users/delete", autheticationToken, deleteUsers);
-middleware.use("/users/update", autheticationToken, PatchRouterUsers);
+middleware.use("/users", autheticationToken, getUsers)
+middleware.use("/users/delete", autheticationToken, deleteUsers)
+middleware.use("/users/update", autheticationToken, PatchRouterUsers)
 
-middleware.use("/companies", autheticationToken, getCompanies);
-middleware.use("/companies/delete", autheticationToken, deleteCompanies);
-middleware.use("/companies/update", autheticationToken, PatchRouterCompanies);
+middleware.use("/companies", autheticationToken, getCompanies)
+middleware.use("/companies/delete", autheticationToken, deleteCompanies)
+middleware.use("/companies/update", autheticationToken, PatchRouterCompanies)
