@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="https://scontent.flpb1-2.fna.fbcdn.net/v/t39.30808-6/291736148_579153870250529_5398000145867132400_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=wn9fnfgK4BAQ7kNvgHQGhsa&_nc_oc=Adnm74I7gmHKJDghk1kgS-0KMkPULLun9BMqAbOonOX8nqt7PY4k7itAhpcz-AY39Lx-UsnYRP_a4NwN2h8AVMyJ&_nc_zt=23&_nc_ht=scontent.flpb1-2.fna&_nc_gid=FVJ6l7qV6Fkfd36qxeNQ1w&oh=00_AYGw3g5mbX8TQrHJq55x9ncnCANduqY_3Aqk3vs8Y-PTAg&oe=67E7E581">
   <title>Register companies</title>
-  <link rel="stylesheet" href="styleRegister.css">
+  <link rel="stylesheet" href="/register/styleRegister.css">
 </head>
 <body>
   <div class="register-container">
@@ -34,36 +34,7 @@
       <button type="submit">Registrar Empresa</button>
     </form>
   </div>
-  <script>
-    const registrar = async (event) => {
-      event.preventDefault()
-
-      const name = document.getElementById('name').value
-      const email = document.getElementById("email").value
-      const phone = document.getElementById("phoneNumber").value
-      const address = document.getElementById("address").value
-      const password = document.getElementById("password").value
-
-      try {
-        const response = await fetch("http://localhost:3333/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, phone, address, password })
-        })
-  
-        const data = await response.json()
-  
-        if (response.ok) {
-          window.location.href = "/"
-        } else {
-          throw new Error(data.message || "Error en el registro")
-        }
-      } catch (error) {
-        alert("Error: " + (error.message || "Ocurrió un error al registrar"))
-      }
-    }
+  <script src="/register/script.js">
   </script>
 </body>
 </html>
