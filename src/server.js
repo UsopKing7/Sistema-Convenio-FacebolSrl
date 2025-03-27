@@ -5,24 +5,20 @@ import { middleware } from './routes/middleware.js'
 import cookieParser from 'cookie-parser'
 
 const app = express()
+
 app.use(express.json())
 app.use(cookieParser())
 app.disable('x-powered-by')
 app.set('view engine', 'ejs')
-app.set('views', './src/views/LoginRegister')
-app.use(express.static('./src/views/LoginRegister'))
+app.set('views', './src/views')
+app.use(express.static('./src/views'))
 app.use(express.urlencoded({ extended: true }));
 
 app.use(middleware)
 
-app.get('/', (req, res) => {
+app.use((req, res) => {
   console.log(req.url)
-  res.render('login');
-});
-
-app.get('/registerEmpresa', (req, res) => {
-  console.log(req.url)
-  res.render('register')
+  return res.json({ message: '404 Not Found'})
 })
 
 const PORT = process.env.PORT || 3333
