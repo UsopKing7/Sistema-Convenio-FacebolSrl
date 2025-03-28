@@ -18,7 +18,7 @@ app.use(middleware)
 
 app.use((req, res) => {
   console.log(req.url)
-  return res.json({ message: '404 Not Found'})
+  res.render('404page/404')
 })
 
 const PORT = process.env.PORT || 3333
