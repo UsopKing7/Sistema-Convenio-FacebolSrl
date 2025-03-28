@@ -33,7 +33,8 @@ routerLogin.post("/", async (req, res) => {
       res.cookie("access_token", token, {
         httpOnly: true,
         sameSite: "strict",
-        maxAge: 60000
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60000,
       });
       return res.status(200).json({ message: "Login successful as user", token, expiresIn: "1 min" })
     }
@@ -60,7 +61,8 @@ routerLogin.post("/", async (req, res) => {
       res.cookie("access_token", token, {
         httpOnly: true,
         sameSite: "strict",
-        maxAge: 60000
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60000,
       });
       return res.status(200).json({ message: "Login successful as company", token });
     }
