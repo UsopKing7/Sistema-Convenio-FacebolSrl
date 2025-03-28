@@ -36,3 +36,8 @@ middleware.use("/users/update", autheticationToken, PatchRouterUsers)
 middleware.use("/companies", autheticationToken, getCompanies)
 middleware.use("/companies/delete", autheticationToken, deleteCompanies)
 middleware.use("/companies/update", autheticationToken, PatchRouterCompanies)
+
+middleware.use((req, res) => {
+  console.log(req.url)
+  return res.render('404page/404')
+})

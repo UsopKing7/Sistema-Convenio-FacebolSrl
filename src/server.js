@@ -16,11 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(middleware)
 
-app.use((req, res) => {
-  console.log(req.url)
-  res.render('404page/404')
-})
-
 const PORT = process.env.PORT || 3333
 app.listen(PORT, () => {
   console.table({
