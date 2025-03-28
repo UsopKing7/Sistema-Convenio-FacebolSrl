@@ -2,13 +2,16 @@
 
 import { createPool } from 'mysql2/promise'
 import pc from 'picocolors'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const pool = createPool({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "nadusopking",
-  database: "agreement_system"
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 })
 
 const testConnection = async () => {
@@ -26,4 +29,4 @@ const testConnection = async () => {
 }
 
 testConnection()
-export const SECRET_JWK_KEY = 'this-is-ah-awesome-secret-key'
+export const SECRET_JWK_KEY = process.env.SECRET_JWK_KEY
