@@ -1,4 +1,3 @@
-
 const login = async (event) => {
   event.preventDefault();
 
@@ -17,11 +16,20 @@ const login = async (event) => {
     const data = await response.json();
 
     if (response.ok) {
-      window.location.href = "/companies";
+      if (data.user) {
+        // Redirect to user profile page
+        window.location.href = "/user/profile";
+      } else if (data.company) {
+        // Redirect to company dashboard
+        window.location.href = "/company/dashboard";
+      } else {
+        // Fallback to companies page if no specific data is returned
+        window.location.href = "/companies";
+      }
     } else {
-      throw new Error(data.message)
+      throw new Error(data.message || "Login failed");
     }
   } catch (error) {
-    alert("Error: " + error.message)
+    alert("Error: " + (error.message || "An error occurred during login"));
   }
 };
