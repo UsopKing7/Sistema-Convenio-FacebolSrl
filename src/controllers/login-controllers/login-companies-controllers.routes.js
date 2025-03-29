@@ -76,6 +76,12 @@ routerLogin.post("/", async (req, res) => {
         secure: process.env.NODE_ENV === "production",
         maxAge: 60000,
       });
+
+      // Si no hay usuarios asociados, no incluirlos en la respuesta
+      if (users.length === 0) {
+        return res.status(200).json({ message: "Login successful as company", company });
+      }
+
       return res.status(200).json({ message: "Login successful as company", company, users });
     }
 

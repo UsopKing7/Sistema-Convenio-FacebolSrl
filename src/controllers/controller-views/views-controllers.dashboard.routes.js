@@ -1,12 +1,14 @@
-import { Router } from 'express'
+import { Router } from "express";
+import { pool } from "../../models/db.js";
 
-export const routerDashboard = Router()
+export const routerDashboard = Router();
 
-routerDashboard.get('/', (req, res) => {
-  console.log(req.url)
-  const users = [ // Datos falsos de prueba
-    { name: 'Juan', email: 'juan@example.com' },
-    { name: 'María', email: 'maria@example.com' }
-  ]
-  res.render('company/dashboard', { users })
-})
+routerDashboard.get("/", async (req, res) => {
+  try {
+    const [users] = await pool.query("SELECT name, email FROM users");
+    res.render("company/dashboard", { users });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send("Internal server error");
+  }
+});
