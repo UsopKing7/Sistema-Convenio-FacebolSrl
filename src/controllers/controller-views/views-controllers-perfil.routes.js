@@ -21,7 +21,6 @@ routerPerfil.get("/", async (req, res) => {
 
     const user = userResult[0];
 
-    // Excluir el campo password del objeto user
     const { password, ...userWithoutPassword } = user;
 
     res.render("user/profile", { user: userWithoutPassword });
