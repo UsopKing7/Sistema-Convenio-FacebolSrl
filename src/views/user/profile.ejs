@@ -8,21 +8,16 @@
 <body>
   <h1>User Profile</h1>
   <div id="userInfo">
-    <!-- User information will be populated here -->
+    <% if (user) { %>
+      <p><strong>ID:</strong> <%= user.id %></p>
+      <p><strong>Company ID:</strong> <%= user.companies_id %></p>
+      <p><strong>Name:</strong> <%= user.name %></p>
+      <p><strong>Email:</strong> <%= user.email %></p>
+      <p><strong>Role:</strong> <%= user.rol %></p>
+      <p><strong>Registration Date:</strong> <%= user.registration_date.toISOString().split('T')[0] %></p>
+    <% } else { %>
+      <p>No user information available.</p>
+    <% } %>
   </div>
-  <script>
-    // Fetch and display user information
-    fetch('/api/user/profile')
-      .then(response => response.json())
-      .then(data => {
-        const userInfoDiv = document.getElementById('userInfo');
-        userInfoDiv.innerHTML = `
-          <p>Name: ${data.user.name}</p>
-          <p>Email: ${data.user.email}</p>
-          <p>Phone: ${data.user.phone}</p>
-          <p>Address: ${data.user.address}</p>
-        `;
-      });
-  </script>
 </body>
 </html>

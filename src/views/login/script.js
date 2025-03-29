@@ -14,16 +14,18 @@ const login = async (event) => {
     });
 
     const data = await response.json();
+    console.log("Login response data:", data); // <-- Agrega este log para depurar
 
     if (response.ok) {
-      if (data.user) {
-        // Redirect to user profile page
+      if (data.user && typeof data.user === "object") {
         window.location.href = "/user/profile";
-      } else if (data.company) {
-        // Redirect to company dashboard
-        window.location.href = "/company/dashboard";
+      } else if (data.company && typeof data.company === "object") {
+        if (data.users && data.users.length > 0) {
+          window.location.href = "/company/dashboard";
+        } else {
+          alert("No users associated with this company.");
+        }
       } else {
-        // Fallback to companies page if no specific data is returned
         window.location.href = "/companies";
       }
     } else {

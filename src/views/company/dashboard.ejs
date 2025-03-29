@@ -19,21 +19,6 @@
       <p>No users found.</p>
     <% } %>
   </div>
-  <script>
-    // Fetch and display list of users
-    fetch('/api/company/users')
-      .then(response => response.json())
-      .then(data => {
-        const usersListDiv = document.getElementById('usersList');
-        data.users.forEach(user => {
-          usersListDiv.innerHTML += `
-            <div>
-              <p>Name: ${user.name}</p>
-              <p>Email: ${user.email}</p>
-            </div>
-          `;
-        });
-      });
-  </script>
+
 </body>
 </html>
