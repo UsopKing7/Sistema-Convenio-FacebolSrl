@@ -4,20 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
+  <link rel="stylesheet" href="/user/style.css">
 </head>
 <body>
-  <h1>User Profile</h1>
-  <div id="userInfo">
-    <% if (user) { %>
-      <p><strong>ID:</strong> <%= user.id %></p>
-      <p><strong>Company ID:</strong> <%= user.companies_id %></p>
-      <p><strong>Name:</strong> <%= user.name %></p>
-      <p><strong>Email:</strong> <%= user.email %></p>
-      <p><strong>Role:</strong> <%= user.rol %></p>
-      <p><strong>Registration Date:</strong> <%= user.registration_date.toISOString().split('T')[0] %></p>
-    <% } else { %>
-      <p>No user information available.</p>
-    <% } %>
+  <div class="container">
+    <h1>User Profile Dashboard</h1>
+    <div id="userInfo">
+      <% if (user) { %>
+        <div class="info">
+          <p><strong>ID:</strong> <span><%= user.id %></span></p>
+        </div>
+        <div class="info">
+          <p><strong>Company ID:</strong> <span><%= user.companies_id %></span></p>
+        </div>
+        <div class="info">
+          <p><strong>Name:</strong> <span><%= user.name %></span></p>
+        </div>
+        <div class="info">
+          <p><strong>Email:</strong> <span><%= user.email %></span></p>
+        </div>
+        <div class="info">
+          <p><strong>Role:</strong> <span><%= user.rol %></span></p>
+        </div>
+        <div class="info">
+          <p><strong>Registration Date:</strong> <span><%= user.registration_date.toISOString().split('T')[0] %></span></p>
+        </div>
+      <% } else { %>
+        <p class="no-info">No user information available.</p>
+      <% } %>
+    </div>
   </div>
 </body>
 </html>

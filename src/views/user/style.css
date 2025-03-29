@@ -1,0 +1,96 @@
+/* General body styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+/* Main dashboard container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Header Styling */
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  color: #f5f5f5;
+  margin-bottom: 30px;
+}
+
+/* User Info Panel */
+#userInfo {
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Styling for the user info labels */
+#userInfo strong {
+  color: #f5f5f5;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Styling for the user info values */
+#userInfo p {
+  font-size: 1rem;
+  color: #b3b3b3;
+}
+
+/* Highlighted user info values */
+#userInfo p span {
+  font-weight: bold;
+  color: #76c7c0;
+}
+
+/* Add some borders and padding for each section */
+#userInfo .info {
+  border-bottom: 2px solid #333;
+  padding-bottom: 15px;
+}
+
+/* Button-like style for sections that don't have user info */
+#userInfo p.no-info {
+  font-style: italic;
+  color: #ff5555;
+}
+
+/* Footer styling (optional for layout) */
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 50px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  #userInfo {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  #userInfo p {
+    font-size: 1rem;
+  }
+}
