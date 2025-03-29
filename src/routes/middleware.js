@@ -16,6 +16,7 @@ import { autheticationToken } from "./midelwareValidator.js"
 
 import { routerViewsLogin } from '../controllers/controller-views/views-controller-login.routes.js'
 import { routerViewsRegisterEmpresa } from '../controllers/controller-views/views-controllers-registerEmpresa.routes.js'
+import { routerDashboard } from '../controllers/controller-views/views-controllers.dashboard.routes.js'
 
 import { Router } from "express";
 
@@ -36,6 +37,7 @@ middleware.use("/users/update", autheticationToken, PatchRouterUsers)
 middleware.use("/companies", autheticationToken, getCompanies)
 middleware.use("/companies/delete", autheticationToken, deleteCompanies)
 middleware.use("/companies/update", autheticationToken, PatchRouterCompanies)
+middleware.use("/company/dashboard", autheticationToken, routerDashboard)
 
 middleware.use((req, res) => {
   console.log(req.url)
