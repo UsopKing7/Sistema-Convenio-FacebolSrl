@@ -29,6 +29,12 @@
         <div class="info">
           <p><strong>Registration Date:</strong> <span><%= user.registration_date.toISOString().split('T')[0] %></span></p>
         </div>
+        <!-- Botón de cierre de sesión -->
+        <div class="logout">
+          <form action="/logout" method="POST">
+            <button type="submit" class="logout-button">Cerrar Sesión</button>
+          </form>
+        </div>
       <% } else { %>
         <p class="no-info">No user information available.</p>
       <% } %>

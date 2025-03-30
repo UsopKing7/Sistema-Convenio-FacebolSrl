@@ -14,7 +14,6 @@ const login = async (event) => {
     });
 
     const data = await response.json();
-    console.log("Login response data:", data); // <-- Agrega este log para depurar
 
     if (response.ok) {
       if (data.user && typeof data.user === "object") {
