@@ -200,3 +200,8 @@ footer {
     font-size: 0.9rem;
   }
 }
+
+a{
+  text-decoration: none;
+  color: #e0e0e0;
+}
