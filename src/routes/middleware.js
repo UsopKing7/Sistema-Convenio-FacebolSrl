@@ -18,10 +18,12 @@ import { routerViewsLogin } from '../controllers/controller-views/views-controll
 import { routerViewsRegisterEmpresa } from '../controllers/controller-views/views-controllers-registerEmpresa.routes.js'
 import { routerDashboard } from '../controllers/controller-views/views-controllers.dashboard.routes.js'
 import { routerPerfil } from '../controllers/controller-views/views-controllers-perfil.routes.js'
+import { logoutRouter } from '../controllers/login-controllers/logout.routes.js';
 
 import { Router } from "express";
 
 export const middleware = Router();
+middleware.use('/', logoutRouter);
 
 // Rutas públicas
 middleware.use("/register", createRouter)

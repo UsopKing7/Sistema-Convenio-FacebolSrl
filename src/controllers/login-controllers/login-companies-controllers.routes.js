@@ -10,10 +10,9 @@ export const routerLogin = Router()
 
 routerLogin.post("/", async (req, res) => {
   try {
-    console.log("Request body:", req.body)
     const loginPage = validationLogin.parse(req.body)
     const token = jwt.sign({ email: loginPage.email }, SECRET_JWK_KEY, {
-      expiresIn: "1m",
+      expiresIn: "2h",
     })
 
     const [userExist] = await pool.query(
@@ -36,7 +35,7 @@ routerLogin.post("/", async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60000,
+        maxAge: 7200000,
       })
       return res.status(200).json({ message: "Login successful as user", user })
     }
@@ -66,7 +65,7 @@ routerLogin.post("/", async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60000,
+        maxAge: 7200000,
       });
 
       if (users.length === 0) {
