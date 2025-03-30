@@ -28,12 +28,12 @@ middleware.use('/', logoutRouter);
 
 // Rutas públicas
 middleware.use("/register", createRouter)
-middleware.use("/register/registrarUsers", usersRouter)
 middleware.use("/login", routerLogin)
 middleware.use("/", routerViewsLogin)
 middleware.use("/registerEmpresa", routerViewsRegisterEmpresa)
 
 // Rutas protegidas
+middleware.use("/register/registrarUsers", autheticationToken, usersRouter)
 middleware.use("/users", autheticationToken, getUsers)
 middleware.use("/users/delete", autheticationToken, deleteUsers)
 middleware.use("/users/update", autheticationToken, PatchRouterUsers)
