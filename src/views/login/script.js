@@ -1,8 +1,8 @@
 const login = async (event) => {
-  event.preventDefault();
+  event.preventDefault()
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value
+  const password = document.getElementById("password").value
 
   try {
     const response = await fetch("http://localhost:3333/login", {
@@ -11,21 +11,17 @@ const login = async (event) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-    });
+    })
 
-    const data = await response.json();
+    const data = await response.json()
 
     if (response.ok) {
       if (data.user && typeof data.user === "object") {
-        window.location.href = "/user/profile";
+        window.location.href = "/user/profile"
       } else if (data.company && typeof data.company === "object") {
-        if (data.users && data.users.length > 0) {
-          window.location.href = "/company/dashboard";
-        } else {
-          alert("No users associated with this company.");
-        }
+        window.location.href = "/company/dashboard"
       } else {
-        window.location.href = "/companies";
+        alert("Unexpected login response.")
       }
     } else {
       throw new Error(data.message || "Login failed");
@@ -33,4 +29,4 @@ const login = async (event) => {
   } catch (error) {
     alert("Error: " + (error.message || "An error occurred during login"));
   }
-};
+}

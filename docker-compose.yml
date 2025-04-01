@@ -11,7 +11,7 @@ services:
       - DB_HOST=db
       - DB_PORT=3306
       - DB_USER=root
-      - DB_PASSWORD=nadusopking
+      - DB_PASSWORD=
       - DB_NAME=agreement_system
       - SECRET_JWK_KEY=this-is-ah-awesome-secret-key
     depends_on:
@@ -25,7 +25,7 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: nadusopking
+      MYSQL_ROOT_PASSWORD: 
       MYSQL_DATABASE: agreement_system
     ports:
       - "3306:3306"
