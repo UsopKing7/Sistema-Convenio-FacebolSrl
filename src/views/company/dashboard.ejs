@@ -10,11 +10,12 @@
   <div class="container">
     <div class="dashboard-header">
       <h1>Company Dashboard</h1>
+      <p><strong>Company ID:</strong> <%= companyId %></p> <!-- Mostrar el Company ID -->
     </div>
     <div id="usersList">
       <% if (users && users.length > 0) { %>
         <% users.forEach(user => { %>
-          <div>
+          <div class="user-card">
             <p><strong>Name:</strong> <%= user.name %></p>
             <p><strong>Email:</strong> <%= user.email %></p>
             <p><strong>Role:</strong> <%= user.rol %></p> 
@@ -32,7 +33,7 @@
     </form>
   </div>
   <div class="logout">
-    <button type="submit" class="logout-button"><a href="/registerUsers">Agregar Usuario</a></button>
+    <button class="logout-button"><a href="/registerUsers">Agregar Usuario</a></button>
   </div>
 </body>
 </html>

@@ -28,4 +28,4 @@ routerPerfil.get("/", async (req, res) => {
     console.error("Error fetching user profile:", error);
     res.status(500).send("Internal server error");
   }
-});
+})

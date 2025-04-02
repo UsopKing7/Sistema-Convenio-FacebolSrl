@@ -19,9 +19,9 @@ routerDashboard.get("/", async (req, res) => {
       [companyId]
     )
 
-    res.render("company/dashboard", { users });
+    res.render("company/dashboard", { users, companyId })
   } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).send("Internal server error");
+    console.error("Error fetching users:", error)
+    res.status(500).send("Internal server error")
   }
 })
