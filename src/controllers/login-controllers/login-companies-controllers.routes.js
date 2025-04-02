@@ -10,26 +10,29 @@ export const routerLogin = Router()
 
 routerLogin.post("/", async (req, res) => {
   try {
-    const loginPage = validationLogin.parse(req.body)
-    const token = jwt.sign({ email: loginPage.email }, SECRET_JWK_KEY, {
-      expiresIn: "2h",
-    })
+    const loginPage = validationLogin.parse(req.body);
 
     const [userExist] = await pool.query(
       "SELECT * FROM users WHERE email = ?",
       [loginPage.email]
-    )
+    );
 
     if (userExist.length > 0) {
-      const user = userExist[0]
+      const user = userExist[0];
       const validatePassword = await bcrypt.compare(
         loginPage.password,
         user.password
-      )
+      );
 
       if (!validatePassword) {
-        return res.status(400).json({ message: "Incorrect password" })
+        return res.status(400).json({ message: "Incorrect password" });
       }
+
+      const token = jwt.sign(
+        { email: user.email, company_id: user.companies_id },
+        SECRET_JWK_KEY,
+        { expiresIn: "2h" }
+      );
 
       res.cookie("access_token", token, {
         httpOnly: true,
@@ -46,7 +49,7 @@ routerLogin.post("/", async (req, res) => {
     )
 
     if (companiesExists.length > 0) {
-      const company = companiesExists[0];
+      const company = companiesExists[0]
       const validatePassword = await bcrypt.compare(
         loginPage.password,
         company.password
@@ -56,23 +59,20 @@ routerLogin.post("/", async (req, res) => {
         return res.status(400).json({ message: "Incorrect password" })
       }
 
-      const [users] = await pool.query(
-        "SELECT * FROM users WHERE companies_id = ?",
-        [company.id]
-      )
+      const token = jwt.sign(
+        { email: company.email, company_id: company.id },
+        SECRET_JWK_KEY,
+        { expiresIn: "2h" }
+      );
 
       res.cookie("access_token", token, {
         httpOnly: true,
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
         maxAge: 7200000,
-      });
+      })
 
-      if (users.length === 0) {
-        return res.status(200).json({ message: "Login successful as company", company })
-      }
-
-      return res.status(200).json({ message: "Login successful as company", company, users })
+      return res.status(200).json({ message: "Login successful as company", company })
     }
 
     return res.status(400).json({ message: "Account not found" })
