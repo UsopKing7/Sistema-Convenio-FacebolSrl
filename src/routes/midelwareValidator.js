@@ -1,8 +1,10 @@
-import jwt from 'jsonwebtoken';
-import { SECRET_JWK_KEY } from '../models/db.js';
+#!/usr/bin/env node
+
+import jwt from 'jsonwebtoken'
+import { SECRET_JWK_KEY } from '../models/db.js'
 
 export const autheticationToken = (req, res, next) => {
-  const token = req.cookies.access_token || req.headers['authorization']?.split(' ')[1];
+  const token = req.cookies.access_token || req.headers['authorization']?.split(' ')[1]
 
   if (!token) {
     return res.status(401).json({ message: "Acceso no autorizado" });
@@ -16,8 +18,8 @@ export const autheticationToken = (req, res, next) => {
       company_id: decoded.company_id 
     };
 
-    next();
+    next()
   } catch (error) {
-    return res.status(403).json({ message: "Token inválido o expirado" });
+    return res.status(403).json({ message: "Token inválido o expirado" })
   }
-};
+}
