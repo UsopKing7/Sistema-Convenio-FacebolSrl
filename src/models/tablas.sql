@@ -22,3 +22,13 @@ CREATE TABLE users (
   registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (companies_id) REFERENCES companies(id) ON DELETE CASCADE
 );
+
+CREATE TABLE company_movements (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  companies_id INT NOT NULL,
+  movement_type VARCHAR(30) NOT NULL,
+  amount INT NOT NULL,
+  description TEXT,
+  movement_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (companies_id) REFERENCES companies(id) ON DELETE CASCADE
+);
