@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Usuario</title>
+    <style>
+        :root {
+          --primary-color: #76c7c0;
+          --secondary-color: #5aa6a0;
+          --dark-color: #1f1f1f;
+          --darker-color: #121212;
+          --light-color: #e0e0e0;
+          --danger-color: #ff5555;
+          --warning-color: #ffaa44;
+          --success-color: #1cc88a;
+          --card-bg: #252525;
+          --border-color: #333;
+          --text-dark: #e0e0e0;
+          --text-light: #b3b3b3;
+        }
+
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--darker-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        form {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        div {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        input {
+            width: 93%;
+            padding: 12px 15px;
+            background-color: var(--dark-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-dark);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(118, 199, 192, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--darker-color);
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-light);
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Estilo para el placeholder */
+        ::placeholder {
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <form id="updateUserForm">
+        <h1>Actualizar Usuario</h1>
+        <div>
+            <label for="id">ID de Usuario:</label>
+            <input type="number" id="id" name="id" required>
+        </div>
+        <div>
+            <label for="password">Nueva Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="rol">Rol (Ej: admin, manager, user):</label>
+            <input type="text" id="rol" name="rol" placeholder="Escribe el rol del usuario" required>
+        </div>
+        <button type="submit">Actualizar</button>
+        <div class="login-link">
+            <p><a href="/company/dashboard">Volver</a></p>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('updateUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                id: document.getElementById('id').value,
+                password: document.getElementById('password').value,
+                rol: document.getElementById('rol').value
+            };
+
+            try {
+                const response = await fetch('/users/update', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Error al actualizar usuario');
+                }
+                
+                alert('Usuario actualizado correctamente');
+                document.getElementById('updateUserForm').reset()
+                window.location.href = "/"
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
