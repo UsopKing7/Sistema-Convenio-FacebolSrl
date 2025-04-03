@@ -20,6 +20,7 @@ import { routerDashboard } from '../controllers/controller-views/views-controlle
 import { routerPerfil } from '../controllers/controller-views/views-controllers-perfil.routes.js'
 import { logoutRouter } from '../controllers/login-controllers/logout.routes.js'
 import { routerRegisterUsers } from '../controllers/controller-views/viewa-register.routes.js'
+import { routerUpdateUsers } from '../controllers/controller-views/views-update.routes.js'
 
 import { Router } from "express";
 
@@ -44,6 +45,7 @@ middleware.use("/companies/update", autheticationToken, PatchRouterCompanies)
 middleware.use("/company/dashboard", autheticationToken, routerDashboard)
 middleware.use("/user/profile", autheticationToken, routerPerfil)
 middleware.use("/registerUsers", autheticationToken, routerRegisterUsers)
+middleware.use("/edit-user", autheticationToken, routerUpdateUsers)
 
 middleware.use((req, res) => {
   console.log(req.url)
