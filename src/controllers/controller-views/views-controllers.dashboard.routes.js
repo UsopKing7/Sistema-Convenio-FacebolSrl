@@ -15,7 +15,7 @@ routerDashboard.get("/", async (req, res) => {
     const companyId = decoded.company_id
 
     const [users] = await pool.query(
-      "SELECT companies_id, name, email, rol FROM users WHERE companies_id = ?",
+      "SELECT id, companies_id, name, email, rol FROM users WHERE companies_id = ?",
       [companyId]
     )
 
