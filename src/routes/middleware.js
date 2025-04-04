@@ -21,6 +21,10 @@ import { routerPerfil } from '../controllers/controller-views/views-controllers-
 import { logoutRouter } from '../controllers/login-controllers/logout.routes.js'
 import { routerRegisterUsers } from '../controllers/controller-views/viewa-register.routes.js'
 import { routerUpdateUsers } from '../controllers/controller-views/views-update.routes.js'
+import { routerMovementsGet } from '../controllers/movements-controllers/get-contollers-movements.routes.js'
+import { routerMovementsPost } from '../controllers/movements-controllers/post-controlles-movements.routes.js'
+import { routerMovementsPatch } from '../controllers/movements-controllers/patch-controlles-movements-patch.routes.js'
+import { routerMovementsDelete } from '../controllers/movements-controllers/delete-controllers-movements.routes.js'
 
 import { Router } from "express";
 
@@ -32,6 +36,10 @@ middleware.use("/register", createRouter)
 middleware.use("/login", routerLogin)
 middleware.use("/", routerViewsLogin)
 middleware.use("/registerEmpresa", routerViewsRegisterEmpresa)
+middleware.use("/movements", routerMovementsGet)
+middleware.use("/movements", routerMovementsPost)
+middleware.use("/movements", routerMovementsPatch)
+middleware.use("/movements", routerMovementsDelete)
 
 // Rutas protegidas
 middleware.use("/register/registrarUsers", autheticationToken, usersRouter)
