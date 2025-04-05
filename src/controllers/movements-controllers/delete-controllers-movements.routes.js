@@ -6,20 +6,22 @@ import { validationMovementsDelete } from '../../routes/validation-movements.js'
 
 export const routerMovementsDelete = Router()
 
-routerMovementsDelete.delete('/', async (req, res) => {
+routerMovementsDelete.delete('/:id', async (req, res) => {
   try {
-    const movementDelete = validationMovementsDelete.parse(req.body)
+    const { id } = req.params
 
     const [existId] = await pool.query(
-      'SELECT * FROM company_movements WHERE id = ?', [movementDelete.id]
+      'SELECT * FROM company_movements WHERE id = ?', [id]
     )
-    if (existId.length > 0) {
-      const [data] = await pool.query(
-        'DELETE FROM company_movements WHERE id = ?', [movementDelete.id]
-      )
+    if (existId.length === 0) {
+      return res.status(404).json({ message: 'Movement not found' })
     }
 
-    res.status(200).json({ message: 'movement delete complete' })
+    await pool.query(
+      'DELETE FROM company_movements WHERE id = ?', [id]
+    )
+
+    res.status(200).json({ message: 'Movement deleted successfully' })
   } catch (error) {
     return res.status(500).json({ message: 'error internal server', error: error.message })
   }

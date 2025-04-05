@@ -6,8 +6,9 @@ import { validationMovementsPatch } from '../../routes/validation-movements.js'
 
 export const routerMovementsPatch = Router()
 
-routerMovementsPatch.patch('/', async (req, res) => {
+routerMovementsPatch.patch('/:id', async (req, res) => {
   try {
+    const { id } = req.params
     const newUpadateMovements = validationMovementsPatch.parse(req.body)
 
     const [movementsCompanyExists] = await pool.query(
@@ -22,10 +23,10 @@ routerMovementsPatch.patch('/', async (req, res) => {
           newUpadateMovements.movement_type,
           newUpadateMovements.amount,
           newUpadateMovements.description,
-          newUpadateMovements.id
+          id
         ]
       )
-      res.status(200).json({ message: 'movement update complete'})
+      res.status(200).json({ message: 'Movement updated successfully' })
     } else {
       return res.status(400).json({ message: 'error id not font', error: error.message })
     }
