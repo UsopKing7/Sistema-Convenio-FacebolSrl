@@ -4,6 +4,6 @@ import { Router } from 'express'
 
 export const routerUpdateUsers = Router()
 
-routerUpdateUsers.get('/', (req, res) => {
+routerUpdateUsers.get('/:id', (req, res) => {
   res.render('patchUsers/edit-user')
 })

@@ -8,16 +8,18 @@ import jwt from 'jsonwebtoken'
 
 export const usersRouter = Router()
 
-usersRouter.post('/', async (req, res) => {
+usersRouter.post('/:companies_id', async (req, res) => {
   try {
     const newUsers = validation.parse({
       ...req.body,
-      companies_id: Number(req.body.companies_id)
+      companies_id: Number(req.params.companies_id)
     })
 
     const hashedPassword = await bcrypt.hash(newUsers.password, 10)
 
-    const [company] = await pool.query('SELECT id FROM companies WHERE id = ?', [newUsers.companies_id])
+    const [company] = await pool.query(
+      'SELECT id FROM companies WHERE id = ?', [newUsers.companies_id]
+    )
 
     if (company.length === 0) {
       return res.status(404).json({ message: 'company not found "400"' })

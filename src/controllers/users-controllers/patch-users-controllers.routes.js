@@ -7,10 +7,12 @@ import { validationPatchUsers } from '../../routes/validation-users.routes.js'
 
 export const PatchRouterUsers = Router()
 
-PatchRouterUsers.patch('/', async (req, res) => {
+PatchRouterUsers.patch('/:id', async (req, res) => {
   try {
-    const { id } = req.body
-    const [idUsers] = await pool.query('SELECT * FROM users WHERE id = ?', [id])
+    const { id } = req.params
+    const [idUsers] = await pool.query(
+      'SELECT * FROM users WHERE id = ?', [id]
+    )
 
     if (idUsers.length === 0) {
       return res.status(400).json({ message: 'id Users not font'})

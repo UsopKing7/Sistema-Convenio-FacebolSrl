@@ -7,9 +7,11 @@ import z from 'zod'
 export const deleteUsers = Router()
 const validationId = z.object({ id: z.coerce.number().int().positive() })
 
-deleteUsers.delete('/', async (req, res) => {
+deleteUsers.delete('/:id', async (req, res) => {
   try {
-    const { id } = validationId.parse(req.body)
+    const { id } = req.params
+    
+    validationId.parse({ id })
 
     const [idUsers] = await pool.query('SELECT * FROM users WHERE id = ?', [id])
     if (idUsers.length === 0) {
