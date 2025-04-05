@@ -4,13 +4,19 @@ import { Router } from "express"
 import { pool } from '../../models/db.js'
 import { validationPatch } from '../../routes/validation.routes.js'
 import bcrypt from 'bcrypt'
+import z from 'zod'
 
 export const PatchRouterCompanies = Router()
 
-PatchRouterCompanies.patch('/', async (req, res) => {
+const validationId = z.object({ id: z.coerce.number().int().positive() })
+
+PatchRouterCompanies.patch('/:id', async (req, res) => {
   try {
-    const { id } = req.body
-    const [idCompanies] = await pool.query('SELECT * FROM companies WHERE id = ?', [id])
+    const { id } = validationId.parse({ id: req.params.id })
+    
+    const [idCompanies] = await pool.query(
+      'SELECT * FROM companies WHERE id = ?', [id]
+    )
     if (idCompanies.length === 0) {
       return res.status(400).json({ message: 'error id not font'})
     }
@@ -18,7 +24,8 @@ PatchRouterCompanies.patch('/', async (req, res) => {
     const UpdateCompanies = validationPatch.parse(req.body)
     const passwordHash = await bcrypt.hash(UpdateCompanies.password, 10)
   
-    await pool.query('UPDATE companies SET address = ?, password = ? WHERE id = ?',
+    await pool.query(
+      'UPDATE companies SET address = ?, password = ? WHERE id = ?',
       [
         UpdateCompanies.address,
         passwordHash,
