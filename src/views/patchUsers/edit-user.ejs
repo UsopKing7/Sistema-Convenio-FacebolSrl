@@ -112,7 +112,6 @@
             text-decoration: underline;
         }
 
-        /* Estilo para el placeholder */
         ::placeholder {
             color: var(--text-light);
             opacity: 0.7;
@@ -122,17 +121,14 @@
 <body>
     <form id="updateUserForm">
         <h1>Actualizar Usuario</h1>
+
         <div>
-            <label for="id">ID de Usuario:</label>
-            <input type="number" id="id" name="id" required>
+            <label for="password">Nueva Contraseña (Opcional):</label>
+            <input type="password" id="password" name="password" placeholder="Escribe la nueva contraseña">
         </div>
         <div>
-            <label for="password">Nueva Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <label for="rol">Rol (Ej: admin, manager, user):</label>
-            <input type="text" id="rol" name="rol" placeholder="Escribe el rol del usuario" required>
+            <label for="rol">Rol (Opcional):</label>
+            <input type="text" id="rol" name="rol" placeholder="Escribe el rol del usuario" value="<%= user.rol %>">
         </div>
         <button type="submit">Actualizar</button>
         <div class="login-link">
@@ -141,34 +137,34 @@
     </form>
 
     <script>
-        document.getElementById('updateUserForm').addEventListener('submit', async (e) => {
+        const form = document.getElementById('updateUserForm');
+        const userId = "<%= user.id %>"
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const formData = {
-                id: document.getElementById('id').value,
-                password: document.getElementById('password').value,
-                rol: document.getElementById('rol').value
+                password: document.getElementById('password').value.trim() || undefined,
+                rol: document.getElementById('rol').value.trim() || undefined 
             };
 
             try {
-                const response = await fetch('/users/update', {
+                const response = await fetch(`/users/update/${userId}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData)
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (!response.ok) {
-                    throw new Error(result.message || 'Error al actualizar usuario');
+                    throw new Error(result.message || 'Error al actualizar el usuario');
                 }
-                
+
                 alert('Usuario actualizado correctamente');
-                document.getElementById('updateUserForm').reset()
-                window.location.href = "/"
-                
+                window.location.href = "/company/dashboard"
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error: ' + error.message);

@@ -9,6 +9,6 @@ export const validation = z.object({
 })
 
 export const validationPatchUsers = z.object({
-  password: z.string().min(8, 'la contraseña tiene que tener mas de 7 caracteres'),
-  rol: z.string().min(5)
+  password: z.string().min(8, 'la contraseña tiene que tener mas de 7 caracteres').optional(),
+  rol: z.string().min(5).optional()
 })

@@ -10,26 +10,30 @@ export const PatchRouterUsers = Router()
 PatchRouterUsers.patch('/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const [idUsers] = await pool.query(
-      'SELECT * FROM users WHERE id = ?', [id]
-    )
 
+    const [idUsers] = await pool.query('SELECT * FROM users WHERE id = ?', [id])
     if (idUsers.length === 0) {
-      return res.status(400).json({ message: 'id Users not font'})
+      return res.status(400).json({ message: 'Usuario no encontrado' })
     }
 
     const updateUsers = validationPatchUsers.parse(req.body)
-    const passwordHash = await bcrypt.hash(updateUsers.password, 10)
 
-    await pool.query('UPDATE users SET password = ?, rol = ? WHERE id = ?', 
-      [
-        passwordHash,
-        updateUsers.rol,
-        id
-      ]
-    )
-    res.status(200).json({ message: 'Users update complete', idUser: id})
+    let passwordHash;
+    if (updateUsers.password) {
+      passwordHash = await bcrypt.hash(updateUsers.password, 10)
+    }
+
+    const query = 'UPDATE users SET password = ?, rol = ? WHERE id = ?'
+    const params = [
+      passwordHash || idUsers[0].password,
+      updateUsers.rol || idUsers[0].rol,
+      id
+    ]
+
+    await pool.query(query, params)
+
+    res.status(200).json({ message: 'Usuario actualizado correctamente', idUser: id })
   } catch (error) {
-    return res.status(500).json({ error: 'internal server error "500"', details: error.errors ?? error.message })
+    res.status(500).json({ error: 'Error interno del servidor', details: error.message })
   }
 })
