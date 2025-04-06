@@ -41,12 +41,12 @@
       <div class="dashboard-header">
         <div class="header-info">
           <h1>User Management</h1>
-          <p><strong>Company ID:</strong> <%= companyId %></p> <!-- Usamos el parámetro companyId -->
+          <p><strong>Company:</strong> <%= companyName %></p>
         </div>
       </div>
 
       <div id="usersList">
-        <% if (users && users.length > 0) { %> <!-- Usamos el parámetro users -->
+        <% if (users && users.length > 0) { %>
           <% users.forEach(user => { %>
             <div class="user-card">
               <div class="user-card-header">
@@ -55,7 +55,6 @@
                 </div>
                 <div class="user-info">
                   <h3><%= user.name %></h3>
-                  <p>ID: <%= user.id %></p>
                   <p><%= user.rol %></p>
                 </div>
               </div>
@@ -64,10 +63,6 @@
                 <div class="user-detail">
                   <i class="fas fa-envelope"></i>
                   <span><strong>Email:</strong> <%= user.email %></span>
-                </div>
-                <div class="user-detail">
-                  <i class="fas fa-id-card"></i>
-                  <span><strong>Company ID:</strong> <%= user.companies_id %></span>
                 </div>
               </div>
               
@@ -94,7 +89,7 @@
       </div>
     </div>
     
-    <a href="/registerUsers/<%= companyId %>" class="add-user-btn"> <!-- Pasamos companyId en la URL -->
+    <a href="/registerUsers/<%= companyId %>" class="add-user-btn">
       <i class="fas fa-plus"></i>
     </a>
   </div>

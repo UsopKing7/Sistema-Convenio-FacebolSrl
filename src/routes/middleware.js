@@ -25,6 +25,7 @@ import { routerMovementsGet } from '../controllers/movements-controllers/get-con
 import { routerMovementsPost } from '../controllers/movements-controllers/post-controlles-movements.routes.js'
 import { routerMovementsPatch } from '../controllers/movements-controllers/patch-controlles-movements-patch.routes.js'
 import { routerMovementsDelete } from '../controllers/movements-controllers/delete-controllers-movements.routes.js'
+import { routerDeleteUsersViews } from '../controllers/controller-views/views-controllers-delete.routes.js'
 
 import { Router } from "express";
 

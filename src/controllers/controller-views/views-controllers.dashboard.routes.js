@@ -19,7 +19,16 @@ routerDashboard.get("/", async (req, res) => {
       [companyId]
     )
 
-    res.render("company/dashboard", { users, companyId })
+    const [[company]] = await pool.query(
+      "SELECT name FROM companies WHERE id = ?",
+      [companyId]
+    )
+
+    res.render("company/dashboard", {
+      users,
+      companyId,
+      companyName: company.name || "Unknown Company"
+    })
   } catch (error) {
     console.error("Error fetching users:", error)
     res.status(500).send("Internal server error")
