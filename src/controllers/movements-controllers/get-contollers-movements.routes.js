@@ -5,15 +5,19 @@ import { pool } from '../../models/db.js'
 
 export const routerMovementsGet = Router()
 
-routerMovementsGet.get('/', async (req, res) => {
+routerMovementsGet.get('/:id', async (req, res) => {
   try {
-    const [data] = await pool.query(
-      'SELECT * FROM company_movements'
-    )
-    if (!data) throw new Error('table not existent')
+    const { id } = req.params
 
-    res.status(200).json({ data })
+    const [movements] = await pool.query(
+      'SELECT * FROM company_movements WHERE companies_id = ?', [id]
+    )
+
+    res.render('movements/movements', {
+      companyId: id,
+      movements
+    })
   } catch (error) {
-    return res.status(500).json({ message: 'error internal server', error: error.message})
+    return res.status(500).json({ message: 'error internal server', error: error.message })
   }
 })
