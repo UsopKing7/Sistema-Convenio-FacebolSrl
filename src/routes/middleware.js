@@ -25,8 +25,10 @@ import { routerMovementsGet } from '../controllers/movements-controllers/get-con
 import { routerMovementsPost } from '../controllers/movements-controllers/post-controlles-movements.routes.js'
 import { routerMovementsPatch } from '../controllers/movements-controllers/patch-controlles-movements-patch.routes.js'
 import { routerMovementsDelete } from '../controllers/movements-controllers/delete-controllers-movements.routes.js'
+import { routerDeleteUsers } from '../controllers/controller-views/deleteViews.routes.js'
 
 import { Router } from "express";
+import { matchPath } from "react-router-dom";
 
 export const middleware = Router();
 middleware.use('/', logoutRouter);
@@ -54,6 +56,7 @@ middleware.use("/company/dashboard", autheticationToken, routerDashboard)
 middleware.use("/user/profile", autheticationToken, routerPerfil)
 middleware.use("/registerUsers", autheticationToken, routerRegisterUsers)
 middleware.use("/edit-user", autheticationToken, routerUpdateUsers)
+middleware.use("/delete-user", autheticationToken, routerDeleteUsers)
 
 middleware.use((req, res) => {
   console.log(req.url)

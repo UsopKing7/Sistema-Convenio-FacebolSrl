@@ -72,11 +72,10 @@
                 <a href="/edit-user/<%= user.id %>" class="btn btn-warning">
                   <i class="fas fa-edit"></i> Edit
                 </a>
-                <form action="/delete-user/<%= user.id %>" method="POST" style="flex: 1;">
-                  <button type="submit" class="btn btn-danger" style="width: 100%;">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </form>
+                <a href="/delete-user/<%= user.id %>" class="btn btn-danger" style="width: 100%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-trash" style="margin-right: 5px;"></i> Delete
+                </a>
+                
               </div>
             </div>
           <% }) %>
