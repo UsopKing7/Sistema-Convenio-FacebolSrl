@@ -26,9 +26,9 @@ import { routerMovementsPost } from '../controllers/movements-controllers/post-c
 import { routerMovementsPatch } from '../controllers/movements-controllers/patch-controlles-movements-patch.routes.js'
 import { routerMovementsDelete } from '../controllers/movements-controllers/delete-controllers-movements.routes.js'
 import { routerDeleteUsers } from '../controllers/controller-views/deleteViews.routes.js'
+import { getInsertMovements } from '../controllers/controller-views/views-insertMovenments.routes.js'
 
 import { Router } from "express";
-import { matchPath } from "react-router-dom";
 
 export const middleware = Router();
 middleware.use('/', logoutRouter);
@@ -39,17 +39,16 @@ middleware.use("/login", routerLogin)
 middleware.use("/", routerViewsLogin)
 middleware.use("/registerEmpresa", routerViewsRegisterEmpresa)
 middleware.use("/movements", routerMovementsGet)
-middleware.use("/movements", routerMovementsPost)
+middleware.use('/movements/registerMovements', routerMovementsPost)
+middleware.use("/movements/registerMovements", getInsertMovements)
 middleware.use("/movements", routerMovementsPatch)
 middleware.use("/movements", routerMovementsDelete)
 
 // Rutas protegidas
 middleware.use("/register/registrarUsers", autheticationToken, usersRouter)
-middleware.use("/users", autheticationToken, getUsers)
 middleware.use("/users/delete", autheticationToken, deleteUsers)
 middleware.use("/users/update", autheticationToken, PatchRouterUsers)
 
-middleware.use("/companies", autheticationToken, getCompanies)
 middleware.use("/companies/delete", autheticationToken, deleteCompanies)
 middleware.use("/companies/update", autheticationToken, PatchRouterCompanies)
 middleware.use("/company/dashboard", autheticationToken, routerDashboard)
