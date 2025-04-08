@@ -462,3 +462,168 @@ a {
   text-decoration: none;
   color: var(--text-light);
 }
+
+/* Estilos para la tabla de movimientos */
+.movements-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-dark);
+}
+
+.movements-table thead {
+  background-color: var(--dark-color);
+  color: var(--text-dark);
+}
+
+.movements-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.movements-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.movements-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.movements-table tbody tr:hover {
+  background-color: rgba(118, 199, 192, 0.05);
+}
+
+/* Estilos para los iconos de tipo de movimiento */
+.movements-table .fa-arrow-up {
+  color: var(--success-color);
+  margin-right: 8px;
+}
+
+.movements-table .fa-arrow-down {
+  color: var(--danger-color);
+  margin-right: 8px;
+}
+
+/* Estilos para los botones de acción */
+.movements-table .btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.movements-table .btn-warning {
+  background-color: var(--warning-color);
+  color: var(--dark-color);
+}
+
+.movements-table .btn-warning:hover {
+  background-color: #e6b239;
+  transform: translateY(-2px);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.movements-table .btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.movements-table .btn-danger:hover {
+  background-color: #d62c1a;
+  transform: translateY(-2px);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.movements-table .btn i {
+  margin-right: 5px;
+}
+
+/* Estilos para el mensaje cuando no hay movimientos */
+.no-users {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.2);
+  margin-top: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.no-users i {
+  font-size: 2rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.no-users p {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+/* Estilos para el botón flotante de agregar */
+.add-user-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  background-color: var(--primary-color);
+  color: var(--dark-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.add-user-btn:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-3px) scale(1.05);
+  color: var(--dark-color);
+}
+
+/* Estilos para el monto */
+.movements-table td:nth-child(4) {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* Estilos responsivos para la tabla */
+@media (max-width: 768px) {
+  .movements-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .movements-table .btn {
+    margin-bottom: 0.5rem;
+  }
+}

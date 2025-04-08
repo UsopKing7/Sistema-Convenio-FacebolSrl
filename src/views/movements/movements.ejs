@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movements - Company <%= companyId %></title>
+  <title>Movements - Company </title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/company/style.css">
-</head>
+  </head>
 <body>
   <div class="container">
     <div class="sidebar">
@@ -46,44 +46,42 @@
     <div class="main-content">
       <div class="dashboard-header">
         <div class="header-info">
-          <h1>Movements for Company </h1>
+          <h1>Movements for Company</h1>
         </div>
       </div>
 
       <% if (movements.length > 0) { %>
-        <div class="movements-list">
-          <% movements.forEach(mov => { 
-              const isCompra = mov.movement_type === 'compra';
-              const icon = isCompra ? 'fa-arrow-down' : 'fa-arrow-up';
-              const avatarClass = isCompra ? 'compra' : 'venta';
-          %>
-            <div class="user-card">
-              <div class="user-card-header">
-                <div class="user-avatar <%= avatarClass %>">
-                  <i class="fas <%= icon %>"></i>
-                </div>
-                <div class="user-info">
-                  <h3><%= mov.description %></h3>
-                  <p><strong>Type:</strong> <%= mov.movement_type %></p>
-                  <p><strong>Amount:</strong> Bs <%= mov.amount %></p>
-                  <p><strong>Date:</strong> <%= new Date(mov.movement_date).toLocaleDateString() %></p>
-                </div>
-              </div>
-
-              <div class="user-actions">
-                <!-- Edit Button -->
-                <a href="/edit-movement/<%= mov.id %>" class="btn btn-warning">
-                  <i class="fas fa-edit"></i> Edit
-                </a>
-                <!-- Delete Button -->
-                <a href="/delete-movement/<%= mov.id %>" class="btn btn-danger">
-                  <i class="fas fa-trash"></i> Delete
-                </a>
-              </div>
-            </div>
-          <% }) %>
-        </div>
-        
+        <table class="movements-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% movements.forEach((mov, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= mov.description %></td>
+                <td><%= mov.movement_type %></td>
+                <td>Bs <%= mov.amount %></td>
+                <td><%= new Date(mov.movement_date).toLocaleDateString() %></td>
+                <td>
+                  <a href="/edit-movement/<%= mov.id %>" class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i> Edit
+                  </a>
+                  <a href="/delete-movement/<%= mov.id %>" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i> Delete
+                  </a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
       <% } else { %>
         <div class="no-users">
           <i class="fas fa-box-open"></i>
@@ -91,10 +89,8 @@
         </div>
       <% } %>
 
-      <a href="/company/dashboard" class="btn btn-primary" style="margin-top: 20px;">
-        <i class="fas fa-arrow-left"></i> Back to Dashboard
-      </a>
     </div>
+
     <a href="/movements/registerMovements/<%= companyId %>" class="add-user-btn">
       <i class="fas fa-plus"></i>
     </a>

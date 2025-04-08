@@ -39,8 +39,6 @@ middleware.use("/login", routerLogin)
 middleware.use("/", routerViewsLogin)
 middleware.use("/registerEmpresa", routerViewsRegisterEmpresa)
 middleware.use("/movements", routerMovementsGet)
-middleware.use('/movements/registerMovements', routerMovementsPost)
-middleware.use("/movements/registerMovements", getInsertMovements)
 middleware.use("/movements", routerMovementsPatch)
 middleware.use("/movements", routerMovementsDelete)
 
@@ -56,6 +54,8 @@ middleware.use("/user/profile", autheticationToken, routerPerfil)
 middleware.use("/registerUsers", autheticationToken, routerRegisterUsers)
 middleware.use("/edit-user", autheticationToken, routerUpdateUsers)
 middleware.use("/delete-user", autheticationToken, routerDeleteUsers)
+middleware.use('/movements/registerMovements', autheticationToken, routerMovementsPost)
+middleware.use("/movements/registerMovements", autheticationToken, getInsertMovements)
 
 middleware.use((req, res) => {
   console.log(req.url)
