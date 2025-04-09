@@ -1,12 +1,6 @@
 # Sistema de convenios FaceboolSrl
 # Bienvenidos al repositorio del Sistema de Convenios FacebolSrl
 
-### Colaboradores del Proyecto 
-- UsopKIng
-- Luz Choque
-- Ramiro Pomacahua Choquemisa 
-- 
-
 # Clonacion del repositorio
 
 pasos para clonar el repositorio
