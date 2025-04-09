@@ -1,4 +1,4 @@
-# Sistema de convenios FaceboolSrl
+# Sistema de convenios FacebolSrl
 
 # Clonacion del repositorio
 
