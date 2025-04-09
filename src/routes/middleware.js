@@ -23,10 +23,12 @@ import { routerRegisterUsers } from '../controllers/controller-views/viewa-regis
 import { routerUpdateUsers } from '../controllers/controller-views/views-update.routes.js'
 import { routerMovementsGet } from '../controllers/movements-controllers/get-contollers-movements.routes.js'
 import { routerMovementsPost } from '../controllers/movements-controllers/post-controlles-movements.routes.js'
-import { routerMovementsPatch } from '../controllers/movements-controllers/patch-controlles-movements-patch.routes.js'
+import { routerMovementsPatch_GET } from '../controllers/controller-views/update-movements.routes.js'
 import { routerMovementsDelete } from '../controllers/movements-controllers/delete-controllers-movements.routes.js'
 import { routerDeleteUsers } from '../controllers/controller-views/deleteViews.routes.js'
 import { getInsertMovements } from '../controllers/controller-views/views-insertMovenments.routes.js'
+import { routerMovementsPatch } from '../controllers/movements-controllers/patch-controlles-movements-patch.routes.js'
+
 
 import { Router } from "express";
 
@@ -38,9 +40,6 @@ middleware.use("/register", createRouter)
 middleware.use("/login", routerLogin)
 middleware.use("/", routerViewsLogin)
 middleware.use("/registerEmpresa", routerViewsRegisterEmpresa)
-middleware.use("/movements", routerMovementsGet)
-middleware.use("/movements", routerMovementsPatch)
-middleware.use("/movements", routerMovementsDelete)
 
 // Rutas protegidas
 middleware.use("/register/registrarUsers", autheticationToken, usersRouter)
@@ -56,6 +55,11 @@ middleware.use("/edit-user", autheticationToken, routerUpdateUsers)
 middleware.use("/delete-user", autheticationToken, routerDeleteUsers)
 middleware.use('/movements/registerMovements', autheticationToken, routerMovementsPost)
 middleware.use("/movements/registerMovements", autheticationToken, getInsertMovements)
+middleware.use("/movements", autheticationToken, routerMovementsGet)
+middleware.use("/edit-movement", autheticationToken, routerMovementsPatch_GET)
+middleware.use("/edit-movement", autheticationToken, routerMovementsPatch)
+
+middleware.use("/delete-movement", autheticationToken, routerMovementsDelete)
 
 middleware.use((req, res) => {
   console.log(req.url)

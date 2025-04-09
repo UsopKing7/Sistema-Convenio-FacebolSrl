@@ -10,11 +10,10 @@ export const validationMovements = z.object({
 })
 
 export const validationMovementsPatch = z.object({
-  id: z.number().int().positive(),
-  companies_id: z.number().int().positive(),
-  movement_type: z.string(),
-  amount: z.number().int(),
-  description: z.string()
+  companies_id: z.number().int().optional(),
+  movement_type: z.string().optional(),
+  amount: z.number().int().optional(),
+  description: z.string().optional()
 })
 
 export const validationMovementsDelete = z.object({
