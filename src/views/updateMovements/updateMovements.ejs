@@ -170,10 +170,10 @@
 
     <script>
         const form = document.getElementById('updateMovementForm');
-        const movementId = "<%= movement.id %>"; // Asegúrate de que el movimiento tenga un id asignado
+        const movementId = "<%= movement.id %>"
     
         form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+            e.preventDefault()
     
             const formData = {
                 amount: document.getElementById('amount').value ? 
@@ -190,28 +190,27 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify(formData)
-                });
+                })
     
-                // Verificar si la respuesta es JSON
-                const contentType = response.headers.get('content-type');
+                const contentType = response.headers.get('content-type')
                 if (!contentType || !contentType.includes('application/json')) {
-                    const text = await response.text();
-                    throw new Error(text || 'Respuesta no válida del servidor');
+                    const text = await response.text()
+                    throw new Error(text || 'Respuesta no válida del servidor')
                 }
     
-                const result = await response.json();
+                const result = await response.json()
     
                 if (!response.ok || !result.success) {
-                    throw new Error(result.message || 'Error al actualizar el movimiento');
+                    throw new Error(result.message || 'Error al actualizar el movimiento')
                 }
     
-                alert(result.message || 'Movimiento actualizado correctamente');
-                window.location.href = "/company/dashboard"; // Redirige al dashboard
+                alert(result.message || 'Movimiento actualizado correctamente')
+                window.location.href = "/company/dashboard"
             } catch (error) {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
+                console.error('Error:', error)
+                alert('Error: ' + error.message)
             }
-        });
+        })
     </script>
 </body>
 </html>
