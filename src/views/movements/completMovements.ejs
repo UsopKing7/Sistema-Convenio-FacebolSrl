@@ -79,17 +79,12 @@
 
   <script>
     function goBackAndReload() {
-      // Establecer que la página debe recargarse al volver
       sessionStorage.setItem("reloadOnBack", "true");
-
-      // Retroceder dos páginas en el historial (dos veces)
       window.history.go(-2);
     }
 
     window.addEventListener("load", function () {
-      // Verificar si se debe recargar la página
       if (sessionStorage.getItem("reloadOnBack") === "true") {
-        // Limpiar la marca de recarga
         sessionStorage.removeItem("reloadOnBack");
       }
     });
