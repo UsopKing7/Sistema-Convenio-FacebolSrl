@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Movimiento Registrado</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -14,10 +14,6 @@
       --dark: #0f0f0f;
       --light: #f5f5f5;
       --light-gray: rgba(255, 255, 255, 0.7);
-      --border-color: rgba(255, 255, 255, 0.08);
-      --input-bg: rgba(30, 30, 30, 0.9);
-      --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
     }
 
     * {
@@ -34,7 +30,6 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
       padding: 20px;
       text-align: center;
     }
@@ -43,21 +38,16 @@
       font-size: 2.5rem;
       font-weight: 600;
       margin-bottom: 20px;
-      color: var(--light);
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       -webkit-background-clip: text;
       background-clip: text;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      animation: fadeIn 1s ease-out forwards;
+      color: transparent;
     }
 
     p {
       font-size: 1.2rem;
       color: var(--light-gray);
       margin-bottom: 30px;
-      opacity: 0;
-      animation: fadeInText 1.5s ease-out forwards 0.3s;
     }
 
     .btn {
@@ -78,33 +68,31 @@
       background: var(--primary-dark);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeInText {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
   </style>
 </head>
 <body>
   <div>
     <h1>Movimiento Registrado Con Éxito</h1>
     <p>El movimiento se ha registrado exitosamente en el sistema.</p>
-    <a href="/company/dashboard" class="btn">Volver al Inicio</a>
+    <button class="btn" onclick="goBackAndReload()">Volver</button>
   </div>
+
+  <script>
+    function goBackAndReload() {
+      // Establecer que la página debe recargarse al volver
+      sessionStorage.setItem("reloadOnBack", "true");
+
+      // Retroceder dos páginas en el historial (dos veces)
+      window.history.go(-2);
+    }
+
+    window.addEventListener("load", function () {
+      // Verificar si se debe recargar la página
+      if (sessionStorage.getItem("reloadOnBack") === "true") {
+        // Limpiar la marca de recarga
+        sessionStorage.removeItem("reloadOnBack");
+      }
+    });
+  </script>
 </body>
 </html>

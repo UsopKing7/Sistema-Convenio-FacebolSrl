@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movements - Company </title>
+  <title>Movements - Company</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/company/style.css">
-  </head>
+</head>
 <body>
   <div class="container">
     <div class="sidebar">
@@ -91,9 +91,15 @@
 
     </div>
 
-    <a href="/movements/registerMovements/<%= companyId %>" class="add-user-btn">
-      <i class="fas fa-plus"></i>
-    </a>
+    <!-- Add Movement and Refresh Button -->
+    <div class="buttons-container">
+      <a href="/movements/registerMovements/<%= companyId %>" class="add-user-btn">
+        <i class="fas fa-plus"></i>
+      </a>
+      <button onclick="location.reload()" class="refresh-button">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
   </div>
 </body>
 </html>

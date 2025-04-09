@@ -34,12 +34,39 @@
       font-size: 1rem;
       color: black;
     }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>⚠️ Movements Deleted</h1>
     <p>The user has been successfully removed from the system.</p>
+    <button onclick="goBackAndReload()">Go Back</button>
   </div>
+
+  <script>
+    function goBackAndReload() {
+      if (document.referrer) {
+        window.location.href = document.referrer
+      } else {
+        window.history.back()
+      }
+    }
+  </script>
 </body>
 </html>
