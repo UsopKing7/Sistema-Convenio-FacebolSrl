@@ -2,11 +2,10 @@
 
 import { Router } from 'express'
 import { pool } from '../../models/db.js'
-import { validationMovementsDelete } from '../../routes/validation-movements.js'
 
 export const routerMovementsDelete = Router()
 
-routerMovementsDelete.delete('/:id', async (req, res) => {
+routerMovementsDelete.get('/:id', async (req, res) => {
   try {
     const { id } = req.params
 
@@ -21,7 +20,7 @@ routerMovementsDelete.delete('/:id', async (req, res) => {
       'DELETE FROM company_movements WHERE id = ?', [id]
     )
 
-    res.status(200).json({ message: 'Movement deleted successfully' })
+    res.render('deleteMovements/delete-movement', { id })
   } catch (error) {
     return res.status(500).json({ message: 'error internal server', error: error.message })
   }

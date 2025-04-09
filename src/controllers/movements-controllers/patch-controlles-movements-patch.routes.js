@@ -9,28 +9,40 @@ export const routerMovementsPatch = Router()
 routerMovementsPatch.patch('/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const newUpadateMovements = validationMovementsPatch.parse(req.body)
+    const newUpdateMovements = validationMovementsPatch.parse(req.body)
+
+    const [movement] = await pool.query(
+      'SELECT * FROM company_movements WHERE id = ?', [id]
+    )
+
+    if (movement.length === 0) {
+      return res.status(404).json({ message: 'Movimiento no encontrado' })
+    }
+
+    const companies_id = movement[0].companies_id
 
     const [movementsCompanyExists] = await pool.query(
-      'SELECT * FROM companies WHERE id = ?', [newUpadateMovements.companies_id]
+      'SELECT * FROM companies WHERE id = ?', [companies_id]
     )
-    if (movementsCompanyExists.length > 0) {
-      const [result] = await pool.query(
-        `UPDATE company_movements 
-         SET movement_type = ?, amount = ?, description = ? 
-         WHERE id = ?`,
-        [
-          newUpadateMovements.movement_type,
-          newUpadateMovements.amount,
-          newUpadateMovements.description,
-          id
-        ]
-      )
-      res.status(200).json({ message: 'Movement updated successfully' })
-    } else {
-      return res.status(400).json({ message: 'error id not font', error: error.message })
+
+    if (movementsCompanyExists.length === 0) {
+      return res.status(400).json({ message: 'ID de empresa no válido' })
     }
+
+    const [result] = await pool.query(
+      `UPDATE company_movements 
+       SET movement_type = ?, amount = ?, description = ? 
+       WHERE id = ?`,
+      [
+        newUpdateMovements.movement_type,
+        newUpdateMovements.amount,
+        newUpdateMovements.description,
+        id
+      ]
+    )
+
+    return res.json({ success: true, message: 'Movimiento actualizado correctamente' })
   } catch (error) {
-    return res.status(500).json({ message: 'error internal mesage', error: error.message })
+    return res.status(500).json({ message: 'Error interno del servidor', error: error.message })
   }
 })
