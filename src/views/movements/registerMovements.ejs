@@ -7,25 +7,24 @@
   <link rel="stylesheet" href="/movements/style.css">
 </head>
 <body>
-<form action="/movements/registerMovements/<%= id %>" method="POST">
+<form id="registerMovementForm">
     <h1>Registrar Movimiento</h1>
 
-    <input type="hidden" name="companies_id" value="<%= id %>">
+    <input type="hidden" id="companies_id" value="<%= id %>">
 
     <div>
       <label for="movement_type">Tipo de Movimiento:</label>
-      <input type="text" id="movement_type" name="movement_type" placeholder="Ingreso o Egreso" required>
+      <input type="text" id="movement_type" placeholder="Ingreso o Egreso" required>
     </div>
-    
 
     <div>
       <label for="amount">Monto:</label>
-      <input type="number" id="amount" name="amount" step="1" required>
+      <input type="number" id="amount" step="1" required>
     </div>
-    
+
     <div>
       <label for="description">Descripción:</label>
-      <textarea id="description" name="description" rows="4" required></textarea>
+      <textarea id="description" rows="4" required></textarea>
     </div>
 
     <button type="submit">Registrar Movimiento</button>
@@ -33,6 +32,49 @@
     <div>
       <p><a href="/">Volver al inicio</a></p>
     </div>
-  </form>
+</form>
+
+<script>
+  const form = document.getElementById('registerMovementForm')
+  const companyId = document.getElementById('companies_id').value
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const data = {
+      movement_type: document.getElementById('movement_type').value.trim(),
+      amount: parseFloat(document.getElementById('amount').value),
+      description: document.getElementById('description').value.trim(),
+      companies_id: Number(companyId)
+    }
+
+    try {
+      const response = await fetch(`/movements/registerMovements/${companyId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) throw new Error(result.message)
+
+      alert('✅ Movimiento registrado correctamente')
+
+      if (document.referrer) {
+        window.location.href = document.referrer
+      } else {
+        window.location.reload()
+      }
+
+    } catch (err) {
+      alert('❌ Error al registrar: ' + err.message)
+      console.error(err)
+    }
+  })
+</script>
 </body>
 </html>

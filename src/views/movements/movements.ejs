@@ -7,6 +7,37 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/company/style.css">
 </head>
+<style>
+  .pagination a {
+  padding: 8px 12px;
+  margin: 0 4px;
+  text-decoration: none;
+  background-color: #403d39; 
+  border-radius: 4px;
+  color: white;
+}
+
+.pagination a.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination a:hover {
+  background-color: #5f5f5f;
+  color: white;
+}
+
+.pagination span {
+  padding: 8px 12px;
+  margin: 0 4px;
+  color: #333;
+}
+
+.pagination a:focus, .pagination span:focus {
+  outline: none;
+}
+
+</style>
 <body>
   <div class="container">
     <div class="sidebar">
@@ -46,7 +77,8 @@
     <div class="main-content">
       <div class="dashboard-header">
         <div class="header-info">
-          <h1>Movements for Company</h1> <p>refresca la pagina para actualizar los movimientos</p>
+          <h1>Movements for Company</h1>
+          <p>Refresca la página para actualizar los movimientos</p>
         </div>
       </div>
 
@@ -65,7 +97,7 @@
           <tbody>
             <% movements.forEach((mov, index) => { %>
               <tr>
-                <td><%= index + 1 %></td>
+                <td><%= index + 1 + ((currentPage - 1) * 20) %></td>
                 <td><%= mov.description %></td>
                 <td><%= mov.movement_type %></td>
                 <td>Bs <%= mov.amount %></td>
@@ -89,16 +121,50 @@
         </div>
       <% } %>
 
-    </div>
+      <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a href="/movements/<%= companyId %>?page=1">
+            <i class="fas fa-angle-double-left"></i> First
+          </a>
+          <a href="/movements/<%= companyId %>?page=<%= currentPage - 1 %>">
+            <i class="fas fa-arrow-left"></i> Previous
+          </a>
+        <% } %>
+      
+        <% let startPage = Math.max(1, currentPage - 2); %>
+        <% let endPage = Math.min(totalPages, currentPage + 2); %>
+      
+        <% if (startPage > 1) { %>
+          <a href="/movements/<%= companyId %>?page=1">1</a>
+          <% if (startPage > 2) { %> <span>...</span> <% } %>
+        <% } %>
+      
+        <% for (let i = startPage; i <= endPage; i++) { %>
+          <a href="/movements/<%= companyId %>?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>">
+            <%= i %>
+          </a>
+        <% } %>
+      
+        <% if (endPage < totalPages) { %>
+          <% if (endPage < totalPages - 1) { %> <span>...</span> <% } %>
+          <a href="/movements/<%= companyId %>?page=<%= totalPages %>"><%= totalPages %></a>
+        <% } %>
+      
+        <% if (currentPage < totalPages) { %>
+          <a href="/movements/<%= companyId %>?page=<%= currentPage + 1 %>">
+            Next <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="/movements/<%= companyId %>?page=<%= totalPages %>">
+            Last <i class="fas fa-angle-double-right"></i>
+          </a>
+        <% } %>
+      </div>
 
-    <!-- Add Movement and Refresh Button -->
-    <div class="buttons-container">
-      <a href="/movements/registerMovements/<%= companyId %>" class="add-user-btn">
-        <i class="fas fa-plus"></i>
-      </a>
-      <button onclick="location.reload()" class="refresh-button">
-        <i class="fas fa-sync-alt"></i>
-      </button>
+      <div class="buttons-container">
+        <a href="/movements/registerMovements/<%= companyId %>" class="add-user-btn">
+          <i class="fas fa-plus"></i>
+        </a>
+      </div>
     </div>
   </div>
 </body>

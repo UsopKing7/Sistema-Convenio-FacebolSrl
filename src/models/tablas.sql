@@ -32,3 +32,5 @@ CREATE TABLE company_movements (
   movement_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (companies_id) REFERENCES companies(id) ON DELETE CASCADE
 );
+
+ALTER TABLE company_movements ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;

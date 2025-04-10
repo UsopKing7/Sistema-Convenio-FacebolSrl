@@ -21,7 +21,7 @@ routerMovementsPost.post('/:id', async (req, res) => {
     )
 
     if (idCompaniesExists.length > 0) {
-      const [data] = await pool.query(
+      await pool.query(
         'INSERT INTO company_movements (companies_id, movement_type, amount, description) VALUES (?, ?, ?, ?)',
         [
           validatedMovement.companies_id,
@@ -30,7 +30,7 @@ routerMovementsPost.post('/:id', async (req, res) => {
           validatedMovement.description
         ]
       )
-      res.render('movements/completMovements')
+      res.status(200).json({ message: 'movement register complete' })
     } else {
       return res.status(400).json({ message: 'company ID not found' })
     }
