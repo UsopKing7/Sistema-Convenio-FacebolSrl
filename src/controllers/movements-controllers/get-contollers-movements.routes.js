@@ -7,7 +7,7 @@ routerMovementsGet.get('/:id', async (req, res) => {
   try {
     const { id } = req.params
     const page = parseInt(req.query.page) || 1
-    const limit = 15
+    const limit = 10
     const offset = (page - 1) * limit
 
     const [movements] = await pool.query(

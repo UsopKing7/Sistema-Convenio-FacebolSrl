@@ -97,7 +97,7 @@
           <tbody>
             <% movements.forEach((mov, index) => { %>
               <tr>
-                <td><%= index + 1 + ((currentPage - 1) * 20) %></td>
+                <td><%= index + 1 + ((currentPage - 1) * 10) %></td>
                 <td><%= mov.description %></td>
                 <td><%= mov.movement_type %></td>
                 <td>Bs <%= mov.amount %></td>
