@@ -39,7 +39,7 @@ routerSucursales.post("/:id", async (req, res) => {
     const id_lugar = dataLugar.insertId
 
     const [dataSucursalTypes] = await pool.query(
-      "INSERT INTO branches_types (nombre_sede, estado) VALUES (?, ?)",
+      "INSERT INTO branch_types (nombre_sede, estado) VALUES (?, ?)",
       [
         schemaSucursalTypes.nombre_sede,
         schemaSucursalTypes.estado
@@ -69,7 +69,7 @@ routerSucursales.post("/:id", async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Error internal en el servidor",
-      error: error.errors,
+      error: error.errors || error.message || error,
     })
   }
 })
