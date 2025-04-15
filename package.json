@@ -1,10 +1,10 @@
 {
   "name": "sistema-convenio-facebolsrl",
   "version": "1.0.0",
-  "description": "- UsopKIng\r - Luz Choque\r - Ramiro Pomacahua Choquemisa \r -",
-  "main": "index.js",
+  "description": "UsopKIng",
+  "main": "server.js",
   "scripts": {
-    "dev": "node --watch src/server.js"
+    "dev": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,18 +19,21 @@
   },
   "homepage": "https://github.com/UsopKing7/Sistema-Convenio-FacebolSrl#readme",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cookie-parser": "^1.4.7",
-    "dotenv": "^16.4.7",
-    "ejs": "^3.1.10",
-    "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.13.0",
-    "picocolors": "^1.1.1",
-    "react-router-dom": "^7.4.0",
-    "zod": "^3.24.2"
+    "bcrypt": "5.1.1",
+    "cookie-parser": "1.4.7",
+    "dotenv": "16.4.7",
+    "ejs": "3.1.10",
+    "express": "4.21.2",
+    "jsonwebtoken": "9.0.2",
+    "mysql2": "3.13.0",
+    "picocolors": "1.1.1",
+    "react-router-dom": "7.4.0",
+    "zod": "3.24.2"
   },
   "prettier": {
     "semi": false
+  },
+  "devDependencies": {
+    "nodemon": "3.1.9"
   }
 }
