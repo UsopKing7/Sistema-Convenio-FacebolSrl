@@ -73,3 +73,43 @@ routerSucursales.post("/:id", async (req, res) => {
     })
   }
 })
+
+
+routerSucursales.get('/:id', async (req, res) => {
+  console.log('/sucursales' + req.url)
+  const id = req.params.id
+
+  try {
+    const [empresaExiste] = await pool.query(
+      'SELECT * FROM branches WHERE id_empresa = ?', [id] 
+    )
+
+    if (empresaExiste.length === 0) {
+      return res.status(404).json({ message: 'Empresa no encontrada' })
+    }
+    
+    const [branches] = await pool.query(
+      `SELECT 
+        bt.nombre_sede,
+        p.departamento,
+        p.ciudad,
+        b.direccion,
+        b.horario,
+        bt.estado
+      FROM branches b
+      JOIN places p ON b.id_lugar = p.id
+      JOIN branch_types bt ON b.id_tipo_sede = bt.id
+      WHERE b.id_empresa = ?`, [id]
+    )
+
+    return res.status(200).json({
+      message: 'Sucursales de la empresa',
+      data: branches
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error internal en el servidor",
+      error: error.errors || error.message || error
+    })
+  }
+})
