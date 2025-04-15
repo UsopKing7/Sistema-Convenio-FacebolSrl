@@ -1,6 +1,0 @@
-DELETE http://localhost:3333/companies/delete
-Content-Type: application/json
-
-{
-  "id": 1
-}

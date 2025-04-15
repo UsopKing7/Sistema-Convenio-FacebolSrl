@@ -1,8 +1,0 @@
-PATCH http://localhost:3333/users/update
-Content-Type: application/json
-
-{
-  "password": "cambiopassword",
-  "rol": "conserje",
-  "id": 1
-}
