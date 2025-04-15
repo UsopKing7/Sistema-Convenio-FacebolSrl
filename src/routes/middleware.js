@@ -28,7 +28,7 @@ import { routerMovementsDelete } from '../controllers/movements-controllers/dele
 import { routerDeleteUsers } from '../controllers/controller-views/deleteViews.routes.js'
 import { getInsertMovements } from '../controllers/controller-views/views-insertMovenments.routes.js'
 import { routerMovementsPatch } from '../controllers/movements-controllers/patch-controlles-movements-patch.routes.js'
-
+import { routerSucursales } from '../controllers/sucursales/sucursal.routes.js'
 
 import { Router } from "express";
 
@@ -58,6 +58,7 @@ middleware.use("/movements/registerMovements", autheticationToken, getInsertMove
 middleware.use("/movements", autheticationToken, routerMovementsGet)
 middleware.use("/edit-movement", autheticationToken, routerMovementsPatch_GET)
 middleware.use("/edit-movement", autheticationToken, routerMovementsPatch)
+middleware.use("/sucursal", routerSucursales)
 
 middleware.use("/delete-movement", autheticationToken, routerMovementsDelete)
 
