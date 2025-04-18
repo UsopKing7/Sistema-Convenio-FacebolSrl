@@ -24,5 +24,5 @@ pasos para clonar el repositorio
 ## 🚀 Características
 - ✅ CRUD de convenios (Crear, Leer, Actualizar, Eliminar).  
 - ✅ Arquitectura **MVC** con **Express y MySQL**.  
-- ✅ **EJS** para las vistas dinámicas.  
+- ✅ **REAC** para las vistas dinámicas.  
 - ✅ **CSS** para la interfaz.
