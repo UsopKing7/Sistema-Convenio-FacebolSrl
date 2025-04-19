@@ -12,13 +12,13 @@ app.disable('x-powered-by')
 app.set('view engine', 'ejs')
 app.set('views', './src/views')
 app.use(express.static('./src/views'))
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
 
 app.use(middleware)
 
 const PORT = process.env.PORT || 3333
 app.listen(PORT, () => {
   console.table({
-    URL:  'http://localhost:' + PORT
+    URL: 'http://localhost:' + PORT
   })
 })
