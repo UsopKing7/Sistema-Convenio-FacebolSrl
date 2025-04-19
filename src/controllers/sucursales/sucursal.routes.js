@@ -64,7 +64,7 @@ routerSucursales.post('/:id', async (req, res) => {
       ciudad: schema.ciudad,
       departamento: schema.departamento,
       direccion: schemaSucursal.direccion,
-      nombre: schemaSucursalTypes.nombre_sed
+      nombre: schemaSucursalTypes.nombre_sede
     })
   } catch (error) {
     return res.status(500).json({

@@ -18,12 +18,12 @@ const testConnection = async () => {
   try {
     const connection = await pool.getConnection()
     console.log(
-      pc.blue(`[+] Connection to data bases complete`)
+      pc.blue('[+] Connection to data bases complete')
     )
     connection.release()
   } catch (error) {
     console.log(
-      pc.red(`[*] Error to connection to database`)
+      pc.red('[*] Error to connection to database')
     )
   }
 }
