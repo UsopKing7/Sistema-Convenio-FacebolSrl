@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 
-import { Router } from "express"
-import { pool } from "../../models/db.js"
+import { Router } from 'express'
+import { pool } from '../../models/db.js'
 import {
   SchemaLugar,
   SchemaSucursal,
-  SchemaSucursalTypes,
-} from "./SchemaSucursal.js"
+  SchemaSucursalTypes
+} from '../../routes/SchemaSucursal.js'
 
 export const routerSucursales = Router()
 
-routerSucursales.post("/:id", async (req, res) => {
+routerSucursales.post('/:id', async (req, res) => {
   const id = req.params.id
 
   try {
@@ -19,16 +19,16 @@ routerSucursales.post("/:id", async (req, res) => {
     const schemaSucursalTypes = SchemaSucursalTypes.parse(req.body)
 
     const empresaExiste = await pool.query(
-      "SELECT * FROM companies WHERE id = ?",
+      'SELECT * FROM empresas WHERE id = ?',
       [id]
     )
 
     if (empresaExiste.length === 0) {
-      return res.status(404).json({ message: "La empresa no existe" })
+      return res.status(404).json({ message: 'La empresa no existe' })
     }
 
     const [dataLugar] = await pool.query(
-      "INSERT INTO places (estado, ciudad, departamento) VALUES (?, ?, ?)",
+      'INSERT INTO lugares (estado, ciudad, departamento) VALUES (?, ?, ?)',
       [
         schema.estado,
         schema.ciudad,
@@ -36,44 +36,43 @@ routerSucursales.post("/:id", async (req, res) => {
       ]
     )
 
-    const id_lugar = dataLugar.insertId
+    const idLugar = dataLugar.insertId
 
     const [dataSucursalTypes] = await pool.query(
-      "INSERT INTO branch_types (nombre_sede, estado) VALUES (?, ?)",
+      'INSERT INTO tipos_sede (nombre_sede, estado) VALUES (?, ?)',
       [
         schemaSucursalTypes.nombre_sede,
         schemaSucursalTypes.estado
       ]
     )
 
-    const id_tipo_sede = dataSucursalTypes.insertId
+    const idTipoSede = dataSucursalTypes.insertId
 
-    const [dataSucursal] = await pool.query(
-      "INSERT INTO branches (direccion, horario, id_lugar, id_empresa, id_tipo_sede) VALUES (?, ?, ?, ?, ?)",
+    await pool.query(
+      'INSERT INTO sucursales (direccion, horario, lugar_id, empresa_id, tipo_sede_id) VALUES (?,?,?,?,?)',
       [
         schemaSucursal.direccion,
         schemaSucursal.horario,
-        id_lugar,
+        idLugar,
         id,
-        id_tipo_sede,
+        idTipoSede
       ]
     )
 
     return res.status(201).json({
-      message: "Sucursal registrado completamente",
+      message: 'Sucursal registrado completamente',
       ciudad: schema.ciudad,
       departamento: schema.departamento,
       direccion: schemaSucursal.direccion,
-      nombre: schemaSucursalTypes.nombre_sede,
+      nombre: schemaSucursalTypes.nombre_sed
     })
   } catch (error) {
     return res.status(500).json({
-      message: "Error internal en el servidor",
-      error: error.errors || error.message || error,
+      message: 'Error internal en el servidor',
+      error: error.errors || error.message || error
     })
   }
 })
-
 
 routerSucursales.get('/:id', async (req, res) => {
   console.log('/sucursales' + req.url)
@@ -81,13 +80,14 @@ routerSucursales.get('/:id', async (req, res) => {
 
   try {
     const [empresaExiste] = await pool.query(
-      'SELECT * FROM branches WHERE id_empresa = ?', [id] 
+      'SELECT * FROM branches WHERE id_empresa = ?',
+      [id]
     )
 
     if (empresaExiste.length === 0) {
       return res.status(404).json({ message: 'Empresa no encontrada' })
     }
-    
+
     const [branches] = await pool.query(
       `SELECT 
         bt.nombre_sede,
@@ -99,7 +99,8 @@ routerSucursales.get('/:id', async (req, res) => {
       FROM branches b
       JOIN places p ON b.id_lugar = p.id
       JOIN branch_types bt ON b.id_tipo_sede = bt.id
-      WHERE b.id_empresa = ?`, [id]
+      WHERE b.id_empresa = ?`,
+      [id]
     )
 
     return res.status(200).json({
@@ -108,7 +109,31 @@ routerSucursales.get('/:id', async (req, res) => {
     })
   } catch (error) {
     return res.status(500).json({
-      message: "Error internal en el servidor",
+      message: 'Error internal en el servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})
+
+routerSucursales.delete('/:id', async (req, res) => {
+  const id = req.params.id
+
+  try {
+    const [empresaExiste] = await pool.query(
+      'SELECT * FROM sucursales WHERE id = ?', [id]
+    )
+
+    if (empresaExiste.length === 0) {
+      return res.status(404).json({ message: 'Sucursal no encontrada' })
+    }
+
+    await pool.query(
+      'DELETE FROM sucursales WHERE id = ?', [id]
+    )
+    res.status(200).json({ message: 'Sucursal eliminada correctamente' })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno en el servidor',
       error: error.errors || error.message || error
     })
   }
