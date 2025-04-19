@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/UsopKing7/Sistema-Convenio-FacebolSrl#readme",
   "dependencies": {
-    "bcrypt": "5.1.1",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "1.4.7",
     "dotenv": "16.4.7",
     "ejs": "3.1.10",
@@ -31,9 +31,14 @@
     "zod": "3.24.2"
   },
   "prettier": {
-    "semi": false
+    "semi": false,
+    "singleQuote": true
   },
   "devDependencies": {
-    "nodemon": "3.1.9"
+    "nodemon": "3.1.9",
+    "standard": "17.1.2"
+  },
+  "eslintConfig": {
+    "extends": "standard"
   }
 }
