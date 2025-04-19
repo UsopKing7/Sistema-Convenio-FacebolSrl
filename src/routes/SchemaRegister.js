@@ -11,3 +11,8 @@ export const schemaRegister = z.object({
   nit: z.string(),
   contrasena: z.string().min(8)
 })
+
+export const schemaLogin = z.object({
+  correo: z.string().email(),
+  contrasena: z.string().min(8)
+})

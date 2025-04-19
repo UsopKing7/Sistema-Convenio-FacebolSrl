@@ -2,10 +2,42 @@
 
 import { Router } from 'express'
 import { pool } from '../../models/db.js'
-import { schemaRegister } from '../../routes/SchemaRegister.js'
+import { schemaRegister, schemaLogin } from '../../routes/SchemaRegister.js'
 import bcrypt from 'bcrypt'
 
 export const routerRegiste = Router()
+
+routerRegiste.post('/login', async (req, res) => {
+  try {
+    const vLogin = schemaLogin.parse(req.body)
+
+    const [empresa] = await pool.query(
+      'SELECT * FROM empresas WHERE correo = ?', [vLogin.correo]
+    )
+
+    if (empresa.length === 0) {
+      return res.status(404).json({
+        message: 'No existe una empresa con ese correo'
+      })
+    }
+
+    const isPasswordValid = await bcrypt.compare(vLogin.contrasena, empresa[0].contrasena)
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        message: 'Usuario o contraseña incorrectos'
+      })
+    }
+    res.status(200).json({
+      message: 'Login exitoso',
+      empresa: empresa[0].nombre_empresa
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno en el servidor',
+      error: error.message || error.errors || error
+    })
+  }
+})
 
 routerRegiste.post('/register', async (req, res) => {
   try {
