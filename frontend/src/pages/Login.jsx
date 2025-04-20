@@ -19,9 +19,16 @@ export const Login = () => {
     })
 
     if (res.ok) {
-      console.log('Estado del login:', res.status);
-      console.log('Cookies en frontend:', document.cookie);
-      navigate('/dashboard')
+      const id = await fetch('http://localhost:3333/id', {
+        credentials: 'include'
+      })
+      const data = await id.json()
+      
+      if (data.id) {
+        navigate(`/dashboard/${data.id}`)
+      } else {
+        alert('Error al obtener el ID')
+      }
     } else {
       alert('Error al iniciar sesión')
     }

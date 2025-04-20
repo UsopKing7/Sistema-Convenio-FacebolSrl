@@ -2,6 +2,7 @@
 
 import jwt from 'jsonwebtoken'
 import { SECRET_JWK_KEY } from '../models/db.js'
+import { Router } from 'express'
 
 export const rutaprotegida = (req, res, next) => {
   const token = req.cookies.token
@@ -19,3 +20,18 @@ export const rutaprotegida = (req, res, next) => {
     })
   }
 }
+
+export const routerMiddleware = Router()
+
+routerMiddleware.get('/check-token', rutaprotegida, (req, res) => {
+  res.status(200).json({
+    message: 'token valido',
+    usuario: req.usuario
+  })
+})
+
+export const ruterPerfil = Router()
+ruterPerfil.get('/id', rutaprotegida, async (req, res) => {
+  const { id } = req.usuario
+  res.status(200).json({ id })
+})

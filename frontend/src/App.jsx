@@ -10,7 +10,7 @@ export const App = () => {
         <Route path='/' element={<Login />} />
 
         <Route 
-          path='/dashboard'
+          path='/dashboard/:id'
           element={
             <PrivateRouter>
               <Dashboard />

@@ -30,15 +30,15 @@ routerRegiste.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({
-      id: empresa[0].id_empresa,
+      id: empresa[0].id,
       nombre_empresa: empresa[0].nombre_empresa,
       correo: empresa[0].correo
     }, SECRET_JWK_KEY, { expiresIn: '1h' })
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'strict',
       maxAge: 72000000
     })
 
