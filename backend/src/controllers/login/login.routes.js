@@ -37,8 +37,8 @@ routerRegiste.post('/login', async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: process.env.EN_NODE = 'production' || true,
+      sameSite: 'strict',
       maxAge: 72000000
     })
 
