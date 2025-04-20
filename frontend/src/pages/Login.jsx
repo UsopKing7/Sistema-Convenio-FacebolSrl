@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import '../styles/Login.css'
 
 export const Login = () => {
   const [correo, setCorreo] = useState('')
@@ -37,8 +38,9 @@ export const Login = () => {
   return (
     <form onSubmit={handleSubmit}>
     <h2>Iniciar sesión</h2>
-    <input type="email" placeholder="Correo" value={correo} onChange={e => setCorreo(e.target.value)} required />
+    <input type="email" placeholder="Correo" value={correo} onChange={e => setCorreo(e.target.value)} required /> <br />
     <input type="password" placeholder="Contraseña" value={contrasena} onChange={e => setContrasena(e.target.value)} required />
+    <br />
     <button type="submit">Entrar</button>
   </form>
   )
