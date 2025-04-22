@@ -1,20 +1,22 @@
-import { useParams, useLocation, Link } from "react-router-dom"
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom"
 import "./Dashboard.css"
 
+export const getInitials = (name) => {
+  if (!name) return "US"
+  const parts = name.split(" ")
+  let initials = ""
+  for (let i = 0; i < Math.min(parts.length, 2); i++) {
+    initials += parts[i].charAt(0).toUpperCase()
+  }
+  return initials
+}
+
 export const Dashboard = () => {
-  const { _id } = useParams()
+  const { id } = useParams()
   const location = useLocation()
+  const navigate = useNavigate()
   const { nombre_empresa, correo } = location.state || {}
 
-  const getInitials = (name) => {
-    if (!name) return "US"
-    const parts = name.split(" ")
-    let initials = ""
-    for (let i = 0; i < Math.min(parts.length, 2); i++) {
-      initials += parts[i].charAt(0).toUpperCase()
-    }
-    return initials
-  }
 
   const handleLogout = async () => {
     try {
@@ -24,7 +26,7 @@ export const Dashboard = () => {
       });
 
       if (res.ok) {
-        window.location.href = "/";
+        navigate('/')
       } else {
         throw new Error("Error al cerrar sesión");
       }
@@ -48,10 +50,11 @@ export const Dashboard = () => {
           <p>{correo || "correo@ejemplo.com"}</p>
         </div>
         <nav className="nav">
-          <Link to="#" className="nav-link">
+          <Link to={`/dashboard/${id}`} state={{ nombre_empresa, correo }} className="nav-link active">
             <i className="icon">🏠</i> Inicio
           </Link>
-          <Link to="#" className="nav-link">
+          <Link to={`/dashboard/sucursales/${id}`} state={{ nombre_empresa, correo }} className="nav-link">
+          
             <i className="icon">🏢</i> Sucursales
           </Link>
           <Link to="#" className="nav-link">

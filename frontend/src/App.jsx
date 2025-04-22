@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import { Login } from './pages/Login'
 import { Dashboard } from './pages/Dashboard'
+import { Sucursales } from './pages/Sucursales'
 import { PrivateRouter } from './routes/PrivateRouter'
 
 export const App = () => {
@@ -16,6 +17,14 @@ export const App = () => {
               <Dashboard />
             </PrivateRouter>
           }
+        />
+        <Route
+        path='/dashboard/sucursales/:id'
+        element={
+          <PrivateRouter>
+            <Sucursales />
+          </PrivateRouter>
+        }
         />
       </Routes>
     </BrowserRouter>
