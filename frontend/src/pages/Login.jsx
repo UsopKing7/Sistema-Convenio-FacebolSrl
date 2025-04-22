@@ -13,7 +13,7 @@ export const Login = () => {
     const res = await fetch('http://localhost:3333/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       credentials: 'include',
       body: JSON.stringify({ correo, contrasena })
@@ -24,7 +24,7 @@ export const Login = () => {
         credentials: 'include'
       })
       const data = await id.json()
-      
+
       if (data.id) {
         navigate(`/dashboard/${data.id}`, {
           state: {
@@ -42,12 +42,24 @@ export const Login = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-    <h2>Iniciar sesión</h2>
-    <input type="email" placeholder="Correo" value={correo} onChange={e => setCorreo(e.target.value)} required /> <br />
-    <input type="password" placeholder="Contraseña" value={contrasena} onChange={e => setContrasena(e.target.value)} required />
-    <br />
-    <button type="submit">Entrar</button>
-  </form>
+      <h2>Iniciar sesión</h2>
+      <input
+        type="email"
+        placeholder="Correo"
+        value={correo}
+        onChange={(e) => setCorreo(e.target.value)}
+        required
+      />{' '}
+      <br />
+      <input
+        type="password"
+        placeholder="Contraseña"
+        value={contrasena}
+        onChange={(e) => setContrasena(e.target.value)}
+        required
+      />
+      <br />
+      <button type="submit">Entrar</button>
+    </form>
   )
 }
-
