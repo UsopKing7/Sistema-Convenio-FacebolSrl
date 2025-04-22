@@ -1,6 +1,7 @@
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom"
 import "./Dashboard.css"
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const getInitials = (name) => {
   if (!name) return "US"
   const parts = name.split(" ")
