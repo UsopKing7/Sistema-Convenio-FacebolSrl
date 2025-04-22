@@ -12,7 +12,8 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.5.1"
+    "react-router-dom": "^7.5.1",
+    "standard": "^17.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
@@ -24,5 +25,13 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "vite": "^6.3.1"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none"
   }
 }

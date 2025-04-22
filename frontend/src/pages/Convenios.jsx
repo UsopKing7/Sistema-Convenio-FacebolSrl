@@ -1,24 +1,25 @@
-import { useParams, useLocation, Link } from 'react-router-dom'
+import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
 import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
 
-export const Sucursales = () => {
+export const Convenios = () => {
   const { id } = useParams()
   const location = useLocation()
   const { nombre_empresa, correo } = location.state || {}
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost:3333/logout', {
       method: 'GET',
       credentials: 'include'
     })
-
     if (res.ok) {
-      window.location.href = '/'
+      navigate('/')
     } else {
       throw new Error('Error al cierre de session')
     }
   }
+
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -43,14 +44,14 @@ export const Sucursales = () => {
           <Link
             to={`/dashboard/sucursales/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link active"
+            className="nav-link"
           >
             <i className="icon">🏢</i> Sucursales
           </Link>
           <Link
             to={`/dashboard/convenios/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link"
+            className="nav-link active"
           >
             <i className="icon">🤝</i> Convenios
           </Link>
@@ -67,7 +68,7 @@ export const Sucursales = () => {
 
       <main className="main-content">
         <header className="main-header">
-          <h1>Bienvenido a sucursales, {nombre_empresa || 'Usuario'}</h1>
+          <h1>Bienvenido a los Convenios, {nombre_empresa || 'Usuario'}</h1>
         </header>
 
         <div className="module-content"></div>
