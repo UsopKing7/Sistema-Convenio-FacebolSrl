@@ -1,5 +1,7 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
 import '../styles/Dashboard.css'
+import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
+
 import { getInitials } from './Dashboard'
 
 export const Convenios = () => {
@@ -39,29 +41,29 @@ export const Convenios = () => {
             state={{ nombre_empresa, correo }}
             className="nav-link"
           >
-            <i className="icon">🏠</i> Inicio
+            <Home className="icon" /> Inicio
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
             state={{ nombre_empresa, correo }}
             className="nav-link"
           >
-            <i className="icon">🏢</i> Sucursales
+            <Building className="icon" />Sucursales
           </Link>
           <Link
             to={`/dashboard/convenios/${id}`}
             state={{ nombre_empresa, correo }}
             className="nav-link active"
           >
-            <i className="icon">🤝</i> Convenios
+            <Handshake className="icon" /> Convenios
           </Link>
           <Link to="#" className="nav-link">
-            <i className="icon">💳</i> Tarjetas
+            <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="logout-btn">
-            <i className="icon">🚪</i> Cerrar sesión
+            <LogOut className="icon"/> Cerrar sesión
           </button>
         </div>
       </aside>
