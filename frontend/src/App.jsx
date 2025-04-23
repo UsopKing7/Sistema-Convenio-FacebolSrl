@@ -3,6 +3,8 @@ import { Login } from './pages/Login'
 import { Dashboard } from './pages/Dashboard'
 import { Sucursales } from './pages/Sucursales'
 import { Convenios } from './pages/Convenios'
+import { Tarjetas } from './pages/Tarjetas'
+import './styles/404.css'
 import { PrivateRouter } from './routes/PrivateRouter'
 
 export const App = () => {
@@ -28,11 +30,29 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/convenios/:is"
+          path="/dashboard/convenios/:id"
           element={
             <PrivateRouter>
               <Convenios />
             </PrivateRouter>
+          }
+        />
+        <Route
+        path='/dashboard/tarjetas/:id'
+        element={
+          <PrivateRouter>
+            <Tarjetas />
+          </PrivateRouter>
+        }
+        />
+        <Route
+          path="*"
+          element={
+            <div className='error-404'>
+              <h1>404 Not Found</h1>
+              <p>La página que buscas no existe.</p>
+              <p>Regresa a la <a href="./">página de inicio</a>.</p>
+            </div>
           }
         />
       </Routes>

@@ -1,10 +1,9 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
-import '../styles/Dashboard.css'
 import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
-
+import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
 
-export const Convenios = () => {
+export const Tarjetas = () => {
   const { id } = useParams()
   const location = useLocation()
   const { nombre_empresa, correo } = location.state || {}
@@ -15,13 +14,13 @@ export const Convenios = () => {
       method: 'GET',
       credentials: 'include'
     })
+
     if (res.ok) {
       navigate('/')
     } else {
       throw new Error('Error al cierre de session')
     }
   }
-
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -48,32 +47,33 @@ export const Convenios = () => {
             state={{ nombre_empresa, correo }}
             className="nav-link"
           >
-            <Building className="icon" />Sucursales
+            <Building className="icon" /> Sucursales
           </Link>
           <Link
             to={`/dashboard/convenios/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link active"
+            className="nav-link"
           >
             <Handshake className="icon" /> Convenios
           </Link>
-          <Link
+          <Link 
             to={`/dashboard/tarjetas/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link">
+            className="nav-link active"
+            >
             <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="logout-btn">
-            <LogOut className="icon"/> Cerrar sesión
+            <LogOut className="icon" /> Cerrar sesión
           </button>
         </div>
       </aside>
 
       <main className="main-content">
         <header className="main-header">
-          <h1>Bienvenido a los Convenios, {nombre_empresa || 'Usuario'}</h1>
+          <h1>Bienvenido a Tarjetas, {nombre_empresa}</h1>
         </header>
 
         <div className="module-content"></div>

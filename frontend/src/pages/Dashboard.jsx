@@ -1,5 +1,5 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
-import { Home, Building, Handshake, CreditCard, LogOut, TargetIcon } from 'lucide-react'
+import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
 import '../styles/Dashboard.css'
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -72,7 +72,10 @@ export const Dashboard = () => {
           >
             <Handshake className="icon" /> Convenios
           </Link>
-          <Link to="#" className="nav-link">
+          <Link
+            to={`/dashboard/tarjetas/${id}`}
+            state={{ nombre_empresa, correo }}
+            className="nav-link">
             <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
