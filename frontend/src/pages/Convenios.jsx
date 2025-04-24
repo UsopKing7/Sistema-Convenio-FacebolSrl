@@ -1,14 +1,37 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
-import '../styles/Dashboard.css'
 import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
-
+import { useEffect, useState } from 'react'
 import { getInitials } from './Dashboard'
+import '../styles/Dashboard.css'
 
 export const Convenios = () => {
   const { id } = useParams()
   const location = useLocation()
   const { nombre_empresa, correo } = location.state || {}
   const navigate = useNavigate()
+  const [convenios, setConvenios] = useState([])
+
+  useEffect(() => {
+    const fetchConvenios = async (ruta) => {
+      try {
+        const res = await fetch(`http://localhost:3333/${ruta}/${id}}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+
+        const json = await res.json()
+
+        if (res.ok && Array.isArray(json.data)) {
+          setConvenios(json.data)
+        } else {
+          setConvenios([])
+        }
+      } catch {
+        setConvenios([])
+      }
+    }
+    fetchConvenios('convenios')
+  }, [id])
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost:3333/logout', {
@@ -48,7 +71,8 @@ export const Convenios = () => {
             state={{ nombre_empresa, correo }}
             className="nav-link"
           >
-            <Building className="icon" />Sucursales
+            <Building className="icon" />
+            Sucursales
           </Link>
           <Link
             to={`/dashboard/convenios/${id}`}
@@ -60,13 +84,14 @@ export const Convenios = () => {
           <Link
             to={`/dashboard/tarjetas/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link">
+            className="nav-link"
+          >
             <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="logout-btn">
-            <LogOut className="icon"/> Cerrar sesión
+            <LogOut className="icon" /> Cerrar sesión
           </button>
         </div>
       </aside>
@@ -75,6 +100,36 @@ export const Convenios = () => {
         <header className="main-header">
           <h1>Bienvenido a los Convenios, {nombre_empresa || 'Usuario'}</h1>
         </header>
+
+        <div className="module-content">
+          {!Array.isArray(convenios) || convenios.length === 0 ? (
+            <p>No hay convenios registrados.</p>
+          ) : (
+            <ul className="convenios-list">
+              {convenios.map((convenio, index) => (
+                <li key={index} className="convenio-card">
+                  <h3>{convenio.folio}</h3>
+                  <p>
+                    <strong>Folio Interno:</strong> {convenio.folio_interno}
+                  </p>
+                  <p>
+                    <strong>Estado:</strong> {convenio.estado}
+                  </p>
+                  <p>
+                    <strong>Modalidad:</strong> {convenio.modalidad}
+                  </p>
+                  <p>
+                    <strong>Presupuesto:</strong> $
+                    {parseFloat(convenio.presupuesto).toLocaleString('es-CL')}
+                  </p>
+                  <p>
+                    <strong>Empresa ID:</strong> {convenio.empresa_id}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <div className="module-content"></div>
       </main>

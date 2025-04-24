@@ -1,8 +1,8 @@
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
-import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
+import '../styles/Dashboard.css'
 
 export const Sucursales = () => {
   const { id } = useParams()
@@ -12,9 +12,9 @@ export const Sucursales = () => {
   const [sucursales, setSucursales] = useState([])
 
   useEffect(() => {
-    const fetchSucursales = async () => {
+    const fetchSucursales = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/sucursal/${id}`, {
+        const res = await fetch(`http://localhost:3333/${ruta}/${id}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -31,7 +31,7 @@ export const Sucursales = () => {
       }
     }
 
-    fetchSucursales()
+    fetchSucursales('sucursal')
   }, [id])
 
   const handleLogout = async () => {
