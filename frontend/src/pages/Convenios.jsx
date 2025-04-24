@@ -14,7 +14,7 @@ export const Convenios = () => {
   useEffect(() => {
     const fetchConvenios = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}/${id}}`, {
+        const res = await fetch(`http://localhost:3333/${ruta}/${id}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -121,9 +121,6 @@ export const Convenios = () => {
                   <p>
                     <strong>Presupuesto:</strong> $
                     {parseFloat(convenio.presupuesto).toLocaleString('es-CL')}
-                  </p>
-                  <p>
-                    <strong>Empresa ID:</strong> {convenio.empresa_id}
                   </p>
                 </li>
               ))}

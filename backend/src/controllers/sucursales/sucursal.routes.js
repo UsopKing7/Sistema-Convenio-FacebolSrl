@@ -75,7 +75,6 @@ routerSucursales.post('/:id', async (req, res) => {
 })
 
 routerSucursales.get('/:id', async (req, res) => {
-  console.log('/sucursales' + req.url)
   const id = req.params.id
 
   try {
