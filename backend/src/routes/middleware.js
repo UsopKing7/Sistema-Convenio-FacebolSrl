@@ -12,5 +12,5 @@ middleware.use('/', routerRegiste)
 
 middleware.use((req, res) => {
   console.log(req.url)
-  return res.render('404page/404')
+  return res.json('404page/404')
 })

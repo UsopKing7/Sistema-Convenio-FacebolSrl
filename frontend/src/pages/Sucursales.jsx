@@ -1,5 +1,6 @@
 import { useParams, useLocation, Link } from 'react-router-dom'
-import { Home, Building, Handshake, CreditCard, LogOut, CornerDownLeft } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
 import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
 
@@ -7,6 +8,31 @@ export const Sucursales = () => {
   const { id } = useParams()
   const location = useLocation()
   const { nombre_empresa, correo } = location.state || {}
+
+  const [sucursales, setSucursales] = useState([])
+
+  useEffect(() => {
+    const fetchSucursales = async () => {
+      try {
+        const res = await fetch(`http://localhost:3333/sucursal/${id}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+
+        const json = await res.json()
+
+        if (res.ok && Array.isArray(json.data)) {
+          setSucursales(json.data)
+        } else {
+          setSucursales([])
+        }
+      } catch {
+        setSucursales([])
+      }
+    }
+
+    fetchSucursales()
+  }, [id])
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost:3333/logout', {
@@ -17,9 +43,10 @@ export const Sucursales = () => {
     if (res.ok) {
       window.location.href = '/'
     } else {
-      throw new Error('Error al cierre de session')
+      throw new Error('Error al cierre de sesión')
     }
   }
+
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -55,10 +82,11 @@ export const Sucursales = () => {
           >
             <Handshake className="icon" /> Convenios
           </Link>
-          <Link 
-            to={`/dashboard&/tarjetas/${id}`}
-            state={{ nombre_empresa, correo}}
-            className="nav-link">
+          <Link
+            to={`/dashboard/tarjetas/${id}`}
+            state={{ nombre_empresa, correo }}
+            className="nav-link"
+          >
             <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
@@ -74,7 +102,24 @@ export const Sucursales = () => {
           <h1>Bienvenido a sucursales, {nombre_empresa || 'Usuario'}</h1>
         </header>
 
-        <div className="module-content"></div>
+        <div className="module-content">
+          {!Array.isArray(sucursales) || sucursales.length === 0 ? (
+            <p>No hay sucursales registradas.</p>
+          ) : (
+            <ul className="sucursales-list">
+              {sucursales.map((sucursal, index) => (
+                <li key={index} className="sucursal-card">
+                  <h3>{sucursal.nombre_sede}</h3>
+                  <p><strong>Departamento:</strong> {sucursal.departamento}</p>
+                  <p><strong>Ciudad:</strong> {sucursal.ciudad}</p>
+                  <p><strong>Dirección:</strong> {sucursal.direccion}</p>
+                  <p><strong>Horario:</strong> {sucursal.horario}</p>
+                  <p><strong>Estado:</strong> {sucursal.estado}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </main>
     </div>
   )
