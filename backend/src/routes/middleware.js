@@ -8,11 +8,11 @@ export const middleware = Router()
 
 middleware.use(routerMiddleware)
 middleware.use(ruterPerfil)
-middleware.use('/sucursal', routerSucursales)
+middleware.use('/sucursal', rutaprotegida, routerSucursales)
 middleware.use('/', routerRegiste)
-middleware.use('/convenios', routerConvenios)
+middleware.use('/convenios', rutaprotegida, routerConvenios)
 
 middleware.use((req, res) => {
   console.log(req.url)
-  return res.json('404page/404')
+  return res.json({ message: 'Ruta no encontrada' })
 })
