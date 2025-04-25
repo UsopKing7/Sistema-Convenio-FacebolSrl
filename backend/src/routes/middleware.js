@@ -11,7 +11,7 @@ middleware.use(ruterPerfil)
 middleware.use('/sucursal', rutaprotegida, routerSucursales)
 middleware.use('/', routerRegiste)
 middleware.use('/convenios', rutaprotegida, routerConvenios)
-middleware.use('/inicio', routerInicio)
+middleware.use('/', routerInicio)
 
 middleware.use((req, res) => {
   console.log(req.url)
