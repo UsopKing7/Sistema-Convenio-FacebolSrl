@@ -1,5 +1,13 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
-import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
+import {
+  Home,
+  Building,
+  Handshake,
+  CreditCard,
+  LogOut,
+  User2Icon
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
 import '../styles/Dashboard.css'
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -18,6 +26,52 @@ export const Dashboard = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { nombre_empresa, correo } = location.state || {}
+
+  const [conveniosData, setConveniosData] = useState([])
+  const [sucursalesData, setSucursalesData] = useState([])
+
+  useEffect(() => {
+    const fetchDashboardData = async (ruta) => {
+      try {
+        const res = await fetch(`http://localhost:3333/${ruta}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+        const json = await res.json()
+
+        if (Array.isArray(json.data)) {
+          setConveniosData(json.data)
+        } else {
+          setConveniosData([])
+        }
+      } catch {
+        setConveniosData([])
+      }
+    }
+    fetchDashboardData('inicioConvenios')
+  }, [])
+
+  useEffect(() => {
+    const fetchSucursalData = async (ruta) => {
+      try {
+        const res = await fetch(`http://localhost:3333/${ruta}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+
+        const json = await res.json()
+
+        if (Array.isArray(json.data)) {
+          setSucursalesData(json.data)
+        } else {
+          setSucursalesData([])
+        }
+      } catch {
+        setSucursalesData([])
+      }
+    }
+    fetchSucursalData('inicioSucursales')
+  }, [])
 
   const handleLogout = async () => {
     try {
@@ -59,11 +113,18 @@ export const Dashboard = () => {
             <Home className="icon" /> Inicio
           </Link>
           <Link
+            to={`/dashboard/usuario/${id}`}
+            state={{ nombre_empresa, correo }}
+            className="nav-link"
+          >
+            <User2Icon className="icon" /> Usuarios
+          </Link>
+          <Link
             to={`/dashboard/sucursales/${id}`}
             state={{ nombre_empresa, correo }}
             className="nav-link"
           >
-            <Building className="icon"/> Sucursales
+            <Building className="icon" /> Sucursales
           </Link>
           <Link
             to={`/dashboard/convenios/${id}`}
@@ -75,7 +136,8 @@ export const Dashboard = () => {
           <Link
             to={`/dashboard/tarjetas/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link">
+            className="nav-link"
+          >
             <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
@@ -91,7 +153,29 @@ export const Dashboard = () => {
           <h1>Bienvenido, {nombre_empresa || 'Usuario'}</h1>
         </header>
 
-        <div className="module-content"></div>
+        <div className="module-content">
+          {Object.keys(conveniosData).length === 0 ? (
+            <p>No hay nada que mostrar</p>
+          ) : (
+            <ul className="card-list">
+              <li className="stat-card">
+                <h3>Convenios</h3>
+                <p>Total: {conveniosData[0]?.total_convenios}</p>
+              </li>
+            </ul>
+          )}
+
+          {Object.keys(sucursalesData).length === 0 ? (
+            <p>No hay nada que mostrar</p>
+          ) : (
+            <ul className="card-list">
+              <li className="stat-card">
+                <h3>Sucursales</h3>
+                <p>Total: {sucursalesData[0]?.total_sucursales}</p>
+              </li>
+            </ul>
+          )}
+        </div>
       </main>
     </div>
   )

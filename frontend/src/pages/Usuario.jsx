@@ -1,38 +1,20 @@
-import { useParams, useLocation, Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Home, Building, Handshake, CreditCard, LogOut, User2Icon } from 'lucide-react'
-import { getInitials } from './Dashboard'
+import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
+import {
+  Home,
+  Building,
+  Handshake,
+  CreditCard,
+  LogOut,
+  User2Icon
+} from 'lucide-react'
 import '../styles/Dashboard.css'
+import { getInitials } from './Dashboard'
 
-export const Sucursales = () => {
+export const Usuario = () => {
   const { id } = useParams()
   const location = useLocation()
   const { nombre_empresa, correo } = location.state || {}
-
-  const [sucursales, setSucursales] = useState([])
-
-  useEffect(() => {
-    const fetchSucursales = async (ruta) => {
-      try {
-        const res = await fetch(`http://localhost:3333/${ruta}/${id}`, {
-          method: 'GET',
-          credentials: 'include'
-        })
-
-        const json = await res.json()
-
-        if (res.ok && Array.isArray(json.data)) {
-          setSucursales(json.data)
-        } else {
-          setSucursales([])
-        }
-      } catch {
-        setSucursales([])
-      }
-    }
-
-    fetchSucursales('sucursal')
-  }, [id])
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost:3333/logout', {
@@ -41,12 +23,11 @@ export const Sucursales = () => {
     })
 
     if (res.ok) {
-      window.location.href = '/'
+      navigate('/')
     } else {
-      throw new Error('Error al cierre de sesión')
+      throw new Error('Error al cierre de session')
     }
   }
-
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -71,14 +52,14 @@ export const Sucursales = () => {
           <Link
             to={`/dashboard/usuario/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link"
+            className="nav-link active"
           >
             <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
             state={{ nombre_empresa, correo }}
-            className="nav-link active"
+            className="nav-link"
           >
             <Building className="icon" /> Sucursales
           </Link>
@@ -106,37 +87,10 @@ export const Sucursales = () => {
 
       <main className="main-content">
         <header className="main-header">
-          <h1>Bienvenido a sucursales, {nombre_empresa || 'Usuario'}</h1>
+          <h1>Bienvenido a los Usuarios, {nombre_empresa}</h1>
         </header>
 
-        <div className="module-content">
-          {!Array.isArray(sucursales) || sucursales.length === 0 ? (
-            <p>No hay sucursales registradas.</p>
-          ) : (
-            <ul className="sucursales-list">
-              {sucursales.map((sucursal, index) => (
-                <li key={index} className="sucursal-card">
-                  <h3>{sucursal.nombre_sede}</h3>
-                  <p>
-                    <strong>Departamento:</strong> {sucursal.departamento}
-                  </p>
-                  <p>
-                    <strong>Ciudad:</strong> {sucursal.ciudad}
-                  </p>
-                  <p>
-                    <strong>Dirección:</strong> {sucursal.direccion}
-                  </p>
-                  <p>
-                    <strong>Horario:</strong> {sucursal.horario}
-                  </p>
-                  <p>
-                    <strong>Estado:</strong> {sucursal.estado}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <div className="module-content"></div>
       </main>
     </div>
   )

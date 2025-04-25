@@ -4,6 +4,7 @@ import { Dashboard } from './pages/Dashboard'
 import { Sucursales } from './pages/Sucursales'
 import { Convenios } from './pages/Convenios'
 import { Tarjetas } from './pages/Tarjetas'
+import { Usuario } from './pages/Usuario'
 import './styles/404.css'
 import { PrivateRouter } from './routes/PrivateRouter'
 
@@ -44,6 +45,14 @@ export const App = () => {
             <Tarjetas />
           </PrivateRouter>
         }
+        />
+        <Route
+          path="/dashboard/usuario/:id"
+          element={
+            <PrivateRouter>
+              <Usuario />
+            </PrivateRouter>
+          }
         />
         <Route
           path="*"

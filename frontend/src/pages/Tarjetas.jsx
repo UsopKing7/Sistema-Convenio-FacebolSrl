@@ -1,5 +1,5 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
-import { Home, Building, Handshake, CreditCard, LogOut } from 'lucide-react'
+import { Home, Building, Handshake, CreditCard, LogOut, User2Icon } from 'lucide-react'
 import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
 
@@ -41,6 +41,13 @@ export const Tarjetas = () => {
             className="nav-link"
           >
             <Home className="icon" /> Inicio
+          </Link>
+          <Link
+            to={`/dashboard/usuario/${id}`}
+            state={{ nombre_empresa, correo }}
+            className="nav-link"
+          >
+            <User2Icon className='icon' /> Usuarios
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
