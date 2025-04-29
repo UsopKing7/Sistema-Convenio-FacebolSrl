@@ -2,12 +2,37 @@ import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
 import { Home, Building, Handshake, CreditCard, LogOut, User2Icon } from 'lucide-react'
 import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
+import { useState, useEffect } from 'react'
 
 export const Tarjetas = () => {
   const { id } = useParams()
   const location = useLocation()
   const { nombre_empresa, correo } = location.state || {}
   const navigate = useNavigate()
+
+  const [tarjetas, setTarjetas] = useState([])
+
+  useEffect(() => {
+    const fetchTarjetas = async () => {
+      try {
+        const res = await fetch('http://localhost:3333/tarjetas', {
+          method: 'GET',
+          credentials: 'include'
+        })
+
+        const json = await res.json()
+
+        if (res.ok) {
+          setTarjetas(json.data)
+        } else {
+          setTarjetas([])
+        }
+      } catch {
+        setTarjetas([])
+      }
+    }
+    fetchTarjetas('tarjetas')
+  }, [])
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost:3333/logout', {
@@ -83,7 +108,21 @@ export const Tarjetas = () => {
           <h1>Bienvenido a Tarjetas, {nombre_empresa}</h1>
         </header>
 
-        <div className="module-content"></div>
+        <div className="module-content">
+          {tarjetas.length === 0 ? (
+            <p>No hay tarjetas registradas</p>
+          ) : (
+            <ul className='sucursales-list'>
+              {tarjetas.map((tarjetas, index) => {
+                <li key={index}
+                className='sucursal-card'>
+                  <h3>{tarjetas.codigo}</h3>
+                  <p>estado: <strong>{tarjetas.estado}</strong></p>
+                </li>
+              })}
+            </ul>
+          )}
+        </div>
       </main>
     </div>
   )
