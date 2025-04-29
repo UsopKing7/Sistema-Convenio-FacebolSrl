@@ -5,6 +5,7 @@ import { rutaprotegida, routerMiddleware, ruterPerfil } from '../routes/token.ro
 import { routerConvenios } from '../controllers/convenios/convenios.routes.js'
 import { routerInicio } from '../controllers/dashboard/inicio.routes.js'
 import { routerUsuarios } from '../controllers/usuarios/usuarios.routes.js'
+import { routerTarjetas } from '../controllers/tarjetas/tarketas.routes.js'
 export const middleware = Router()
 
 middleware.use(routerMiddleware)
@@ -13,7 +14,7 @@ middleware.use(ruterPerfil)
 // rutas publicas
 middleware.use('/', routerRegiste)
 middleware.use('/', routerUsuarios)
-
+middleware.use('/', routerTarjetas)
 // rutas privadas
 middleware.use('/sucursal', rutaprotegida, routerSucursales)
 middleware.use('/convenios', rutaprotegida, routerConvenios)
