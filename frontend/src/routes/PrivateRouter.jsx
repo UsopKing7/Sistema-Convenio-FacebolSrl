@@ -20,7 +20,6 @@ export const PrivateRouter = ({ children }) => {
 
     verificar()
   }, [])
-
-  if (isAuth === null) return <div>Cargando...</div>
+  if (isAuth === null) return 
   return isAuth ? children : <Navigate to="/" />
 }
