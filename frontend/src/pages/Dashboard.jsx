@@ -150,31 +150,66 @@ export const Dashboard = () => {
 
       <main className="main-content">
         <header className="main-header">
-          <h1>Bienvenido, {nombre_empresa || 'Usuario'}</h1>
+          <h1>Estadísticas de {nombre_empresa || 'Usuario'}</h1>
+          <p>Resumen general de tu empresa</p>
         </header>
 
-        <div className="module-content">
+        <div className="stats-grid">
           {Object.keys(conveniosData).length === 0 ? (
-            <p>No hay nada que mostrar</p>
+            <div className="stat-card empty">
+              <p>No hay datos de convenios</p>
+            </div>
           ) : (
-            <ul className="card-list">
-              <li className="stat-card">
+            <div className="stat-card">
+              <div className="stat-icon">
+                <Handshake size={24} />
+              </div>
+              <div className="stat-info">
                 <h3>Convenios</h3>
-                <p>Total: {conveniosData[0]?.total_convenios}</p>
-              </li>
-            </ul>
+                <p className="stat-number">{conveniosData[0]?.total_convenios || 0}</p>
+                <p className="stat-description">Convenios activos</p>
+              </div>
+            </div>
           )}
 
           {Object.keys(sucursalesData).length === 0 ? (
-            <p>No hay nada que mostrar</p>
+            <div className="stat-card empty">
+              <p>No hay datos de sucursales</p>
+            </div>
           ) : (
-            <ul className="card-list">
-              <li className="stat-card">
+            <div className="stat-card">
+              <div className="stat-icon">
+                <Building size={24} />
+              </div>
+              <div className="stat-info">
                 <h3>Sucursales</h3>
-                <p>Total: {sucursalesData[0]?.total_sucursales}</p>
-              </li>
-            </ul>
+                <p className="stat-number">{sucursalesData[0]?.total_sucursales || 0}</p>
+                <p className="stat-description">Sucursales registradas</p>
+              </div>
+            </div>
           )}
+
+          <div className="stat-card coming-soon">
+            <div className="stat-icon">
+              <User2Icon size={24} />
+            </div>
+            <div className="stat-info">
+              <h3>Usuarios</h3>
+              <p className="stat-number">--</p>
+              <p className="stat-description">Próximamente</p>
+            </div>
+          </div>
+
+          <div className="stat-card coming-soon">
+            <div className="stat-icon">
+              <CreditCard size={24} />
+            </div>
+            <div className="stat-info">
+              <h3>Tarjetas</h3>
+              <p className="stat-number">--</p>
+              <p className="stat-description">Próximamente</p>
+            </div>
+          </div>
         </div>
       </main>
     </div>
