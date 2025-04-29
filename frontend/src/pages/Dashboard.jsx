@@ -29,6 +29,8 @@ export const Dashboard = () => {
 
   const [conveniosData, setConveniosData] = useState([])
   const [sucursalesData, setSucursalesData] = useState([])
+  const [usuariosData, setUsuariosData] = useState([])
+  const [tarjetasData, setTarjetasData] = useState([])
 
   useEffect(() => {
     const fetchDashboardData = async (ruta) => {
@@ -71,6 +73,50 @@ export const Dashboard = () => {
       }
     }
     fetchSucursalData('inicioSucursales')
+  }, [])
+
+  useEffect(() => {
+    const fetchUsuarioData = async (ruta) => {
+      try {
+        const res = await fetch(`http://localhost:3333/${ruta}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+
+        const json = await res.json()
+
+        if (Array.isArray(json.data)) {
+          setUsuariosData(json.data)
+        } else {
+          setUsuariosData([])
+        }
+      } catch {
+        setUsuariosData([])
+      }
+    }
+    fetchUsuarioData('inicioUsuarios')
+  }, [])
+
+  useEffect(() => {
+    const fetchTarjetaData = async (ruta) => {
+      try {
+        const res = await fetch(`http://localhost:3333/${ruta}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+
+        const json = await res.json()
+
+        if (Array.isArray(json.data)) {
+          setTarjetasData(json.data)
+        } else {
+          setTarjetasData([])
+        }
+      } catch {
+        setTarjetasData([])
+      }
+    }
+    fetchTarjetaData('inicioTarjetas')
   }, [])
 
   const handleLogout = async () => {
@@ -151,7 +197,7 @@ export const Dashboard = () => {
       <main className="main-content">
         <header className="main-header">
           <h1>Estadísticas de {nombre_empresa || 'Usuario'}</h1>
-          <p>Resumen general de tu empresa</p>
+          <p>Resumen general de {nombre_empresa}</p>
         </header>
 
         <div className="stats-grid">
@@ -166,12 +212,13 @@ export const Dashboard = () => {
               </div>
               <div className="stat-info">
                 <h3>Convenios</h3>
-                <p className="stat-number">{conveniosData[0]?.total_convenios || 0}</p>
+                <p className="stat-number">
+                  {conveniosData[0]?.total_convenios || 0}
+                </p>
                 <p className="stat-description">Convenios activos</p>
               </div>
             </div>
           )}
-
           {Object.keys(sucursalesData).length === 0 ? (
             <div className="stat-card empty">
               <p>No hay datos de sucursales</p>
@@ -183,33 +230,46 @@ export const Dashboard = () => {
               </div>
               <div className="stat-info">
                 <h3>Sucursales</h3>
-                <p className="stat-number">{sucursalesData[0]?.total_sucursales || 0}</p>
+                <p className="stat-number">
+                  {sucursalesData[0]?.total_sucursales || 0}
+                </p>
                 <p className="stat-description">Sucursales registradas</p>
               </div>
             </div>
           )}
+          {Object.keys(usuariosData).length === 0 ? (
+            <div className="stat-card empty">
+              <p>No hay datos de Usuarios</p>
+            </div>
+          ) : (
+            <div className="stat-card">
+              <div className="stat-icon">
+                <User2Icon size={24} />
+              </div>
+              <div className="stat-info">
+                <h3>Usuarios</h3>
+                <p className="stat-number">{usuariosData[0]?.total_usuarios}</p>
+                <p className="stat-description">Usuarios registrados</p>
+              </div>
+            </div>
+          )}
 
-          <div className="stat-card coming-soon">
-            <div className="stat-icon">
-              <User2Icon size={24} />
+          {Object.keys(tarjetasData).length === 0 ? (
+            <div className="stat-card empty">
+              <p>No hay datos de Usuarios</p>
             </div>
-            <div className="stat-info">
-              <h3>Usuarios</h3>
-              <p className="stat-number">--</p>
-              <p className="stat-description">Próximamente</p>
+          ) : (
+            <div className="stat-card">
+              <div className="stat-icon">
+                <CreditCard size={24} />
+              </div>
+              <div className="stat-info">
+                <h3>Tarjetas</h3>
+                <p className="stat-number">{tarjetasData[0]?.total_tarjetas}</p>
+                <p className="stat-description">Tarjetas registradas</p>
+              </div>
             </div>
-          </div>
-
-          <div className="stat-card coming-soon">
-            <div className="stat-icon">
-              <CreditCard size={24} />
-            </div>
-            <div className="stat-info">
-              <h3>Tarjetas</h3>
-              <p className="stat-number">--</p>
-              <p className="stat-description">Próximamente</p>
-            </div>
-          </div>
+          )}
         </div>
       </main>
     </div>
