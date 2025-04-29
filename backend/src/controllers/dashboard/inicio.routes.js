@@ -40,3 +40,41 @@ routerInicio.get('/inicioSucursales', async (req, res) => {
     })
   }
 })
+
+routerInicio.get('/inicioUsuarios', async (req, res) => {
+  try {
+    const [totalUsuarios] = await pool.query(
+      'SELECT COUNT(*) AS total_usuarios FROM usuarios'
+    )
+
+    if (totalUsuarios.length === 0) return res.status(404).json({ message: 'No se encontraron convenios' })
+
+    res.status(200).json({
+      data: totalUsuarios
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno del servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})
+
+routerInicio.get('/inicioTarjetas', async (req, res) => {
+  try {
+    const [totalTarjetas] = await pool.query(
+      'SELECT COUNT(*) AS total_tarjetas FROM tarjetas'
+    )
+
+    if (totalTarjetas.length === 0) return res.status(404).json({ message: 'No se encontraron tarjetas' })
+
+    res.status(200).json({
+      data: totalTarjetas
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno del servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})
