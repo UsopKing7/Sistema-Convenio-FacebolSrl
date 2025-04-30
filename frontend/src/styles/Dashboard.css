@@ -663,3 +663,20 @@ tr:hover {
 .floating-add-btn:hover::after {
   opacity: 1;
 }
+
+.filter-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  background-color: #f9fafb;
+  transition: border-color 0.3s;
+}
+
+.input-filtrar {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  background-color: #f9fafb;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  width: 250px;
+}
