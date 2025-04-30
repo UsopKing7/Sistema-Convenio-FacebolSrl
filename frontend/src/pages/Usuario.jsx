@@ -21,6 +21,7 @@ export const Usuario = () => {
   const navigate = useNavigate()
 
   const [usuario, setUsuarios] = useState([])
+  const [filtro, setFiltro] = useState('')
 
   useEffect(() => {
     const fetchUsusarios = async (ruta) => {
@@ -53,9 +54,16 @@ export const Usuario = () => {
     if (res.ok) {
       navigate('/')
     } else {
-      throw new Error('Error al cierre de session')
+      throw new Error('Error al cierre de sesión')
     }
   }
+
+  const usuariosFiltrados = usuario.filter(
+    (u) =>
+      u.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+      u.correo.toLowerCase().includes(filtro.toLowerCase())
+  )
+
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -117,10 +125,21 @@ export const Usuario = () => {
         <header className="main-header">
           <h1>Bienvenido a los Usuarios, {nombre_empresa}</h1>
         </header>
+
         <div className="module-content">
-          {usuario.length === 0 ? (
+          <div className="filter-bar">
+            <input
+              type="text"
+              placeholder="Filtrar por nombre o correo..."
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value)}
+              className="input-filtrar"
+            />
+          </div>
+
+          {usuariosFiltrados.length === 0 ? (
             <div className="empty-state">
-              <p>No hay usuarios en esta empresa</p>
+              <p>No hay usuarios que coincidan con el filtro</p>
             </div>
           ) : (
             <div className="table-container">
@@ -135,7 +154,7 @@ export const Usuario = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {usuario.map((usuario, index) => (
+                  {usuariosFiltrados.map((usuario, index) => (
                     <tr key={usuario.id || index}>
                       <td>{index + 1}</td>
                       <td>{usuario.nombre}</td>
@@ -165,13 +184,13 @@ export const Usuario = () => {
           )}
         </div>
       </main>
-        <Link
-          to={`/dashboard/usuario/${id}/crear`}
-          className="floating-add-btn"
-          title="Agregar usuario"
-        >
-          <Plus />
-        </Link>
+      <Link
+        to={`/dashboard/usuario/${id}/crear`}
+        className="floating-add-btn"
+        title="Agregar usuario"
+      >
+        <Plus />
+      </Link>
     </div>
   )
 }
