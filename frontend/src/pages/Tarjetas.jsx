@@ -1,5 +1,13 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
-import { Home, Building, Handshake, CreditCard, LogOut, User2Icon } from 'lucide-react'
+import {
+  Home,
+  Building,
+  Handshake,
+  CreditCard,
+  LogOut,
+  User2Icon,
+  Plus
+} from 'lucide-react'
 import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
 import { useState, useEffect } from 'react'
@@ -72,7 +80,7 @@ export const Tarjetas = () => {
             state={{ nombre_empresa, correo }}
             className="nav-link"
           >
-            <User2Icon className='icon' /> Usuarios
+            <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
@@ -88,11 +96,11 @@ export const Tarjetas = () => {
           >
             <Handshake className="icon" /> Convenios
           </Link>
-          <Link 
+          <Link
             to={`/dashboard/tarjetas/${id}`}
             state={{ nombre_empresa, correo }}
             className="nav-link active"
-            >
+          >
             <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
@@ -112,18 +120,26 @@ export const Tarjetas = () => {
           {tarjetas.length === 0 ? (
             <p>No hay tarjetas registradas</p>
           ) : (
-            <ul className='sucursales-list'>
+            <ul className="sucursales-list">
               {tarjetas.map((tarjetas, index) => {
-                <li key={index}
-                className='sucursal-card'>
+                ;<li key={index} className="sucursal-card">
                   <h3>{tarjetas.codigo}</h3>
-                  <p>estado: <strong>{tarjetas.estado}</strong></p>
+                  <p>
+                    estado: <strong>{tarjetas.estado}</strong>
+                  </p>
                 </li>
               })}
             </ul>
           )}
         </div>
       </main>
+      <Link
+        to={`/dashboard/usuario/${id}/crear`}
+        className="floating-add-btn"
+        title="Agregar usuario"
+      >
+        <Plus />
+      </Link>
     </div>
   )
 }

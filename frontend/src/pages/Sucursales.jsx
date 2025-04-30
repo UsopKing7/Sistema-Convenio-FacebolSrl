@@ -1,6 +1,14 @@
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Home, Building, Handshake, CreditCard, LogOut, User2Icon } from 'lucide-react'
+import {
+  Home,
+  Building,
+  Handshake,
+  CreditCard,
+  LogOut,
+  User2Icon,
+  Plus
+} from 'lucide-react'
 import { getInitials } from './Dashboard'
 import '../styles/Dashboard.css'
 
@@ -138,6 +146,13 @@ export const Sucursales = () => {
           )}
         </div>
       </main>
+      <Link
+        to={`/dashboard/usuario/${id}/crear`}
+        className="floating-add-btn"
+        title="Agregar usuario"
+      >
+        <Plus />
+      </Link>
     </div>
   )
 }
