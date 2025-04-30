@@ -1,5 +1,15 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
-import { Home, Building, Handshake, CreditCard, LogOut, User2Icon } from 'lucide-react'
+import {
+  Home,
+  Building,
+  Handshake,
+  CreditCard,
+  LogOut,
+  User2Icon,
+  RefreshCcw,
+  DeleteIcon,
+  Plus
+} from 'lucide-react'
 import { getInitials } from './Dashboard'
 import { useEffect, useState } from 'react'
 import '../styles/Dashboard.css'
@@ -107,22 +117,61 @@ export const Usuario = () => {
         <header className="main-header">
           <h1>Bienvenido a los Usuarios, {nombre_empresa}</h1>
         </header>
-
         <div className="module-content">
           {usuario.length === 0 ? (
-            <p>No hay usuarios en esta empresa</p>
+            <div className="empty-state">
+              <p>No hay usuarios en esta empresa</p>
+            </div>
           ) : (
-            <ul className="sucursales-list">
-              {usuario.map((usuario, index) => (
-                <li key={index} className="sucursal-card">
-                  <h3>{usuario.nombre}</h3>
-                  <p><strong>Correo: </strong> {usuario.correo} </p>
-                </li>
-              ))}
-            </ul>
+            <div className="table-container">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usuario.map((usuario, index) => (
+                    <tr key={usuario.id || index}>
+                      <td>{index + 1}</td>
+                      <td>{usuario.nombre}</td>
+                      <td>{usuario.correo}</td>
+                      <td>{usuario.telefono}</td>
+                      <td className="actions-cell">
+                        <Link
+                          to={`/dashboard/usuario/${id}/editar/${usuario.id}`}
+                          className="btn btn-action btn-icon btn-update"
+                          title="Editar"
+                        >
+                          <RefreshCcw size={16} />
+                        </Link>
+                        <Link
+                          to={`/dashboard/usuario/${id}/eliminar/${usuario.id}`}
+                          className="btn btn-action btn-icon btn-delete"
+                          title="Eliminar"
+                        >
+                          <DeleteIcon size={16} />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </main>
+        <Link
+          to={`/dashboard/usuario/${id}/crear`}
+          className="floating-add-btn"
+          title="Agregar usuario"
+        >
+          <Plus />
+        </Link>
     </div>
   )
 }
