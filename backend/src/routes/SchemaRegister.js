@@ -1,14 +1,11 @@
 #!/usr/bin/env node
 
-import z, { string } from 'zod'
+import z from 'zod'
 
 export const schemaRegister = z.object({
-  nombre_empresa: z.string(),
-  representante: string(),
-  celular: z.string().min(12).max(20),
+  nombre: z.string().min(3),
   correo: z.string().email(),
-  descripcion: z.string(),
-  nit: z.string(),
+  telefono: z.string().min(10).max(10),
   contrasena: z.string().min(8)
 })
 

@@ -13,7 +13,7 @@ routerRegiste.post('/login', async (req, res) => {
     const vLogin = schemaLogin.parse(req.body)
 
     const [empresa] = await pool.query(
-      'SELECT * FROM empresas WHERE correo = ?', [vLogin.correo]
+      'SELECT * FROM usuarios WHERE correo = ?', [vLogin.correo]
     )
 
     if (empresa.length === 0) {

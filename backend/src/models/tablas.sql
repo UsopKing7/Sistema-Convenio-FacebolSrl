@@ -8,8 +8,7 @@ CREATE TABLE empresas (
   celular VARCHAR(20),
   correo VARCHAR(100) UNIQUE,
   descripcion TEXT,
-  nit VARCHAR(50) UNIQUE,
-  contrasena VARCHAR(255)
+  nit VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE roles (
@@ -23,6 +22,7 @@ CREATE TABLE usuarios (
   nombre VARCHAR(100),
   correo VARCHAR(100) UNIQUE,
   telefono VARCHAR(20),
+  contrasena VARCHAR(255), 
   rol_id CHAR(36),
   FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
