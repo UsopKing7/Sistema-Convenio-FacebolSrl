@@ -7,7 +7,8 @@ import {
   CreditCard,
   LogOut,
   User2Icon,
-  Plus
+  Plus,
+  CookingPot
 } from 'lucide-react'
 import { getInitials } from './Dashboard'
 import '../styles/Dashboard.css'
@@ -82,6 +83,13 @@ export const Sucursales = () => {
             className="nav-link"
           >
             <User2Icon className="icon" /> Usuarios
+          </Link>
+          <Link
+            to={`/dashboard/empresas`}
+            state={{ nombre, correo }}
+            className="nav-link"
+          >
+            <CookingPot className='icon' /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}

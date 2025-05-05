@@ -6,7 +6,8 @@ import {
   CreditCard,
   LogOut,
   User2Icon,
-  Plus
+  Plus,
+  CookingPot
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { getInitials } from './Dashboard'
@@ -77,6 +78,13 @@ export const Convenios = () => {
             className="nav-link"
           >
             <User2Icon className="icon" /> Usuarios
+          </Link>
+          <Link
+            to={`/dashboard/empresas`}
+            state={{ nombre, correo }}
+            className="nav-link"
+          >
+            <CookingPot className='icon' /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}

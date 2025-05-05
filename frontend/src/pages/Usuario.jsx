@@ -8,7 +8,8 @@ import {
   User2Icon,
   RefreshCcw,
   DeleteIcon,
-  Plus
+  Plus,
+  CookingPot
 } from 'lucide-react'
 import { getInitials } from './Dashboard'
 import { useEffect, useState } from 'react'
@@ -91,6 +92,13 @@ export const Usuario = () => {
             className="nav-link active"
           >
             <User2Icon className="icon" /> Usuarios
+          </Link>
+          <Link
+            to={`/dashboard/empresas`}
+            state={{ nombre, correo }}
+            className="nav-link"
+          >
+            <CookingPot className='icon' /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}

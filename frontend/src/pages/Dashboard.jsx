@@ -5,7 +5,8 @@ import {
   Handshake,
   CreditCard,
   LogOut,
-  User2Icon
+  User2Icon,
+  CookingPot
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import '../styles/Dashboard.css'
@@ -161,6 +162,13 @@ export const Dashboard = () => {
             className="nav-link"
           >
             <User2Icon className="icon" /> Usuarios
+          </Link>
+          <Link
+            to={`/dashboard/empresas`}
+            state={{ nombre, correo }}
+            className="nav-link"
+          >
+            <CookingPot className='icon' /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
