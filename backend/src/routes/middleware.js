@@ -6,6 +6,7 @@ import { routerConvenios } from '../controllers/convenios/convenios.routes.js'
 import { routerInicio } from '../controllers/dashboard/inicio.routes.js'
 import { routerUsuarios } from '../controllers/usuarios/usuarios.routes.js'
 import { routerTarjetas } from '../controllers/tarjetas/tarketas.routes.js'
+import { routerEmpresas } from '../controllers/empresas/empresas.routes.js'
 export const middleware = Router()
 
 middleware.use(routerMiddleware)
@@ -15,6 +16,7 @@ middleware.use(ruterPerfil)
 middleware.use('/', routerRegiste)
 middleware.use('/', routerUsuarios)
 middleware.use('/', routerTarjetas)
+middleware.use('/', routerEmpresas)
 // rutas privadas
 middleware.use('/sucursal', rutaprotegida, routerSucursales)
 middleware.use('/convenios', rutaprotegida, routerConvenios)
