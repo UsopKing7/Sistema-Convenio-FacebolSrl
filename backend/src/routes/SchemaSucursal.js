@@ -18,3 +18,12 @@ export const SchemaSucursalTypes = z.object({
   nombre_sede: z.string(),
   estado: z.boolean().default(true)
 })
+
+export const ShcemaEmpesas = z.object({
+  nombre_empresa: z.string(),
+  representante: z.string(),
+  celular: z.string(),
+  correo: z.string().email(),
+  descripcion: z.string(),
+  nit: z.string()
+})
