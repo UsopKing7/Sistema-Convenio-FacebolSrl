@@ -5,6 +5,7 @@ import { Sucursales } from './pages/Sucursales'
 import { Convenios } from './pages/Convenios'
 import { Tarjetas } from './pages/Tarjetas'
 import { Usuario } from './pages/Usuario'
+import { Empresas } from './pages/empresas'
 import './styles/404.css'
 import { PrivateRouter } from './routes/PrivateRouter'
 
@@ -51,6 +52,14 @@ export const App = () => {
           element={
             <PrivateRouter>
               <Usuario />
+            </PrivateRouter>
+          }
+        />
+        <Route
+          path='/dashboard/empresas'
+          element={
+            <PrivateRouter>
+              <Empresas />
             </PrivateRouter>
           }
         />
