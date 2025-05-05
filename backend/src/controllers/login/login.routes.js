@@ -72,36 +72,55 @@ routerRegiste.post('/register', async (req, res) => {
     const schemaRegistro = schemaRegister.parse(req.body)
     const validacionRoles = schemaRoles.parse(req.body)
     const validacionPermiso = schemaPermiso.parse(req.body)
-
     const hashPassword = await bcrypt.hash(schemaRegistro.contrasena, 10)
 
-    const [dataRoles] = await pool.query(
-      'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?,?)',
-      [validacionRoles.nombre_rol, validacionRoles.descripcion_rol]
-    )
-
-    const idRoles = dataRoles.insertId
-
-    const [dataPermisos] = await pool.query(
-      'INSERT INTO permisos (nombre) VALUES (?)',
+    const [existingPermiso] = await pool.query(
+      'SELECT id FROM permisos WHERE nombre = ?',
       [validacionPermiso.nombre]
     )
 
-    const idPermiso = dataPermisos.insertId
+    let idPermiso
+
+    if (existingPermiso.length > 0) {
+      idPermiso = existingPermiso[0].id
+    } else {
+      await pool.query('INSERT INTO permisos (nombre) VALUES (?)', [
+        validacionPermiso.nombre
+      ])
+
+      const [rowsPerm] = await pool.query(
+        'SELECT id FROM permisos WHERE nombre = ?',
+        [validacionPermiso.nombre]
+      )
+
+      idPermiso = rowsPerm[0].id
+    }
 
     await pool.query(
-      'INSERT INTO roles_permisos (permiso_id, rol_id) VALUES (?,?)',
-      [idPermiso, idRoles]
+      'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
+      [validacionRoles.nombre_rol, validacionRoles.descripcion_rol]
+    )
+
+    const [rowsRol] = await pool.query(
+      'SELECT id FROM roles WHERE nombre_rol = ?',
+      [validacionRoles.nombre_rol]
+    )
+
+    const idRol = rowsRol[0].id
+
+    await pool.query(
+      'INSERT INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
+      [idPermiso, idRol]
     )
 
     await pool.query(
-      'INSERT INTO usuarios (nombre, correo, telefono, contrasena, rol_id) VALUES (?,?,?,?,?)',
+      'INSERT INTO usuarios (nombre, correo, telefono, contrasena, rol_id) VALUES (?, ?, ?, ?, ?)',
       [
         schemaRegistro.nombre,
         schemaRegistro.correo,
         schemaRegistro.telefono,
         hashPassword,
-        idRoles
+        idRol
       ]
     )
 
@@ -112,9 +131,9 @@ routerRegiste.post('/register', async (req, res) => {
       correo: schemaRegistro.correo
     })
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       message: 'Error internal server',
-      error: error.message || error.errors || error
+      error: error.message || error
     })
   }
 })
