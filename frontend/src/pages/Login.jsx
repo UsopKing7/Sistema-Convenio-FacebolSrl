@@ -28,7 +28,7 @@ export const Login = () => {
       if (data.id) {
         navigate(`/dashboard/${data.id}`, {
           state: {
-            nombre_empresa: data.nombre_empresa,
+            nombre: data.nombre,
             correo: data.correo
           }
         })

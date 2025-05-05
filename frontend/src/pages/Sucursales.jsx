@@ -15,7 +15,7 @@ import '../styles/Dashboard.css'
 export const Sucursales = () => {
   const { id } = useParams()
   const location = useLocation()
-  const { nombre_empresa, correo } = location.state || {}
+  const { nombre, correo } = location.state || {}
 
   const [sucursales, setSucursales] = useState([])
 
@@ -61,45 +61,45 @@ export const Sucursales = () => {
         <div className="profile">
           <div
             className="avatar-circle"
-            style={{ backgroundColor: nombre_empresa }}
+            style={{ backgroundColor: nombre }}
           >
-            {getInitials(nombre_empresa)}
+            {getInitials(nombre)}
           </div>
-          <h2>{nombre_empresa || 'Usuario'}</h2>
+          <h2>{nombre || 'Usuario'}</h2>
           <p>{correo || 'correo@ejemplo.com'}</p>
         </div>
         <nav className="nav">
           <Link
             to={`/dashboard/${id}`}
-            state={{ nombre_empresa, correo }}
+            state={{ nombre, correo }}
             className="nav-link"
           >
             <Home className="icon" /> Inicio
           </Link>
           <Link
             to={`/dashboard/usuario/${id}`}
-            state={{ nombre_empresa, correo }}
+            state={{ nombre, correo }}
             className="nav-link"
           >
             <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
-            state={{ nombre_empresa, correo }}
+            state={{ nombre, correo }}
             className="nav-link active"
           >
             <Building className="icon" /> Sucursales
           </Link>
           <Link
             to={`/dashboard/convenios/${id}`}
-            state={{ nombre_empresa, correo }}
+            state={{ nombre, correo }}
             className="nav-link"
           >
             <Handshake className="icon" /> Convenios
           </Link>
           <Link
             to={`/dashboard/tarjetas/${id}`}
-            state={{ nombre_empresa, correo }}
+            state={{ nombre, correo }}
             className="nav-link"
           >
             <CreditCard className="icon" /> Tarjetas
@@ -114,7 +114,7 @@ export const Sucursales = () => {
 
       <main className="main-content">
         <header className="main-header">
-          <h1>Bienvenido a sucursales, {nombre_empresa || 'Usuario'}</h1>
+          <h1>Bienvenido a sucursales, {nombre || 'Usuario'}</h1>
         </header>
 
         <div className="module-content">
