@@ -17,12 +17,12 @@ routerRegiste.post('/login', async (req, res) => {
   try {
     const vLogin = schemaLogin.parse(req.body)
 
-    const [empresa] = await pool.query(
+    const [usuarios] = await pool.query(
       'SELECT * FROM usuarios WHERE correo = ?',
       [vLogin.correo]
     )
 
-    if (empresa.length === 0) {
+    if (usuarios.length === 0) {
       return res.status(404).json({
         message: 'No existen usuarios con este correo'
       })
@@ -30,7 +30,7 @@ routerRegiste.post('/login', async (req, res) => {
 
     const isPasswordValid = await bcrypt.compare(
       vLogin.contrasena,
-      empresa[0].contrasena
+      usuarios[0].contrasena
     )
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -40,9 +40,9 @@ routerRegiste.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: empresa[0].id,
-        nombre_empresa: empresa[0].nombre_empresa,
-        correo: empresa[0].correo
+        id: usuarios[0].id,
+        nombre: usuarios[0].nombre,
+        correo: usuarios[0].correo
       },
       SECRET_JWK_KEY,
       { expiresIn: '1h' }
@@ -57,7 +57,7 @@ routerRegiste.post('/login', async (req, res) => {
 
     return res.status(200).json({
       message: 'Login exitoso',
-      empresa: empresa[0].nombre_empresa
+      nombre: usuarios[0].nombre
     })
   } catch (error) {
     return res.status(500).json({

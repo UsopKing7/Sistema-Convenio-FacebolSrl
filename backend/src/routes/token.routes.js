@@ -32,6 +32,6 @@ routerMiddleware.get('/check-token', rutaprotegida, (req, res) => {
 
 export const ruterPerfil = Router()
 ruterPerfil.get('/id', rutaprotegida, async (req, res) => {
-  const { id, nombre_empresa, correo } = req.usuario
-  res.status(200).json({ id, correo, nombre_empresa })
+  const { id, nombre, correo } = req.usuario
+  res.status(200).json({ id, correo, nombre })
 })
