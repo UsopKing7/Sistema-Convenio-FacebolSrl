@@ -6,7 +6,7 @@ import {
   CreditCard,
   LogOut,
   User2Icon,
-  CookingPot
+  Briefcase
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import '../styles/Dashboard.css'
@@ -32,6 +32,7 @@ export const Dashboard = () => {
   const [sucursalesData, setSucursalesData] = useState([])
   const [usuariosData, setUsuariosData] = useState([])
   const [tarjetasData, setTarjetasData] = useState([])
+  const [empresasData, setEmpresasData] = useState([])
 
   useEffect(() => {
     const fetchDashboardData = async (ruta) => {
@@ -120,6 +121,27 @@ export const Dashboard = () => {
     fetchTarjetaData('inicioTarjetas')
   }, [])
 
+  useEffect(() => {
+    const fetchEmpresasData = async (ruta) => {
+      try {
+        const res = await fetch(`http://localhost:3333/${ruta}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+
+        const json = await res.json()
+
+        if (Array.isArray(json.data)) {
+          setEmpresasData(json.data)
+        } else {
+          setEmpresasData([])
+        }
+      } catch {
+        setEmpresasData([])
+      }
+    }
+    fetchEmpresasData('inicioEmpresas')
+  }, [])
   const handleLogout = async () => {
     try {
       const res = await fetch('http://localhost:3333/logout', {
@@ -168,7 +190,7 @@ export const Dashboard = () => {
             state={{ nombre, correo }}
             className="nav-link"
           >
-            <CookingPot className='icon' /> Empresas
+            <Briefcase className='icon' /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
@@ -220,7 +242,7 @@ export const Dashboard = () => {
                 <p className="stat-number">
                   {conveniosData[0]?.total_convenios || 0}
                 </p>
-                <p className="stat-description">Convenios activos</p>
+                <p className="stat-description">Convenios Registrados</p>
               </div>
             </div>
           )}
@@ -272,6 +294,23 @@ export const Dashboard = () => {
                 <h3>Tarjetas</h3>
                 <p className="stat-number">{tarjetasData[0]?.total_tarjetas}</p>
                 <p className="stat-description">Tarjetas registradas</p>
+              </div>
+            </div>
+          )}
+
+          {Object.keys(empresasData).length === 0 ? (
+            <div className='stat-card empty'>
+              <p>No hay datos de Empresas</p>
+            </div>
+          ) : (
+            <div className="stat-card">
+              <div className="stat-icon">
+                <Briefcase size={24} />
+              </div>
+              <div className="stat-info">
+                <h3>Empresas</h3>
+                <p className="stat-number">{empresasData[0]?.total_empresas}</p>
+                <p className="stat-description">Empresas registradas</p>
               </div>
             </div>
           )}
