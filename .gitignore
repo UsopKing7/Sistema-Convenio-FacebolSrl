@@ -4,3 +4,4 @@ backend/.env
 backend/web
 .vscode
 web/*
+localhost.session.sql
