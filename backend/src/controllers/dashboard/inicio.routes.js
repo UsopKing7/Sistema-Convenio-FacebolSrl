@@ -78,3 +78,22 @@ routerInicio.get('/inicioTarjetas', async (req, res) => {
     })
   }
 })
+
+routerInicio.get('/inicioEmpresas', async (req, res) => {
+  try {
+    const [totalEmpresas] = await pool.query(
+      'SELECT COUNT(*) AS total_empresas FROM empresas'
+    )
+
+    if (totalEmpresas.length === 0) return res.status(404).json({ message: 'No se encontraron empresas' })
+
+    res.status(200).json({
+      data: totalEmpresas
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno del servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})
