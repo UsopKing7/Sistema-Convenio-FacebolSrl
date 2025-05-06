@@ -7,7 +7,7 @@ import {
   LogOut,
   User2Icon,
   Plus,
-  CookingPot
+  Briefcase
 } from 'lucide-react'
 import '../styles/Dashboard.css'
 import { getInitials } from './Dashboard'
@@ -88,7 +88,7 @@ export const Tarjetas = () => {
             state={{ nombre, correo }}
             className="nav-link"
           >
-            <CookingPot className='icon' /> Empresas
+            <Briefcase className='icon' /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}

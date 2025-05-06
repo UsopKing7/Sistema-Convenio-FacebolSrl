@@ -7,7 +7,7 @@ import {
   LogOut,
   User2Icon,
   Plus,
-  CookingPot
+  Briefcase
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { getInitials } from './Dashboard'
@@ -84,7 +84,7 @@ export const Empresas = () => {
             state={{ nombre, correo }}
             className="nav-link active"
           >
-            <CookingPot className="icon" /> Empresas
+            <Briefcase className="icon" /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
