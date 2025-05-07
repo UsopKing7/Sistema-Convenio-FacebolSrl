@@ -80,7 +80,7 @@ export const Convenios = () => {
             <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
-            to={`/dashboard/empresas`}
+            to={`/dashboard/empresas/${id}`}
             state={{ nombre, correo }}
             className="nav-link"
           >
@@ -101,13 +101,7 @@ export const Convenios = () => {
           >
             <Handshake className="icon" /> Convenios
           </Link>
-          <Link
-            to={`/dashboard/tarjetas/${id}`}
-            state={{ nombre, correo }}
-            className="nav-link"
-          >
-            <CreditCard className="icon" /> Tarjetas
-          </Link>
+
         </nav>
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="logout-btn">

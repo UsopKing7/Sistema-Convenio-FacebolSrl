@@ -47,7 +47,7 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/empresas"
+          path="/dashboard/empresas/:id"
           element={
             <PrivateRouter>
               <Empresas />

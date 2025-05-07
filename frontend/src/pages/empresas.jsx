@@ -22,7 +22,7 @@ export const Empresas = () => {
   useEffect(() => {
     const fetchEmpresas = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`http://localhost:3333/${ruta}/${id}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -39,7 +39,7 @@ export const Empresas = () => {
       }
     }
     fetchEmpresas('empresas')
-  }, [])
+  }, [id])
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost/logout', {
@@ -80,7 +80,7 @@ export const Empresas = () => {
             <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
-            to={`/dashboard/empresas`}
+            to={`/dashboard/empresas/${id}`}
             state={{ nombre, correo }}
             className="nav-link active"
           >
@@ -100,13 +100,6 @@ export const Empresas = () => {
             className="nav-link"
           >
             <Handshake className="icon" /> Convenios
-          </Link>
-          <Link
-            to={`/dashboard/tarjetas/${id}`}
-            state={{ nombre, correo }}
-            className="nav-link"
-          >
-            <CreditCard className="icon" /> Tarjetas
           </Link>
         </nav>
         <div className="sidebar-footer">

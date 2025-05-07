@@ -3,7 +3,6 @@ import {
   Home,
   Building,
   Handshake,
-  CreditCard,
   LogOut,
   User2Icon,
   Briefcase
@@ -163,7 +162,7 @@ export const Dashboard = () => {
             <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
-            to={`/dashboard/empresas`}
+            to={`/dashboard/empresas/${id}`}
             state={{ nombre, correo }}
             className="nav-link"
           >
