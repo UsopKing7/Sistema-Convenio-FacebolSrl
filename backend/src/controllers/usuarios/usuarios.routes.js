@@ -15,7 +15,7 @@ routerUsuarios.get('/usuarios', async (req, res) => {
         r.nombre_rol, 
         r.descripcion_rol, 
         p.id AS permiso_id, 
-        p.nombre AS nombre_permiso
+        p.nombre_permiso AS nombre_permiso
       FROM usuarios u
       INNER JOIN roles r ON u.rol_id = r.id
       INNER JOIN roles_permisos rp ON r.id = rp.rol_id

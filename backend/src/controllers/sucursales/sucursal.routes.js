@@ -10,17 +10,14 @@ import {
 
 export const routerSucursales = Router()
 
-routerSucursales.post('/:id', async (req, res) => {
-  const id = req.params.id
-
+routerSucursales.post('/', async (req, res) => {
   try {
     const schema = SchemaLugar.parse(req.body)
     const schemaSucursal = SchemaSucursal.parse(req.body)
     const schemaSucursalTypes = SchemaSucursalTypes.parse(req.body)
 
     const empresaExiste = await pool.query(
-      'SELECT * FROM empresas WHERE id = ?',
-      [id]
+      'SELECT * FROM empresas'
     )
 
     if (empresaExiste.length === 0) {
@@ -54,7 +51,6 @@ routerSucursales.post('/:id', async (req, res) => {
         schemaSucursal.direccion,
         schemaSucursal.horario,
         idLugar,
-        id,
         idTipoSede
       ]
     )

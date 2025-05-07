@@ -6,17 +6,16 @@ import { SchemaConvenios } from '../../routes/SchemaConvenios.js'
 
 export const routerConvenios = Router()
 
-routerConvenios.get('/:id', async (req, res) => {
-  const { id } = req.params
+routerConvenios.get('/', async (req, res) => {
   try {
     const [empresaExiste] = await pool.query(
-      'SELECT * FROM empresas WHERE id = ?', [id]
+      'SELECT * FROM empresas'
     )
 
-    if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresa no encontrada' })
+    if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresas no encontradas' })
 
     const [convenio] = await pool.query(
-      'SELECT * FROM convenios WHERE empresa_id = ?', [id]
+      'SELECT * FROM convenios'
     )
 
     if (convenio.length === 0) return res.status(404).json({ message: 'No se encontraron convenios para esta empresa' })

@@ -75,8 +75,8 @@ routerRegiste.post('/register', async (req, res) => {
     const hashPassword = await bcrypt.hash(schemaRegistro.contrasena, 10)
 
     const [existingPermiso] = await pool.query(
-      'SELECT id FROM permisos WHERE nombre = ?',
-      [validacionPermiso.nombre]
+      'SELECT id FROM permisos WHERE nombre_permiso = ?',
+      [validacionPermiso.nombre_permiso]
     )
 
     let idPermiso
@@ -84,13 +84,13 @@ routerRegiste.post('/register', async (req, res) => {
     if (existingPermiso.length > 0) {
       idPermiso = existingPermiso[0].id
     } else {
-      await pool.query('INSERT INTO permisos (nombre) VALUES (?)', [
-        validacionPermiso.nombre
+      await pool.query('INSERT INTO permisos (nombre_permiso) VALUES (?)', [
+        validacionPermiso.nombre_permiso
       ])
 
       const [rowsPerm] = await pool.query(
-        'SELECT id FROM permisos WHERE nombre = ?',
-        [validacionPermiso.nombre]
+        'SELECT id FROM permisos WHERE nombre_permiso = ?',
+        [validacionPermiso.nombre_permiso]
       )
 
       idPermiso = rowsPerm[0].id
