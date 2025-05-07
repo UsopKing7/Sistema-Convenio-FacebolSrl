@@ -2,98 +2,90 @@ CREATE DATABASE IF NOT EXISTS sistema_convenios;
 USE sistema_convenios;
 
 CREATE TABLE empresas (
-  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  nombre_empresa VARCHAR(100),
-  representante VARCHAR(100),
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()), 
+  nombre_empresa VARCHAR(100) NOT NULL,
+  representante VARCHAR(100) NOT NULL,
   celular VARCHAR(20),
-  correo VARCHAR(100) UNIQUE,
+  correo VARCHAR(100) UNIQUE NOT NULL,
   descripcion TEXT,
-  nit VARCHAR(50) UNIQUE
+  nit VARCHAR(50) UNIQUE NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE roles (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  nombre_rol VARCHAR(100),
-  descripcion_rol TEXT
+  nombre_rol VARCHAR(100) NOT NULL,
+  descripcion_rol TEXT,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE usuarios (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  nombre VARCHAR(100),
-  correo VARCHAR(100) UNIQUE,
+  nombre VARCHAR(100) NOT NULL,
+  correo VARCHAR(100) UNIQUE NOT NULL,
   telefono VARCHAR(20),
-  contrasena VARCHAR(255), 
-  rol_id CHAR(36),
+  contrasena VARCHAR(255) NOT NULL,
+  rol_id CHAR(36) NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
 
 CREATE TABLE permisos (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  nombre VARCHAR(100)
+  nombre_permiso VARCHAR(100) NOT NULL,
+  descripcion TEXT,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE roles_permisos (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  permiso_id CHAR(36),
-  rol_id CHAR(36),
-  FOREIGN KEY (permiso_id) REFERENCES permisos(id),
-  FOREIGN KEY (rol_id) REFERENCES roles(id)
-);
-
-CREATE TABLE clientes (
-  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  estado BOOLEAN DEFAULT TRUE,
-  nombre VARCHAR(100),
-  apellido_paterno VARCHAR(100),
-  apellido_materno VARCHAR(100),
-  ci VARCHAR(20),
-  extension VARCHAR(10),
-  celular VARCHAR(15),
-  direccion TEXT,
-  correo VARCHAR(100) UNIQUE
-);
-
-CREATE TABLE tarjetas (
-  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  codigo VARCHAR(50),
-  modalidad_qr VARCHAR(100),
-  estado BOOLEAN DEFAULT TRUE,
-  cliente_id CHAR(36),
-  FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+  permiso_id CHAR(36) NOT NULL,
+  rol_id CHAR(36) NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (permiso_id) REFERENCES permisos(id) ON DELETE CASCADE,
+  FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE CASCADE,
+  CONSTRAINT UNQ_ROL_PERM UNIQUE (permiso_id, rol_id)
 );
 
 CREATE TABLE convenios (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  estado VARCHAR(50),
-  folio VARCHAR(50),
+  estado VARCHAR(50) NOT NULL,
+  folio VARCHAR(50) NOT NULL,
   folio_interno VARCHAR(50),
   modalidad VARCHAR(100),
-  presupuesto DECIMAL(12,2),
-  empresa_id CHAR(36),
+  presupuesto DECIMAL(12,2) NOT NULL,
+  empresa_id CHAR(36) NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (empresa_id) REFERENCES empresas(id)
 );
 
 CREATE TABLE tipos_sede (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  nombre_sede VARCHAR(100),
-  estado BOOLEAN DEFAULT TRUE
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  nombre_sede VARCHAR(100) NOT NULL,
+  estado BOOLEAN DEFAULT TRUE,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE lugares (
-  id INT PRIMARY KEY AUTO_INCREMENT,
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   estado BOOLEAN DEFAULT TRUE,
   ciudad VARCHAR(100),
   departamento VARCHAR(100),
-  provincia VARCHAR(100)
+  provincia VARCHAR(100),
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE sucursales (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  direccion TEXT,
+  direccion TEXT NOT NULL,
   horario VARCHAR(100),
-  lugar_id INT,
-  empresa_id CHAR(36),
-  tipo_sede_id INT,
+  lugar_id CHAR(36) NOT NULL,
+  empresa_id CHAR(36) NOT NULL,
+  tipo_sede_id CHAR(36) NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (lugar_id) REFERENCES lugares(id),
   FOREIGN KEY (empresa_id) REFERENCES empresas(id),
   FOREIGN KEY (tipo_sede_id) REFERENCES tipos_sede(id)
