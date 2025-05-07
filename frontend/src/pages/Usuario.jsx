@@ -33,6 +33,7 @@ export const Usuario = () => {
         })
 
         const json = await res.json()
+        console.log(json)
 
         if (res.ok && Array.isArray(json.data)) {
           setUsuarios(json.data)
@@ -61,18 +62,16 @@ export const Usuario = () => {
 
   const usuariosFiltrados = usuario.filter(
     (u) =>
-      u.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-      u.correo.toLowerCase().includes(filtro.toLowerCase())
+      (u.nombre_usuario && u.nombre_usuario.toLowerCase().includes(filtro.toLowerCase())) ||
+      (u.correo && u.correo.toLowerCase().includes(filtro.toLowerCase()))
   )
+  
 
   return (
     <div className="dashboard">
       <aside className="sidebar">
         <div className="profile">
-          <div
-            className="avatar-circle"
-            style={{ backgroundColor: nombre }}
-          >
+          <div className="avatar-circle" style={{ backgroundColor: nombre }}>
             {getInitials(nombre)}
           </div>
           <h2>{nombre || 'Usuario'}</h2>
@@ -98,7 +97,7 @@ export const Usuario = () => {
             state={{ nombre, correo }}
             className="nav-link"
           >
-            <Briefcase className='icon' /> Empresas
+            <Briefcase className="icon" /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales/${id}`}
@@ -158,26 +157,30 @@ export const Usuario = () => {
                     <th>Nombre</th>
                     <th>Correo</th>
                     <th>Teléfono</th>
+                    <th>Rol</th>
+                    <th>Permiso</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {usuariosFiltrados.map((usuario, index) => (
-                    <tr key={usuario.id || index}>
+                    <tr key={usuario.usuario_id || index}>
                       <td>{index + 1}</td>
-                      <td>{usuario.nombre}</td>
+                      <td>{usuario.nombre_usuario}</td>
                       <td>{usuario.correo}</td>
                       <td>{usuario.telefono}</td>
+                      <td>{usuario.nombre_rol}</td>
+                      <td>{usuario.nombre_permiso}</td>
                       <td className="actions-cell">
                         <Link
-                          to={`/dashboard/usuario/${id}/editar/${usuario.id}`}
+                          to={`/dashboard/usuario/${id}/editar/${usuario.usuario_id}`}
                           className="btn btn-action btn-icon btn-update"
                           title="Editar"
                         >
                           <RefreshCcw size={16} />
                         </Link>
                         <Link
-                          to={`/dashboard/usuario/${id}/eliminar/${usuario.id}`}
+                          to={`/dashboard/usuario/${id}/eliminar/${usuario.usuario_id}`}
                           className="btn btn-action btn-icon btn-delete"
                           title="Eliminar"
                         >

@@ -3,7 +3,6 @@ import { Login } from './pages/Login'
 import { Dashboard } from './pages/Dashboard'
 import { Sucursales } from './pages/Sucursales'
 import { Convenios } from './pages/Convenios'
-import { Tarjetas } from './pages/Tarjetas'
 import { Usuario } from './pages/Usuario'
 import { Empresas } from './pages/empresas'
 import './styles/404.css'
@@ -40,14 +39,6 @@ export const App = () => {
           }
         />
         <Route
-        path='/dashboard/tarjetas/:id'
-        element={
-          <PrivateRouter>
-            <Tarjetas />
-          </PrivateRouter>
-        }
-        />
-        <Route
           path="/dashboard/usuario/:id"
           element={
             <PrivateRouter>
@@ -56,7 +47,7 @@ export const App = () => {
           }
         />
         <Route
-          path='/dashboard/empresas'
+          path="/dashboard/empresas"
           element={
             <PrivateRouter>
               <Empresas />
@@ -66,10 +57,12 @@ export const App = () => {
         <Route
           path="*"
           element={
-            <div className='error-404'>
+            <div className="error-404">
               <h1>404 Not Found</h1>
               <p>La página que buscas no existe.</p>
-              <p>Regresa a la <a href="./">página de inicio</a>.</p>
+              <p>
+                Regresa a la <a href="./">página de inicio</a>.
+              </p>
             </div>
           }
         />
