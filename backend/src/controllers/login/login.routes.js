@@ -84,34 +84,41 @@ routerRegiste.post('/register', async (req, res) => {
     if (existingPermiso.length > 0) {
       idPermiso = existingPermiso[0].id
     } else {
-      await pool.query('INSERT INTO permisos (nombre_permiso) VALUES (?)', [
-        validacionPermiso.nombre_permiso
-      ])
-
-      const [rowsPerm] = await pool.query(
-        'SELECT id FROM permisos WHERE nombre_permiso = ?',
+      const [permInsert] = await pool.query(
+        'INSERT INTO permisos (nombre_permiso) VALUES (?)',
         [validacionPermiso.nombre_permiso]
       )
-
-      idPermiso = rowsPerm[0].id
+      idPermiso = permInsert.insertId
     }
 
-    await pool.query(
-      'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
-      [validacionRoles.nombre_rol, validacionRoles.descripcion_rol]
-    )
-
-    const [rowsRol] = await pool.query(
+    const [existingRol] = await pool.query(
       'SELECT id FROM roles WHERE nombre_rol = ?',
       [validacionRoles.nombre_rol]
     )
 
-    const idRol = rowsRol[0].id
+    let idRol
 
-    await pool.query(
-      'INSERT INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
-      [idPermiso, idRol]
+    if (existingRol.length > 0) {
+      idRol = existingRol[0].id
+    } else {
+      const [rolInsert] = await pool.query(
+        'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
+        [validacionRoles.nombre_rol, validacionRoles.descripcion_rol]
+      )
+      idRol = rolInsert.insertId
+    }
+
+    const [existingRel] = await pool.query(
+      'SELECT * FROM roles_permisos WHERE rol_id = ? AND permiso_id = ?',
+      [idRol, idPermiso]
     )
+
+    if (existingRel.length === 0) {
+      await pool.query(
+        'INSERT INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
+        [idPermiso, idRol]
+      )
+    }
 
     await pool.query(
       'INSERT INTO usuarios (nombre, correo, telefono, contrasena, rol_id) VALUES (?, ?, ?, ?, ?)',
