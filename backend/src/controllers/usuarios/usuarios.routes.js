@@ -34,3 +34,26 @@ routerUsuarios.get('/usuarios', async (req, res) => {
     })
   }
 })
+
+routerUsuarios.delete('/usuarios/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [usuarioExiste] = await pool.query(
+      'SELECT * FROM usuarios WHERE id = ?', [id]
+    )
+
+    if (usuarioExiste.length === 0) return res.status(404).json({ message: 'Este usuario no existe' })
+
+    await pool.query(
+      'DELETE FROM usuarios WHERE id = ?', [id]
+    )
+    res.status(200).json({
+      message: 'Usuario eliminado correctamente'
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Usuario eliminado correctamente',
+      error: error.errors || error.message || error
+    })
+  }
+})
