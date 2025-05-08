@@ -74,51 +74,29 @@ routerRegiste.post('/register', async (req, res) => {
     const validacionPermiso = schemaPermiso.parse(req.body)
     const hashPassword = await bcrypt.hash(schemaRegistro.contrasena, 10)
 
-    const [existingPermiso] = await pool.query(
-      'SELECT id FROM permisos WHERE nombre_permiso = ?',
-      [validacionPermiso.nombre_permiso]
+    await pool.query('INSERT INTO permisos (nombre) VALUES (?)', [
+      validacionPermiso.nombre
+    ])
+    const [rowsPerm] = await pool.query(
+      'SELECT id FROM permisos WHERE nombre = ?',
+      [validacionPermiso.nombre]
     )
+    const idPermiso = rowsPerm[0].id
 
-    let idPermiso
-
-    if (existingPermiso.length > 0) {
-      idPermiso = existingPermiso[0].id
-    } else {
-      const [permInsert] = await pool.query(
-        'INSERT INTO permisos (nombre_permiso) VALUES (?)',
-        [validacionPermiso.nombre_permiso]
-      )
-      idPermiso = permInsert.insertId
-    }
-
-    const [existingRol] = await pool.query(
+    await pool.query(
+      'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
+      [validacionRoles.nombre_rol, validacionRoles.descripcion_rol]
+    )
+    const [rowsRol] = await pool.query(
       'SELECT id FROM roles WHERE nombre_rol = ?',
       [validacionRoles.nombre_rol]
     )
+    const idRol = rowsRol[0].id
 
-    let idRol
-
-    if (existingRol.length > 0) {
-      idRol = existingRol[0].id
-    } else {
-      const [rolInsert] = await pool.query(
-        'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
-        [validacionRoles.nombre_rol, validacionRoles.descripcion_rol]
-      )
-      idRol = rolInsert.insertId
-    }
-
-    const [existingRel] = await pool.query(
-      'SELECT * FROM roles_permisos WHERE rol_id = ? AND permiso_id = ?',
-      [idRol, idPermiso]
+    await pool.query(
+      'INSERT INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
+      [idPermiso, idRol]
     )
-
-    if (existingRel.length === 0) {
-      await pool.query(
-        'INSERT INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
-        [idPermiso, idRol]
-      )
-    }
 
     await pool.query(
       'INSERT INTO usuarios (nombre, correo, telefono, contrasena, rol_id) VALUES (?, ?, ?, ?, ?)',
@@ -138,10 +116,8 @@ routerRegiste.post('/register', async (req, res) => {
       correo: schemaRegistro.correo
     })
   } catch (error) {
-    res.status(500).json({
-      message: 'Error internal server',
-      error: error.message || error
-    })
+    console.error('Error en registro:', error)
+    res.status(500).json({ error: 'Error al registrar usuario' })
   }
 })
 

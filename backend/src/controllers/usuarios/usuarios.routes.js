@@ -14,12 +14,12 @@ routerUsuarios.get('/usuarios', async (req, res) => {
         r.id AS rol_id, 
         r.nombre_rol, 
         r.descripcion_rol, 
-        p.id AS permiso_id, 
-        p.nombre_permiso AS nombre_permiso
+        GROUP_CONCAT(p.nombre_permiso SEPARATOR ', ') AS permisos
       FROM usuarios u
       INNER JOIN roles r ON u.rol_id = r.id
       INNER JOIN roles_permisos rp ON r.id = rp.rol_id
-      INNER JOIN permisos p ON rp.permiso_id = p.id`
+      INNER JOIN permisos p ON rp.permiso_id = p.id
+      GROUP BY u.id, u.nombre, u.correo, u.telefono, r.id, r.nombre_rol, r.descripcion_rol`
     )
 
     if (usuariosExisten.length === 0) return res.status(404).json({ message: 'No se encontraron usuarios en la epresa' })

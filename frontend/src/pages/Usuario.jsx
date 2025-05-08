@@ -3,7 +3,6 @@ import {
   Home,
   Building,
   Handshake,
-  CreditCard,
   LogOut,
   User2Icon,
   RefreshCcw,
@@ -60,12 +59,25 @@ export const Usuario = () => {
     }
   }
 
+  const deleteUsuario = async () => {
+    const res = await fetch(`http://localhost:3333/usuarios/${id}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+
+    if (res.ok) {
+      navigate('/')
+    } else {
+      throw new Error('Error al eliminar al usuario')
+    }
+  }
+
   const usuariosFiltrados = usuario.filter(
     (u) =>
-      (u.nombre_usuario && u.nombre_usuario.toLowerCase().includes(filtro.toLowerCase())) ||
+      (u.nombre_usuario &&
+        u.nombre_usuario.toLowerCase().includes(filtro.toLowerCase())) ||
       (u.correo && u.correo.toLowerCase().includes(filtro.toLowerCase()))
   )
-  
 
   return (
     <div className="dashboard">
@@ -163,8 +175,14 @@ export const Usuario = () => {
                       <td>{usuario.correo}</td>
                       <td>{usuario.telefono}</td>
                       <td>{usuario.nombre_rol}</td>
-                      <td>{usuario.nombre_permiso}</td>
-                      <td className="actions-cell">
+                      <td>
+                        <ul>
+                          {usuario.permisos.split(', ').map((permiso, i) => (
+                            <li key={i}>{permiso}</li>
+                          ))}
+                        </ul>
+                      </td>
+                                            <td className="actions-cell">
                         <Link
                           to={`/dashboard/usuario/${id}/editar/${usuario.usuario_id}`}
                           className="btn btn-action btn-icon btn-update"
@@ -172,13 +190,12 @@ export const Usuario = () => {
                         >
                           <RefreshCcw size={16} />
                         </Link>
-                        <Link
-                          to={`/dashboard/usuario/${id}/eliminar/${usuario.usuario_id}`}
+                        <button
+                          onClick={deleteUsuario}
                           className="btn btn-action btn-icon btn-delete"
-                          title="Eliminar"
                         >
                           <DeleteIcon size={16} />
-                        </Link>
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -189,7 +206,7 @@ export const Usuario = () => {
         </div>
       </main>
       <Link
-        to={`/dashboard/usuario/${id}/crear`}
+        to={`/dashboard/usuario/crearUsuario`}
         className="floating-add-btn"
         title="Agregar usuario"
       >

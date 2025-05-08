@@ -5,6 +5,7 @@ import { Sucursales } from './pages/Sucursales'
 import { Convenios } from './pages/Convenios'
 import { Usuario } from './pages/Usuario'
 import { Empresas } from './pages/empresas'
+import { CrearUsuario } from './pages/CrearUsuarios'
 import './styles/404.css'
 import { PrivateRouter } from './routes/PrivateRouter'
 
@@ -51,6 +52,14 @@ export const App = () => {
           element={
             <PrivateRouter>
               <Empresas />
+            </PrivateRouter>
+          }
+        />
+        <Route
+          path="/dashboard/usuario/crearUsuario"
+          element={
+            <PrivateRouter>
+              <CrearUsuario />
             </PrivateRouter>
           }
         />
