@@ -66,7 +66,8 @@ export const Usuario = () => {
     })
 
     if (res.ok) {
-      navigate('/')
+      alert('Usuario eliminado correctamente')
+      window.location.reload()
     } else {
       throw new Error('Error al eliminar al usuario')
     }

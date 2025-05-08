@@ -2,12 +2,7 @@
 
 import { Router } from 'express'
 import { pool, SECRET_JWK_KEY } from '../../models/db.js'
-import {
-  schemaRegister,
-  schemaLogin,
-  schemaRoles,
-  schemaPermiso
-} from '../../routes/SchemaRegister.js'
+import { schemaRegister, schemaLogin } from '../../routes/SchemaRegister.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
@@ -70,31 +65,29 @@ routerRegiste.post('/login', async (req, res) => {
 routerRegiste.post('/register', async (req, res) => {
   try {
     const schemaRegistro = schemaRegister.parse(req.body)
-    const validacionRoles = schemaRoles.parse(req.body)
-    const validacionPermiso = schemaPermiso.parse(req.body)
     const hashPassword = await bcrypt.hash(schemaRegistro.contrasena, 10)
 
-    await pool.query('INSERT INTO permisos (nombre) VALUES (?)', [
-      validacionPermiso.nombre
+    await pool.query('INSERT INTO permisos (nombre_permiso) VALUES (?)', [
+      schemaRegistro.nombre_permiso
     ])
     const [rowsPerm] = await pool.query(
-      'SELECT id FROM permisos WHERE nombre = ?',
-      [validacionPermiso.nombre]
+      'SELECT id FROM permisos WHERE nombre_permiso = ?',
+      [schemaRegistro.nombre_permiso]
     )
     const idPermiso = rowsPerm[0].id
 
     await pool.query(
       'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
-      [validacionRoles.nombre_rol, validacionRoles.descripcion_rol]
+      [schemaRegistro.nombre_rol, schemaRegistro.descripcion_rol]
     )
     const [rowsRol] = await pool.query(
       'SELECT id FROM roles WHERE nombre_rol = ?',
-      [validacionRoles.nombre_rol]
+      [schemaRegistro.nombre_rol]
     )
     const idRol = rowsRol[0].id
 
     await pool.query(
-      'INSERT INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
+      'INSERT IGNORE INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
       [idPermiso, idRol]
     )
 

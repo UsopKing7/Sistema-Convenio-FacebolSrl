@@ -35,9 +35,8 @@ export const CrearUsuario = () => {
     })
 
     const data = await res.json()
-    console.log(data)
 
-    if (res.ok && data.id) {
+    if (res.ok) {
       navigate(-1)
     } else {
       alert(data.message || 'Error al crear el Usuario')
