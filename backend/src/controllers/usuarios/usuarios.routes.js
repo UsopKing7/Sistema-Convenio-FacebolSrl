@@ -57,3 +57,25 @@ routerUsuarios.delete('/usuarios/:id', async (req, res) => {
     })
   }
 })
+
+routerUsuarios.patch('/updateUsuarios/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [usuarioExiste] = await pool.query(
+      'SELECT * FROM usuarios WHERE id = ?', [id]
+    )
+
+    if (usuarioExiste.length === 0) return res.status(404).json({ message: 'error no se encontro el usuarios' })
+
+    const [usuarioActualizado] = await pool.query(
+      'UPDATE FROM usuarios'
+    )
+
+    res.status(200).json({ message: usuarioActualizado })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Errorinternal del servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})

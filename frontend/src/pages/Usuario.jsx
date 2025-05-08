@@ -185,7 +185,7 @@ export const Usuario = () => {
                       </td>
                                             <td className="actions-cell">
                         <Link
-                          to={`/dashboard/usuario/${id}/editar/${usuario.usuario_id}`}
+                          to={`/dashboard/usuario/editar/${usuario.usuario_id}`}
                           className="btn btn-action btn-icon btn-update"
                           title="Editar"
                         >
