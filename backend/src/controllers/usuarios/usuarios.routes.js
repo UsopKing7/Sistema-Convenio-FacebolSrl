@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { pool } from '../../models/db.js'
+import { validacionUpdateUsuario } from '../../routes/schemaUsuariosUpdate.js'
 
 export const routerUsuarios = Router()
 
@@ -61,6 +62,7 @@ routerUsuarios.delete('/usuarios/:id', async (req, res) => {
 routerUsuarios.patch('/updateUsuarios/:id', async (req, res) => {
   const { id } = req.params
   try {
+    const vUsuarioUpdate = validacionUpdateUsuario.parse(req.body)
     const [usuarioExiste] = await pool.query(
       'SELECT * FROM usuarios WHERE id = ?', [id]
     )
@@ -68,13 +70,21 @@ routerUsuarios.patch('/updateUsuarios/:id', async (req, res) => {
     if (usuarioExiste.length === 0) return res.status(404).json({ message: 'error no se encontro el usuarios' })
 
     const [usuarioActualizado] = await pool.query(
-      'UPDATE FROM usuarios'
+      'UPDATE usuarios SET telefono = ?, contrasena = ?, nombre_rol = ?, descripcion_rol = ?, nombre_permiso = ?, descripcion = ? WHERE id = ?', [
+        vUsuarioUpdate.telefono,
+        vUsuarioUpdate.contrasena,
+        vUsuarioUpdate.nombre_rol,
+        vUsuarioUpdate.descripcion_rol,
+        vUsuarioUpdate.nombre_permiso,
+        vUsuarioUpdate.descripcion,
+        id
+      ]
     )
 
     res.status(200).json({ message: usuarioActualizado })
   } catch (error) {
     return res.status(500).json({
-      message: 'Errorinternal del servidor',
+      message: 'Error internal del servidor',
       error: error.errors || error.message || error
     })
   }
