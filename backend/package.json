@@ -39,6 +39,9 @@
     "standard": "17.1.2"
   },
   "eslintConfig": {
-    "extends": "standard"
+    "extends": "standard",
+    "rules": {
+      "camelcase": "off"
+    }
   }
 }

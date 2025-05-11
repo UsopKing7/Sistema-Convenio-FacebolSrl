@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import '../styles/Login.css'
+import { useEffect } from 'react'
 
 export const UpdateUsuario = () => {
+  const { id } = useParams()
   const [telefono, setTelefono] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [nombre_rol, setNombreRol] = useState('')
@@ -11,10 +13,37 @@ export const UpdateUsuario = () => {
   const [descripcion, setDescripcionPermiso] = useState('')
   const navigate = useNavigate()
 
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      const res = await fetch(`http://localhost:3333/usuarios/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        setTelefono(data.telefono || '')
+        setContrasena('')
+        setNombreRol(data.nombre_rol || '')
+        setDescripcionRol(data.descripcion_rol || '')
+        setNombrePermiso(data.nombre_permiso || '')
+        setDescripcionPermiso(data.descripcion || '')
+      } else {
+        alert(data.message || 'No se pudo obtener los datos del usuario')
+      }
+    }
+
+    fetchUsuario()
+  }, [id])
+
   const updateUsuario = async (e) => {
     e.preventDefault()
 
-    const res = await fetch('http://localhost:3333/updateUsuario', {
+    const res = await fetch(`http://localhost:3333/updateUsuarios/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -38,6 +67,7 @@ export const UpdateUsuario = () => {
       alert(data.nessage || 'Error al actualizar el usuario')
     }
   }
+
   return (
     <form onSubmit={updateUsuario}>
       <h2>datos a actualizar</h2>
@@ -53,7 +83,6 @@ export const UpdateUsuario = () => {
         placeholder="contraseña"
         value={contrasena}
         onChange={(e) => setContrasena(e.target.value)}
-        required
       ></input>
       <input
         type="text"
@@ -83,6 +112,7 @@ export const UpdateUsuario = () => {
         onChange={(e) => setDescripcionPermiso(e.target.value)}
         required
       ></input>
+      <button type="submit">Actualizar</button>
     </form>
   )
 }
