@@ -50,6 +50,16 @@ CREATE TABLE roles_permisos (
   CONSTRAINT UNQ_ROL_PERM UNIQUE (permiso_id, rol_id)
 );
 
+CREATE TABLE usuarios_permisos (
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  usuario_id CHAR(36) NOT NULL,
+  permiso_id CHAR(36) NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+  FOREIGN KEY (permiso_id) REFERENCES permisos(id) ON DELETE CASCADE,
+  CONSTRAINT UNQ_USUARIO_PERM UNIQUE (usuario_id, permiso_id)
+);
+
 CREATE TABLE convenios (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   estado VARCHAR(50) NOT NULL,
@@ -90,3 +100,5 @@ CREATE TABLE sucursales (
   FOREIGN KEY (empresa_id) REFERENCES empresas(id),
   FOREIGN KEY (tipo_sede_id) REFERENCES tipos_sede(id)
 );
+
+DESCRIBE permisos;
