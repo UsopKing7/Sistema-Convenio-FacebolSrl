@@ -26,7 +26,7 @@ export const Login = () => {
       const data = await id.json()
 
       if (data.id) {
-        navigate(`/dashboard/${data.id}`, {
+        navigate(`/dashboard`, {
           state: {
             nombre: data.nombre,
             correo: data.correo

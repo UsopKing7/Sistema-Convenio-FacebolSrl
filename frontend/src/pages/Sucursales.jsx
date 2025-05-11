@@ -71,35 +71,35 @@ export const Sucursales = () => {
         </div>
         <nav className="nav">
           <Link
-            to={`/dashboard/${id}`}
+            to={`/dashboard`}
             state={{ nombre, correo }}
             className="nav-link"
           >
             <Home className="icon" /> Inicio
           </Link>
           <Link
-            to={`/dashboard/usuario/${id}`}
+            to={`/dashboard/usuario`}
             state={{ nombre, correo }}
             className="nav-link"
           >
             <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
-            to={`/dashboard/empresas/${id}`}
+            to={`/dashboard/empresas`}
             state={{ nombre, correo }}
             className="nav-link"
           >
             <Briefcase className='icon' /> Empresas
           </Link>
           <Link
-            to={`/dashboard/sucursales/${id}`}
+            to={`/dashboard/sucursales`}
             state={{ nombre, correo }}
             className="nav-link active"
           >
             <Building className="icon" /> Sucursales
           </Link>
           <Link
-            to={`/dashboard/convenios/${id}`}
+            to={`/dashboard/convenios`}
             state={{ nombre, correo }}
             className="nav-link"
           >

@@ -17,7 +17,7 @@ export const App = () => {
         <Route path="/" element={<Login />} />
 
         <Route
-          path="/dashboard/:id"
+          path="/dashboard"
           element={
             <PrivateRouter>
               <Dashboard />
@@ -25,7 +25,7 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/sucursales/:id"
+          path="/dashboard/sucursales"
           element={
             <PrivateRouter>
               <Sucursales />
@@ -33,7 +33,7 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/convenios/:id"
+          path="/dashboard/convenios"
           element={
             <PrivateRouter>
               <Convenios />
@@ -41,7 +41,7 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/usuario/:id"
+          path="/dashboard/usuario"
           element={
             <PrivateRouter>
               <Usuario />
@@ -49,7 +49,7 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/empresas/:id"
+          path="/dashboard/empresas"
           element={
             <PrivateRouter>
               <Empresas />
@@ -65,7 +65,7 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/usuario/editar/:id"
+          path="/dashboard/usuario/editar"
           element={
             <PrivateRouter>
               <UpdateUsuario />
