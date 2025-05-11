@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { pool } from '../../models/db.js'
 import { validacionUpdateUsuario } from '../../routes/schemaUsuariosUpdate.js'
+import bcrypt from 'bcrypt'
 
 export const routerUsuarios = Router()
 
@@ -63,29 +64,51 @@ routerUsuarios.patch('/updateUsuarios/:id', async (req, res) => {
   const { id } = req.params
   try {
     const vUsuarioUpdate = validacionUpdateUsuario.parse(req.body)
-    const [usuarioExiste] = await pool.query(
-      'SELECT * FROM usuarios WHERE id = ?', [id]
-    )
+    const hashPassword = await bcrypt.hash(vUsuarioUpdate.contrasena, 10)
 
-    if (usuarioExiste.length === 0) return res.status(404).json({ message: 'error no se encontro el usuarios' })
+    const [usuarioExiste] = await pool.query('SELECT * FROM usuarios WHERE id = ?', [id])
 
-    const [usuarioActualizado] = await pool.query(
-      'UPDATE usuarios SET telefono = ?, contrasena = ?, nombre_rol = ?, descripcion_rol = ?, nombre_permiso = ?, descripcion = ? WHERE id = ?', [
-        vUsuarioUpdate.telefono,
-        vUsuarioUpdate.contrasena,
+    if (usuarioExiste.length === 0) return res.status(404).json({ message: 'No se encontro el usuario' })
+
+    const usuario = usuarioExiste[0]
+
+    await pool.query(
+      'UPDATE roles SET nombre_rol = ?, descripcion_rol = ? WHERE id = ?', [
         vUsuarioUpdate.nombre_rol,
         vUsuarioUpdate.descripcion_rol,
-        vUsuarioUpdate.nombre_permiso,
-        vUsuarioUpdate.descripcion,
+        usuario.rol_id
+      ]
+    )
+
+    await pool.query(
+      'UPDATE usuarios SET telefono = ?, contrasena = ?, rol_id = ? WHERE id = ?', [
+        vUsuarioUpdate.telefono,
+        hashPassword,
+        usuario.rol_id,
         id
       ]
     )
 
-    res.status(200).json({ message: usuarioActualizado })
+    const [rolPermiso] = await pool.query(
+      'SELECT * FROM roles_permisos WHERE rol_id = ?', [usuario.rol_id]
+    )
+    if (rolPermiso.length === 0) return res.status(404).json({ message: 'no hay roles asociados a esta persona' })
+
+    const permisoId = rolPermiso[0].permiso_id
+
+    await pool.query(
+      'UPDATE permisos SET nombre_permiso = ?, descripcion = ? WHERE id = ?', [
+        vUsuarioUpdate.nombre_permiso,
+        vUsuarioUpdate.descripcion,
+        permisoId
+      ]
+    )
+
+    res.status(200).json({ message: 'Usuario actualizado correcatamente' })
   } catch (error) {
     return res.status(500).json({
       message: 'Error internal del servidor',
-      error: error.errors || error.message || error
+      error: error.message || error.errors || error
     })
   }
 })
