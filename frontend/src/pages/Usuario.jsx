@@ -59,7 +59,7 @@ export const Usuario = () => {
   }
 
   const deleteUsuario = async () => {
-    const res = await fetch(`http://localhost:3333/usuarios/${id}`, {
+    const res = await fetch(`http://localhost:3333/usuariosDelete/${id}`, {
       method: 'DELETE',
       credentials: 'include'
     })

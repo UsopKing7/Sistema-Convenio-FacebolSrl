@@ -10,12 +10,11 @@ export const UpdateUsuario = () => {
   const [nombre_rol, setNombreRol] = useState('')
   const [descripcion_rol, setDescripcionRol] = useState('')
   const [nombre_permiso, setNombrePermiso] = useState('')
-  const [descripcion, setDescripcionPermiso] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUsuario = async () => {
-      const res = await fetch(`http://localhost:3333/usuarios/${id}`, {
+      const res = await fetch(`http://localhost:3333/usuariosUnico/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -31,7 +30,6 @@ export const UpdateUsuario = () => {
         setNombreRol(data.nombre_rol || '')
         setDescripcionRol(data.descripcion_rol || '')
         setNombrePermiso(data.nombre_permiso || '')
-        setDescripcionPermiso(data.descripcion || '')
       } else {
         alert(data.message || 'No se pudo obtener los datos del usuario')
       }
@@ -55,7 +53,6 @@ export const UpdateUsuario = () => {
         nombre_rol,
         descripcion_rol,
         nombre_permiso,
-        descripcion
       })
     })
 
@@ -67,7 +64,7 @@ export const UpdateUsuario = () => {
       alert(data.nessage || 'Error al actualizar el usuario')
     }
   }
-
+  
   return (
     <form onSubmit={updateUsuario}>
       <h2>datos a actualizar</h2>
@@ -103,13 +100,6 @@ export const UpdateUsuario = () => {
         placeholder="nombre del permiso"
         value={nombre_permiso}
         onChange={(e) => setNombrePermiso(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="descripcion del permiso"
-        value={descripcion}
-        onChange={(e) => setDescripcionPermiso(e.target.value)}
         required
       ></input>
       <button type="submit">Actualizar</button>

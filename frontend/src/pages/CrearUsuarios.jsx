@@ -10,7 +10,6 @@ export const CrearUsuario = () => {
   const [nombre_rol, setNombreRol] = useState('')
   const [descripcion_rol, setDescripcionRol] = useState('')
   const [nombre_permiso, setNombrePermiso] = useState('')
-  const [descripcion, setDescripcionPermiso] = useState('')
   const navigate = useNavigate()
 
   const crearUsuario = async (e) => {
@@ -29,8 +28,7 @@ export const CrearUsuario = () => {
         contrasena,
         nombre_rol,
         descripcion_rol,
-        nombre_permiso,
-        descripcion
+        nombre_permiso: [nombre_permiso],
       })
     })
 
@@ -92,13 +90,6 @@ export const CrearUsuario = () => {
         placeholder="nombre del permiso"
         value={nombre_permiso}
         onChange={(e) => setNombrePermiso(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="descripcion del permiso"
-        value={descripcion}
-        onChange={(e) => setDescripcionPermiso(e.target.value)}
         required
       ></input>
       <br />

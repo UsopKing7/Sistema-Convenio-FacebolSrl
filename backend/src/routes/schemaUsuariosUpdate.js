@@ -5,6 +5,5 @@ export const validacionUpdateUsuario = z.object({
   contrasena: z.string(),
   nombre_rol: z.string(),
   descripcion_rol: z.string(),
-  nombre_permiso: z.string(),
-  descripcion: z.string()
+  nombre_permiso: z.string()
 })

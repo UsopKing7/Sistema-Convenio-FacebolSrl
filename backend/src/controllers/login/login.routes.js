@@ -63,11 +63,33 @@ routerRegiste.post('/login', async (req, res) => {
 })
 
 routerRegiste.post('/register', async (req, res) => {
+  const connection = await pool.getConnection()
   try {
+    await connection.beginTransaction()
+
     const schemaRegistro = schemaRegister.parse(req.body)
+
+    const [existingUser] = await connection.query(
+      'SELECT * FROM usuarios WHERE correo = ?',
+      [schemaRegistro.correo]
+    )
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: 'El correo ya está registrado' })
+    }
+
+    const [existingPhone] = await connection.query(
+      'SELECT * FROM usuarios WHERE telefono = ?',
+      [schemaRegistro.telefono]
+    )
+
+    if (existingPhone.length > 0) {
+      return res.status(400).json({ message: 'El teléfono ya está registrado' })
+    }
+
     const hashPassword = await bcrypt.hash(schemaRegistro.contrasena, 10)
 
-    let [rowsRol] = await pool.query(
+    let [rowsRol] = await connection.query(
       'SELECT id FROM roles WHERE nombre_rol = ?',
       [schemaRegistro.nombre_rol]
     )
@@ -76,18 +98,18 @@ routerRegiste.post('/register', async (req, res) => {
     if (rowsRol.length > 0) {
       idRol = rowsRol[0].id
     } else {
-      await pool.query(
+      await connection.query(
         'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
         [schemaRegistro.nombre_rol, schemaRegistro.descripcion_rol]
       )
-      const [newRol] = await pool.query(
+      const [newRol] = await connection.query(
         'SELECT id FROM roles WHERE nombre_rol = ?',
         [schemaRegistro.nombre_rol]
       )
       idRol = newRol[0].id
     }
 
-    const [userResult] = await pool.query(
+    const [userResult] = await connection.query(
       'INSERT INTO usuarios (nombre, correo, telefono, contrasena, rol_id) VALUES (?, ?, ?, ?, ?)',
       [
         schemaRegistro.nombre,
@@ -101,7 +123,7 @@ routerRegiste.post('/register', async (req, res) => {
     const usuarioId = userResult.insertId || userResult[0]?.id
 
     for (const permisoNombre of schemaRegistro.nombre_permiso) {
-      let [perm] = await pool.query(
+      let [perm] = await connection.query(
         'SELECT id FROM permisos WHERE nombre_permiso = ?',
         [permisoNombre]
       )
@@ -110,27 +132,29 @@ routerRegiste.post('/register', async (req, res) => {
       if (perm.length > 0) {
         idPermiso = perm[0].id
       } else {
-        await pool.query(
+        await connection.query(
           'INSERT INTO permisos (nombre_permiso) VALUES (?)',
           [permisoNombre]
         )
-        const [newPerm] = await pool.query(
+        const [newPerm] = await connection.query(
           'SELECT id FROM permisos WHERE nombre_permiso = ?',
           [permisoNombre]
         )
         idPermiso = newPerm[0].id
       }
 
-      await pool.query(
+      await connection.query(
         'INSERT IGNORE INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
         [idPermiso, idRol]
       )
 
-      await pool.query(
+      await connection.query(
         'INSERT IGNORE INTO usuarios_permisos (usuario_id, permiso_id) VALUES (?, ?)',
         [usuarioId, idPermiso]
       )
     }
+
+    await connection.commit()
 
     res.status(201).json({
       message: 'Registro Exitoso',
@@ -139,8 +163,11 @@ routerRegiste.post('/register', async (req, res) => {
       correo: schemaRegistro.correo
     })
   } catch (error) {
+    await connection.rollback()
     console.error('Error en registro:', error)
     res.status(500).json({ error: 'Error al registrar usuario' })
+  } finally {
+    connection.release()
   }
 })
 

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { pool } from '../../models/db.js'
 import { validacionUpdateUsuario } from '../../routes/schemaUsuariosUpdate.js'
+import bcrypt from 'bcrypt'
 
 export const routerUsuarios = Router()
 
@@ -36,7 +37,7 @@ routerUsuarios.get('/usuarios', async (req, res) => {
   }
 })
 
-routerUsuarios.get('/usuarios/:id', async (req, res) => {
+routerUsuarios.get('/usuariosUnico/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [usuario] = await pool.query(
@@ -47,8 +48,7 @@ routerUsuarios.get('/usuarios/:id', async (req, res) => {
         u.telefono,
         r.nombre_rol,
         r.descripcion_rol,
-        GROUP_CONCAT(p.nombre_permiso SEPARATOR ', ') AS nombre_permiso,
-        GROUP_CONCAT(p.descripcion SEPARATOR ', ') AS descripcion
+        GROUP_CONCAT(p.nombre_permiso SEPARATOR ', ') AS nombre_permiso
       FROM usuarios u
       JOIN roles r ON u.rol_id = r.id
       JOIN roles_permisos rp ON r.id = rp.rol_id
@@ -62,15 +62,18 @@ routerUsuarios.get('/usuarios/:id', async (req, res) => {
       return res.status(404).json({ message: 'No se encontró el usuario' })
     }
 
-    // Modificamos la respuesta para devolver los permisos como un array
-    const permisos = usuario[0].nombre_permiso.split(', ').map((permiso, i) => ({
-      nombre_permiso: permiso,
-      descripcion: usuario[0].descripcion.split(', ')[i]
-    }));
+    const nombrePermisos = usuario[0].nombre_permiso || ''
+
+    let permisos = []
+    if (nombrePermisos) {
+      permisos = nombrePermisos.split(', ').map((permiso) => ({
+        nombre_permiso: permiso
+      }))
+    }
 
     const usuarioData = {
       ...usuario[0],
-      permisos: permisos
+      permisos
     }
 
     res.status(200).json(usuarioData)
@@ -82,18 +85,17 @@ routerUsuarios.get('/usuarios/:id', async (req, res) => {
   }
 })
 
-routerUsuarios.delete('/usuarios/:id', async (req, res) => {
+routerUsuarios.delete('/usuariosDelete/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [usuarioExiste] = await pool.query(
-      'SELECT * FROM usuarios WHERE id = ?', [id]
+      'SELECT * FROM usuarios WHERE id = ?',
+      [id]
     )
 
     if (usuarioExiste.length === 0) return res.status(404).json({ message: 'Este usuario no existe' })
 
-    await pool.query(
-      'DELETE FROM usuarios WHERE id = ?', [id]
-    )
+    await pool.query('DELETE FROM usuarios WHERE id = ?', [id])
     res.status(200).json({
       message: 'Usuario eliminado correctamente'
     })
@@ -109,28 +111,72 @@ routerUsuarios.patch('/updateUsuarios/:id', async (req, res) => {
   const { id } = req.params
   try {
     const vUsuarioUpdate = validacionUpdateUsuario.parse(req.body)
+
     const [usuarioExiste] = await pool.query(
-      'SELECT * FROM usuarios WHERE id = ?', [id]
+      'SELECT * FROM usuarios WHERE id = ?',
+      [id]
+    )
+    if (usuarioExiste.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' })
+    }
+
+    const [rowsPerm] = await pool.query(
+      'SELECT id FROM permisos WHERE nombre_permiso = ?',
+      [vUsuarioUpdate.nombre_permiso]
     )
 
-    if (usuarioExiste.length === 0) return res.status(404).json({ message: 'error no se encontro el usuarios' })
+    let idPermiso
+    if (rowsPerm.length > 0) {
+      idPermiso = rowsPerm[0].id
+    } else {
+      await pool.query(
+        'INSERT INTO permisos (nombre_permiso) VALUES (?)',
+        [vUsuarioUpdate.nombre_permiso]
+      )
+      const [newPerm] = await pool.query(
+        'SELECT id FROM permisos WHERE nombre_permiso = ?',
+        [vUsuarioUpdate.nombre_permiso]
+      )
+      idPermiso = newPerm[0].id
+    }
 
-    const [usuarioActualizado] = await pool.query(
-      'UPDATE usuarios SET telefono = ?, contrasena = ?, nombre_rol = ?, descripcion_rol = ?, nombre_permiso = ?, descripcion = ? WHERE id = ?', [
-        vUsuarioUpdate.telefono,
-        vUsuarioUpdate.contrasena,
-        vUsuarioUpdate.nombre_rol,
-        vUsuarioUpdate.descripcion_rol,
-        vUsuarioUpdate.nombre_permiso,
-        vUsuarioUpdate.descripcion,
-        id
-      ]
+    const [rowsRol] = await pool.query(
+      'SELECT id FROM roles WHERE nombre_rol = ?',
+      [vUsuarioUpdate.nombre_rol]
     )
 
-    res.status(200).json({ message: usuarioActualizado })
+    let idRol
+    if (rowsRol.length > 0) {
+      idRol = rowsRol[0].id
+    } else {
+      await pool.query(
+        'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
+        [vUsuarioUpdate.nombre_rol, vUsuarioUpdate.descripcion_rol]
+      )
+      const [newRol] = await pool.query(
+        'SELECT id FROM roles WHERE nombre_rol = ?',
+        [vUsuarioUpdate.nombre_rol]
+      )
+      idRol = newRol[0].id
+    }
+
+    await pool.query('DELETE FROM roles_permisos WHERE rol_id = ?', [idRol])
+
+    await pool.query(
+      'INSERT IGNORE INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
+      [idPermiso, idRol]
+    )
+
+    const hashPassword = await bcrypt.hash(vUsuarioUpdate.contrasena, 10)
+    await pool.query(
+      'UPDATE usuarios SET telefono = ?, contrasena = ?, rol_id = ? WHERE id = ?',
+      [vUsuarioUpdate.telefono, hashPassword, idRol, id]
+    )
+
+    res.status(200).json({ message: 'Usuario actualizado correctamente' })
   } catch (error) {
     return res.status(500).json({
-      message: 'Error internal del servidor',
+      message: 'Error interno del servidor',
       error: error.errors || error.message || error
     })
   }
