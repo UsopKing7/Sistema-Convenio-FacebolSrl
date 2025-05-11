@@ -65,7 +65,7 @@ export const App = () => {
           }
         />
         <Route
-          path="/dashboard/usuario/editar"
+          path="/dashboard/usuario/editar/:id"
           element={
             <PrivateRouter>
               <UpdateUsuario />
