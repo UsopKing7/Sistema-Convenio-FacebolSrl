@@ -9,7 +9,7 @@ export const schemaRegister = z.object({
   contrasena: z.string().min(8),
   nombre_rol: z.string(),
   descripcion_rol: z.string(),
-  nombre_permiso: z.string().min(3)
+  nombre_permiso: z.array(z.string())
 })
 
 export const schemaLogin = z.object({
