@@ -67,31 +67,27 @@ routerRegiste.post('/register', async (req, res) => {
     const schemaRegistro = schemaRegister.parse(req.body)
     const hashPassword = await bcrypt.hash(schemaRegistro.contrasena, 10)
 
-    await pool.query('INSERT INTO permisos (nombre_permiso) VALUES (?)', [
-      schemaRegistro.nombre_permiso
-    ])
-    const [rowsPerm] = await pool.query(
-      'SELECT id FROM permisos WHERE nombre_permiso = ?',
-      [schemaRegistro.nombre_permiso]
-    )
-    const idPermiso = rowsPerm[0].id
-
-    await pool.query(
-      'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
-      [schemaRegistro.nombre_rol, schemaRegistro.descripcion_rol]
-    )
-    const [rowsRol] = await pool.query(
+    let [rowsRol] = await pool.query(
       'SELECT id FROM roles WHERE nombre_rol = ?',
       [schemaRegistro.nombre_rol]
     )
-    const idRol = rowsRol[0].id
 
-    await pool.query(
-      'INSERT IGNORE INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
-      [idPermiso, idRol]
-    )
+    let idRol
+    if (rowsRol.length > 0) {
+      idRol = rowsRol[0].id
+    } else {
+      await pool.query(
+        'INSERT INTO roles (nombre_rol, descripcion_rol) VALUES (?, ?)',
+        [schemaRegistro.nombre_rol, schemaRegistro.descripcion_rol]
+      )
+      const [newRol] = await pool.query(
+        'SELECT id FROM roles WHERE nombre_rol = ?',
+        [schemaRegistro.nombre_rol]
+      )
+      idRol = newRol[0].id
+    }
 
-    await pool.query(
+    const [userResult] = await pool.query(
       'INSERT INTO usuarios (nombre, correo, telefono, contrasena, rol_id) VALUES (?, ?, ?, ?, ?)',
       [
         schemaRegistro.nombre,
@@ -101,6 +97,40 @@ routerRegiste.post('/register', async (req, res) => {
         idRol
       ]
     )
+
+    const usuarioId = userResult.insertId || userResult[0]?.id
+
+    for (const permisoNombre of schemaRegistro.nombre_permiso) {
+      let [perm] = await pool.query(
+        'SELECT id FROM permisos WHERE nombre_permiso = ?',
+        [permisoNombre]
+      )
+
+      let idPermiso
+      if (perm.length > 0) {
+        idPermiso = perm[0].id
+      } else {
+        await pool.query(
+          'INSERT INTO permisos (nombre_permiso) VALUES (?)',
+          [permisoNombre]
+        )
+        const [newPerm] = await pool.query(
+          'SELECT id FROM permisos WHERE nombre_permiso = ?',
+          [permisoNombre]
+        )
+        idPermiso = newPerm[0].id
+      }
+
+      await pool.query(
+        'INSERT IGNORE INTO roles_permisos (permiso_id, rol_id) VALUES (?, ?)',
+        [idPermiso, idRol]
+      )
+
+      await pool.query(
+        'INSERT IGNORE INTO usuarios_permisos (usuario_id, permiso_id) VALUES (?, ?)',
+        [usuarioId, idPermiso]
+      )
+    }
 
     res.status(201).json({
       message: 'Registro Exitoso',
