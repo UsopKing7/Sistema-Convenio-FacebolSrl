@@ -26,14 +26,19 @@ routerEmpresas.post('/empresas', async (req, res) => {
   const vEmpresas = ShcemaEmpesas.parse(req.body)
   try {
     await pool.query(
-      'INSERT INTO empresas (nombre_empresa, representante, celular, correo, descripcion, nit) VALUES (?,?,?,?,?,?)',
+      'INSERT INTO empresas (nombre_empresa, representante, celular, correo, descripcion, nit, facebook, linkedin, tiktok, longitud, altitud) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
       [
         vEmpresas.nombre_empresa,
         vEmpresas.representante,
         vEmpresas.celular,
         vEmpresas.correo,
         vEmpresas.descripcion,
-        vEmpresas.nit
+        vEmpresas.nit,
+        vEmpresas.facebook,
+        vEmpresas.linkedin,
+        vEmpresas.tiktok,
+        vEmpresas.longitud,
+        vEmpresas.altitud
       ]
     )
 
