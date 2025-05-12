@@ -60,6 +60,7 @@ body {
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   z-index: 10;
   transition: var(--transition);
+  width: 310px;
 }
 
 .sidebar:hover {
