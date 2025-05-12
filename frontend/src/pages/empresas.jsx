@@ -3,14 +3,16 @@ import {
   Home,
   Building,
   Handshake,
-  CreditCard,
   LogOut,
   User2Icon,
   Plus,
-  Briefcase
+  Briefcase,
+  RefreshCcw,
+  DeleteIcon
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { getInitials } from './Dashboard'
+import '../styles/Dashboard.css'
 
 export const Empresas = () => {
   const { id } = useParams()
@@ -18,11 +20,12 @@ export const Empresas = () => {
   const { nombre, correo } = location.state || {}
   const navigate = useNavigate()
   const [empresas, setEmpresas] = useState([])
+  const [filtro, setFiltro] = useState('')
 
   useEffect(() => {
     const fetchEmpresas = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}/${id}`, {
+        const res = await fetch(`http://localhost:3333/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -53,6 +56,13 @@ export const Empresas = () => {
       throw new Error('Error al cierre de session')
     }
   }
+
+  const empresasFiltrado = empresas.filter(
+    (u) =>
+      (u.nombre_empresa &&
+        u.nombre_empresa.toLowerCase().includes(filtro.toLowerCase())) ||
+      (u.correo && u.correo.toLowerCase().includes(filtro.toLowerCase()))
+  )
 
   return (
     <div className="dashboard">
@@ -115,23 +125,65 @@ export const Empresas = () => {
         </header>
 
         <div className="module-content">
-          {empresas.length === 0 ? (
-            <p>No hay empresas registrados.</p>
+          <div className="filter-bar">
+            <input
+              type="text"
+              placeholder="Filtrar por nombre de la empresa o por correo"
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value)}
+              className="input-filtrar"
+            />
+          </div>
+
+          {empresasFiltrado.length === 0 ? (
+            <div className="empty-state">
+              <p>No hay empresas con este filtro</p>
+            </div>
           ) : (
-            <ul className="convenios-list">
-              {empresas.map((empresas, index) => (
-                <li key={index} className="convenio-card">
-                  <h3>{empresas.nombre_empresa}</h3>
-                  <p><strong>representante:</strong> {empresas.representante}</p>
-                  <p><strong>correo:</strong> {empresas.correo}</p>
-                </li>
-              ))}
-            </ul>
+            <div className="table-container">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Representante</th>
+                    <th>Celular</th>
+                    <th>Correo</th>
+                    <th>Nit</th>
+                    <th>Fecha de creacion</th>
+                    <th>Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {empresasFiltrado.map((empresas, index) => (
+                    <tr key={empresas.empresas_id || index}>
+                      <td>{index + 1}</td>
+                      <td>{empresas.nombre_empresa}</td>
+                      <td>{empresas.representante}</td>
+                      <td>{empresas.celular}</td>
+                      <td>{empresas.correo}</td>
+                      <td>{empresas.nit}</td>
+                      <td>{empresas.fecha_creacion}</td>
+                      <td className="actions-cell">
+                        <Link
+                          className="btn btn-action btn-icon btn-update"
+                        >
+                          <RefreshCcw />
+                        </Link>
+                        <Link className="btn btn-action btn-icon btn-delete">
+                          <DeleteIcon />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </main>
       <Link
-        to={`/dashboard/usuario/crear/${id}`}
+        to={`/dashboard/empresas/crearEmpresa`}
         className="floating-add-btn"
         title="Agregar usuario"
       >
