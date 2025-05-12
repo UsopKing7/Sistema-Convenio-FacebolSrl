@@ -9,6 +9,11 @@ CREATE TABLE empresas (
   correo VARCHAR(100) UNIQUE NOT NULL,
   descripcion TEXT,
   nit VARCHAR(50) UNIQUE NOT NULL,
+  facebook TEXT,
+  linkedin TEXT,
+  tiktok TEXT,
+  longitud TEXT,
+  altitud TEXT,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -99,5 +104,3 @@ CREATE TABLE sucursales (
   FOREIGN KEY (empresa_id) REFERENCES empresas(id),
   FOREIGN KEY (tipo_sede_id) REFERENCES tipos_sede(id)
 );
-
-DESCRIBE permisos;
