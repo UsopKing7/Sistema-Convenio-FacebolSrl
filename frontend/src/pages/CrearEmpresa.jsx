@@ -9,6 +9,11 @@ export const CrearEmpresa = () => {
   const [correo, setCorreo] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [nit, setNit] = useState('')
+  const [facebook, setFacebook] = useState('')
+  const [linkedin, setLinkedin] = useState('')
+  const [tiktok, setTiktok] = useState('')
+  const [longitud, setLongitud] = useState('')
+  const [altitud, setAltitud] = useState('')
   const navigate = useNavigate()
 
   const crearEmpresa = async (e) => {
@@ -26,7 +31,12 @@ export const CrearEmpresa = () => {
         celular,
         correo,
         descripcion,
-        nit
+        nit,
+        facebook,
+        linkedin,
+        tiktok,
+        longitud,
+        altitud
       })
     })
 
@@ -84,7 +94,39 @@ export const CrearEmpresa = () => {
         onChange={(e) => setNit(e.target.value)}
         required
       ></input>
-      <button type='submit'>Registrar Empresa</button>
+      <input
+        type="text"
+        placeholder="Url de Facebook"
+        value={facebook}
+        onChange={(e) => setFacebook(e.target.value)}
+      ></input>
+      <input
+        type="text"
+        placeholder="Url de Linkedin"
+        value={linkedin}
+        onChange={(e) => setLinkedin(e.target.value)}
+      ></input>
+      <input
+        type="text"
+        placeholder="Url de Tiktok"
+        value={tiktok}
+        onChange={(e) => setTiktok(e.target.value)}
+        required
+      ></input>
+      <input
+        type="text"
+        placeholder="longitud"
+        value={longitud}
+        onChange={(e) => setLongitud(e.target.value)}
+      ></input>
+      <input
+        type="text"
+        placeholder="altitud"
+        value={altitud}
+        onChange={(e) => setAltitud(e.target.value)}
+        required
+      ></input>
+      <button type="submit">Registrar Empresa</button>
     </form>
   )
 }
