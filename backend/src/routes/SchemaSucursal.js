@@ -25,5 +25,10 @@ export const ShcemaEmpesas = z.object({
   celular: z.string(),
   correo: z.string().email(),
   descripcion: z.string(),
-  nit: z.string()
+  nit: z.string(),
+  facebook: z.string().nullable(),
+  linkedin: z.string().nullable(),
+  tiktok: z.string().nullable(),
+  longitud: z.string(),
+  altitud: z.string()
 })
