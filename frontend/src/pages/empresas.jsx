@@ -150,6 +150,11 @@ export const Empresas = () => {
                     <th>Celular</th>
                     <th>Correo</th>
                     <th>Nit</th>
+                    <th>facebook</th>
+                    <th>linkedin</th>
+                    <th>tiktok</th>
+                    <th>longitud</th>
+                    <th>altitud</th>
                     <th>Fecha de creacion</th>
                     <th>Accion</th>
                   </tr>
@@ -163,11 +168,38 @@ export const Empresas = () => {
                       <td>{empresas.celular}</td>
                       <td>{empresas.correo}</td>
                       <td>{empresas.nit}</td>
+                      <td>
+                        <a
+                          href={empresas.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          facebook
+                        </a>
+                      </td>
+                      <td>
+                        <a
+                          href={empresas.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Linkedin
+                        </a>
+                      </td>
+                      <td>
+                        <a
+                          href={empresas.tiktok}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Tiktok
+                        </a>
+                      </td>
+                      <td>{empresas.longitud}</td>
+                      <td>{empresas.altitud}</td>
                       <td>{empresas.fecha_creacion}</td>
                       <td className="actions-cell">
-                        <Link
-                          className="btn btn-action btn-icon btn-update"
-                        >
+                        <Link className="btn btn-action btn-icon btn-update">
                           <RefreshCcw />
                         </Link>
                         <Link className="btn btn-action btn-icon btn-delete">
