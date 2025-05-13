@@ -8,6 +8,7 @@ import { Empresas } from './pages/empresas'
 import { CrearUsuario } from './pages/CrearUsuarios'
 import { UpdateUsuario } from './pages/UpdateUsuario'
 import { CrearEmpresa } from './pages/CrearEmpresa'
+import { UpdateEmpresas } from './pages/UpdateEMpresas'
 import './styles/404.css'
 import { PrivateRouter } from './routes/PrivateRouter'
 
@@ -78,6 +79,14 @@ export const App = () => {
           element={
             <PrivateRouter>
               <CrearEmpresa />
+            </PrivateRouter>
+          }
+        />
+        <Route
+          path="dashboard/empresas/UpdateEmpresas/:id"
+          element={
+            <PrivateRouter>
+              <UpdateEmpresas />
             </PrivateRouter>
           }
         />

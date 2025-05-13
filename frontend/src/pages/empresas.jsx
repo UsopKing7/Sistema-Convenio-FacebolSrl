@@ -10,12 +10,13 @@ import {
   RefreshCcw,
   DeleteIcon
 } from 'lucide-react'
+import { FaFacebook, FaLinkedin, FaTiktok } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { getInitials } from './Dashboard'
 import '../styles/Dashboard.css'
 
 export const Empresas = () => {
-  const { id } = useParams()
+  const { _id } = useParams()
   const location = useLocation()
   const { nombre, correo } = location.state || {}
   const navigate = useNavigate()
@@ -31,6 +32,7 @@ export const Empresas = () => {
         })
 
         const json = await res.json()
+        console.log(json)
 
         if (res.ok && Array.isArray(json.data)) {
           setEmpresas(json.data)
@@ -42,7 +44,7 @@ export const Empresas = () => {
       }
     }
     fetchEmpresas('empresas')
-  }, [id])
+  }, [])
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost/logout', {
@@ -161,7 +163,7 @@ export const Empresas = () => {
                 </thead>
                 <tbody>
                   {empresasFiltrado.map((empresas, index) => (
-                    <tr key={empresas.empresas_id || index}>
+                    <tr key={empresas.id || index}>
                       <td>{index + 1}</td>
                       <td>{empresas.nombre_empresa}</td>
                       <td>{empresas.representante}</td>
@@ -174,16 +176,16 @@ export const Empresas = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          facebook
+                          <FaFacebook size={30} />
                         </a>
                       </td>
                       <td>
                         <a
-                          href={empresas.linkedin}
+                          href={empresas.linkedin || 'no tiene linkedin'}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Linkedin
+                          <FaLinkedin size={30} color="#1877F2" />
                         </a>
                       </td>
                       <td>
@@ -192,14 +194,17 @@ export const Empresas = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Tiktok
+                          <FaTiktok size={30} color="black" />
                         </a>
                       </td>
                       <td>{empresas.longitud}</td>
                       <td>{empresas.altitud}</td>
                       <td>{empresas.fecha_creacion}</td>
                       <td className="actions-cell">
-                        <Link className="btn btn-action btn-icon btn-update">
+                        <Link
+                          to={`/dashboard/empresas/UpdateEmpresas/${empresas.id}`}
+                          className="btn btn-action btn-icon btn-update"
+                        >
                           <RefreshCcw />
                         </Link>
                         <Link className="btn btn-action btn-icon btn-delete">

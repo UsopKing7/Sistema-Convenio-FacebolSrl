@@ -1,6 +1,9 @@
 import { Router } from 'express'
 import { pool } from '../../models/db.js'
-import { ShcemaEmpesas } from '../../routes/SchemaSucursal.js'
+import {
+  ShcemaEmpesas,
+  SchemaUpdateEmpresa
+} from '../../routes/SchemaSucursal.js'
 
 export const routerEmpresas = Router()
 
@@ -18,6 +21,24 @@ routerEmpresas.get('/empresas', async (req, res) => {
     res.status(500).json({
       message: 'Error interno del seridor',
       error: error.message || error.errors || error
+    })
+  }
+})
+
+routerEmpresas.get('/empresaUnica/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [empresaExiste] = await pool.query(
+      'SELECT * FROM empresas WHERE id = ?', [id]
+    )
+
+    if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresa no encontrada' })
+
+    res.status(200).json(empresaExiste[0])
+  } catch (error) {
+    return res.status(500).json({
+      message: 'error internal en el servidor',
+      error: error.errors || error.message || error
     })
   }
 })
@@ -55,6 +76,38 @@ routerEmpresas.post('/empresas', async (req, res) => {
     return res.status(500).json({
       message: 'Error interno del servidor',
       error: error.message || error.errors || error
+    })
+  }
+})
+
+routerEmpresas.patch('/updateEmpresa/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const vEmpresas = SchemaUpdateEmpresa.parse(req.body)
+
+    const [empresaExiste] = await pool.query(
+      'SELECT * FROM empresas WHERE id = ?',
+      [id]
+    )
+
+    if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresa no encontrada para la actualizacion' })
+
+    await pool.query(
+      'UPDATE empresas SET descripcion = ?, facebook = ?, linkedin = ?, tiktok = ? WHERE id = ?',
+      [
+        vEmpresas.descripcion,
+        vEmpresas.facebook,
+        vEmpresas.linkedin,
+        vEmpresas.tiktok,
+        id
+      ]
+    )
+
+    res.status(200).json({ message: 'empresa actualizada correctamente' })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'error internal en el servidor',
+      error: error.errors || error.message || error
     })
   }
 })

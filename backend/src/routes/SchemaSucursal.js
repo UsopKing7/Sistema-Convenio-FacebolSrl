@@ -32,3 +32,10 @@ export const ShcemaEmpesas = z.object({
   longitud: z.string(),
   altitud: z.string()
 })
+
+export const SchemaUpdateEmpresa = z.object({
+  descripcion: z.string().optional(),
+  facebook: z.string().nullable().optional(),
+  linkedin: z.string().nullable().optional(),
+  tiktok: z.string().nullable().optional()
+})
