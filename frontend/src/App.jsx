@@ -9,6 +9,8 @@ import { CrearUsuario } from './pages/CrearUsuarios'
 import { UpdateUsuario } from './pages/UpdateUsuario'
 import { CrearEmpresa } from './pages/CrearEmpresa'
 import { UpdateEmpresas } from './pages/UpdateEMpresas'
+import { DeleteUsuario } from './pages/DeleteUsuarios'
+import { DeleteEmpresa } from './pages/DeleteEmpresa'
 import './styles/404.css'
 import { PrivateRouter } from './routes/PrivateRouter'
 
@@ -83,10 +85,26 @@ export const App = () => {
           }
         />
         <Route
-          path="dashboard/empresas/UpdateEmpresas/:id"
+          path="/dashboard/empresas/UpdateEmpresas/:id"
           element={
             <PrivateRouter>
               <UpdateEmpresas />
+            </PrivateRouter>
+          }
+        />
+        <Route
+          path="/dashboard/usuario/delete/:id"
+          element={
+            <PrivateRouter>
+              <DeleteUsuario />
+            </PrivateRouter>
+          }
+        />
+        <Route
+          path="/dashboard/empresas/deleteEmpresa/:id"
+          element={
+            <PrivateRouter>
+              <DeleteEmpresa />
             </PrivateRouter>
           }
         />
