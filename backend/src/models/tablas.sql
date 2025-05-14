@@ -88,7 +88,6 @@ CREATE TABLE lugares (
   estado BOOLEAN DEFAULT TRUE,
   ciudad VARCHAR(100),
   departamento VARCHAR(100),
-  provincia VARCHAR(100),
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
