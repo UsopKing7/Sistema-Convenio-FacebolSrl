@@ -40,6 +40,11 @@ export const CrearUsuario = () => {
       alert(data.message || 'Error al crear el Usuario')
     }
   }
+
+  const volver = (e) => {
+    e.preventDefault()
+    navigate(-1)
+  }
   return (
     <form onSubmit={crearUsuario}>
       <h2>Datos del nuevo Usuario</h2>
@@ -94,6 +99,7 @@ export const CrearUsuario = () => {
       ></input>
       <br />
       <button type="submit">Registrar Usuario</button>
+      <button onClick={volver}>Volver</button>
     </form>
   )
 }

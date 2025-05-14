@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import '../styles/Dashboard.css'
 
 export const Usuario = () => {
-  const { id } = useParams()
+  const { _id } = useParams()
   const location = useLocation()
   const { nombre, correo } = location.state || {}
   const navigate = useNavigate()
@@ -55,20 +55,6 @@ export const Usuario = () => {
       navigate('/')
     } else {
       throw new Error('Error al cierre de sesión')
-    }
-  }
-
-  const deleteUsuario = async () => {
-    const res = await fetch(`http://localhost:3333/usuariosDelete/${id}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
-
-    if (res.ok) {
-      alert('Usuario eliminado correctamente')
-      window.location.reload()
-    } else {
-      throw new Error('Error al eliminar al usuario')
     }
   }
 
@@ -190,12 +176,12 @@ export const Usuario = () => {
                         >
                           <RefreshCcw size={16} />
                         </Link>
-                        <button
-                          onClick={deleteUsuario}
+                        <Link
+                          to={`/dashboard/usuario/delete/${usuario.usuario_id}`}
                           className="btn btn-action btn-icon btn-delete"
                         >
                           <DeleteIcon size={16} />
-                        </button>
+                        </Link>
                       </td>
                     </tr>
                   ))}

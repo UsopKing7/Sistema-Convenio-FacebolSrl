@@ -49,6 +49,11 @@ export const CrearEmpresa = () => {
     }
   }
 
+  const volver = (e) => {
+    e.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <form onSubmit={crearEmpresa}>
       <h2>Datos de la nueva empresa</h2>
@@ -127,6 +132,7 @@ export const CrearEmpresa = () => {
         required
       ></input>
       <button type="submit">Registrar Empresa</button>
+      <button onClick={volver}>Volver</button>
     </form>
   )
 }

@@ -32,6 +32,11 @@ export const UpdateEmpresas = () => {
     fetchEmpresa()
   }, [id])
 
+  const volver = (e) => {
+    e.preventDefault()
+    navigate(-1)
+  }
+
   const updateEmpresa = async (e) => {
     e.preventDefault()
 
@@ -91,6 +96,7 @@ export const UpdateEmpresas = () => {
         required
       ></input>
       <button type='submit'>Actualizar</button>
+      <button onClick={volver}>Volver</button>
     </form>
   )
 }

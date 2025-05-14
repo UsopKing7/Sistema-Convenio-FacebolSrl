@@ -207,7 +207,10 @@ export const Empresas = () => {
                         >
                           <RefreshCcw />
                         </Link>
-                        <Link className="btn btn-action btn-icon btn-delete">
+                        <Link
+                          to={`/dashboard/empresas/deleteEmpresa/${empresas.id}`}
+                          className="btn btn-action btn-icon btn-delete"
+                        >
                           <DeleteIcon />
                         </Link>
                       </td>

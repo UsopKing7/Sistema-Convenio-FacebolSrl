@@ -64,6 +64,11 @@ export const UpdateUsuario = () => {
       alert(data.nessage || 'Error al actualizar el usuario')
     }
   }
+
+  const volver = (e) => {
+    e.preventDefault()
+    navigate(-1)
+  }
   
   return (
     <form onSubmit={updateUsuario}>
@@ -103,6 +108,7 @@ export const UpdateUsuario = () => {
         required
       ></input>
       <button type="submit">Actualizar</button>
+      <button onClick={volver}>Volver</button>
     </form>
   )
 }

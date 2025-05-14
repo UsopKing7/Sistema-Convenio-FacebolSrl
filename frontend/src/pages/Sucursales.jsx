@@ -4,7 +4,6 @@ import {
   Home,
   Building,
   Handshake,
-  CreditCard,
   LogOut,
   User2Icon,
   Plus,
