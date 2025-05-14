@@ -16,7 +16,7 @@ middleware.use('/', routerRegiste)
 middleware.use('/', routerUsuarios)
 middleware.use('/', routerEmpresas)
 // rutas privadas
-middleware.use('/sucursal', rutaprotegida, routerSucursales)
+middleware.use('/', routerSucursales)
 middleware.use('/convenios', rutaprotegida, routerConvenios)
 middleware.use('/', rutaprotegida, routerInicio)
 

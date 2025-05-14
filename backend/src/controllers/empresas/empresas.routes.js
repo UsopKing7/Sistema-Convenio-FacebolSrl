@@ -29,7 +29,8 @@ routerEmpresas.get('/empresaUnica/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [empresaExiste] = await pool.query(
-      'SELECT * FROM empresas WHERE id = ?', [id]
+      'SELECT * FROM empresas WHERE id = ?',
+      [id]
     )
 
     if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresa no encontrada' })
@@ -116,14 +117,15 @@ routerEmpresas.delete('/deleteEmpresa/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [empresaExiste] = await pool.query(
-      'SELECT * FROM empresas WHERE id = ?', [id]
+      'SELECT * FROM empresas WHERE id = ?',
+      [id]
     )
 
     if (empresaExiste.length === 0) return res.status(404).json({ message: 'empresa no encontrada' })
 
-    await pool.query(
-      'DELETE FROM empresas WHERE id = ?', [id]
-    )
+    await pool.query('DELETE FROM sucursales WHERE empresa_id = ?', [id])
+
+    await pool.query('DELETE FROM empresas WHERE id = ?', [id])
 
     res.status(200).json({ message: 'Empresa eliminada correctamente' })
   } catch (error) {
