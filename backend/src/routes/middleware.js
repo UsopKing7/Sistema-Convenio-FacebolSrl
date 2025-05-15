@@ -13,11 +13,11 @@ middleware.use(ruterPerfil)
 
 // rutas publicas
 middleware.use('/', routerRegiste)
-middleware.use('/', routerUsuarios)
-middleware.use('/', routerEmpresas)
 // rutas privadas
-middleware.use('/', routerSucursales)
-middleware.use('/convenios', rutaprotegida, routerConvenios)
+middleware.use('/', rutaprotegida, routerUsuarios)
+middleware.use('/', rutaprotegida, routerEmpresas)
+middleware.use('/', rutaprotegida, routerSucursales)
+middleware.use('/', rutaprotegida, routerConvenios)
 middleware.use('/', rutaprotegida, routerInicio)
 
 middleware.use((req, res) => {
