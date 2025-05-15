@@ -11,6 +11,7 @@ import { CrearEmpresa } from './pages/CrearEmpresa'
 import { UpdateEmpresas } from './pages/UpdateEMpresas'
 import { DeleteUsuario } from './pages/DeleteUsuarios'
 import { DeleteEmpresa } from './pages/DeleteEmpresa'
+import { CrearSucursal } from './pages/CrearSucursal'
 import './styles/404.css'
 import { PrivateRouter } from './routes/PrivateRouter'
 
@@ -105,6 +106,14 @@ export const App = () => {
           element={
             <PrivateRouter>
               <DeleteEmpresa />
+            </PrivateRouter>
+          }
+        />
+        <Route
+          path="/dashboard/empresas/agregar/sucursal/:id"
+          element={
+            <PrivateRouter>
+              <CrearSucursal />
             </PrivateRouter>
           }
         />
