@@ -121,16 +121,16 @@ routerEmpresas.delete('/deleteEmpresa/:id', async (req, res) => {
       [id]
     )
 
-    if (empresaExiste.length === 0) return res.status(404).json({ message: 'empresa no encontrada' })
+    if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresa no encontrada' })
 
+    await pool.query('DELETE FROM convenios WHERE empresa_id = ?', [id])
     await pool.query('DELETE FROM sucursales WHERE empresa_id = ?', [id])
-
     await pool.query('DELETE FROM empresas WHERE id = ?', [id])
 
-    res.status(200).json({ message: 'Empresa eliminada correctamente' })
+    res.status(200).json({ message: 'Empresa y datos relacionados eliminados correctamente' })
   } catch (error) {
     return res.status(500).json({
-      message: 'Error internal server',
+      message: 'Error del servidor',
       error: error.errors || error.message || error
     })
   }
