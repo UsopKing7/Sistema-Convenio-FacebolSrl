@@ -6,27 +6,30 @@ import { SchemaConvenios } from '../../routes/SchemaConvenios.js'
 
 export const routerConvenios = Router()
 
-routerConvenios.get('/', async (req, res) => {
+routerConvenios.get('/convenios', async (req, res) => {
   try {
-    const [empresaExiste] = await pool.query(
-      'SELECT * FROM empresas'
-    )
-
-    if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresas no encontradas' })
-
-    const [convenio] = await pool.query(
-      'SELECT * FROM convenios'
-    )
-
-    if (convenio.length === 0) return res.status(404).json({ message: 'No se encontraron convenios para esta empresa' })
+    const [convenios] = await pool.query(`
+      SELECT 
+        c.id AS id_convenio,
+        c.estado,
+        c.folio,
+        c.folio_interno,
+        c.modalidad,
+        c.presupuesto,
+        c.fecha_creacion AS fecha_convenio,
+        e.id AS id_empresa,
+        e.nombre_empresa
+      FROM convenios c
+      JOIN empresas e ON c.empresa_id = e.id
+    `)
 
     res.status(200).json({
       message: 'Convenios encontrados',
-      data: convenio
+      data: convenios
     })
   } catch (error) {
     return res.status(500).json({
-      message: 'Error interno del servidor',
+      message: 'Error interno en el servidor',
       error: error.errors || error.message || error
     })
   }
@@ -37,7 +40,8 @@ routerConvenios.post('/convenios/:id', async (req, res) => {
   const vConvenios = SchemaConvenios.parse(req.body)
   try {
     const [empresaExiste] = await pool.query(
-      'SELECT * FROM empresas WHERE id = ?', [id]
+      'SELECT * FROM empresas WHERE id = ?',
+      [id]
     )
 
     if (empresaExiste.length === 0) return res.status(404).json({ message: 'Empresa no encontrada' })
