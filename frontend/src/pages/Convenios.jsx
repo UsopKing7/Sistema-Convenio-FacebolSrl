@@ -3,7 +3,6 @@ import {
   Home,
   Building,
   Handshake,
-  CreditCard,
   LogOut,
   User2Icon,
   Plus,
@@ -14,23 +13,24 @@ import { getInitials } from './Dashboard'
 import '../styles/Dashboard.css'
 
 export const Convenios = () => {
-  const { id } = useParams()
+  const { _id } = useParams()
   const location = useLocation()
   const { nombre, correo } = location.state || {}
   const navigate = useNavigate()
   const [convenios, setConvenios] = useState([])
+  const [filtro, setFiltro] = useState('')
 
   useEffect(() => {
     const fetchConvenios = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}/${id}`, {
+        const res = await fetch(`http://localhost:3333/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
 
         const json = await res.json()
 
-        if (res.ok && Array.isArray(json.data)) {
+        if (res.ok) {
           setConvenios(json.data)
         } else {
           setConvenios([])
@@ -40,7 +40,7 @@ export const Convenios = () => {
       }
     }
     fetchConvenios('convenios')
-  }, [id])
+  }, [])
 
   const handleLogout = async () => {
     const res = await fetch('http://localhost:3333/logout', {
@@ -53,6 +53,11 @@ export const Convenios = () => {
       throw new Error('Error al cierre de session')
     }
   }
+  const empresasFiltrado = convenios.filter(
+    (u) =>
+      u.nombre_empresa &&
+      u.nombre_empresa.toLowerCase().includes(filtro.toLowerCase())
+  )
 
   return (
     <div className="dashboard">
@@ -84,7 +89,7 @@ export const Convenios = () => {
             state={{ nombre, correo }}
             className="nav-link"
           >
-            <Briefcase className='icon' /> Empresas
+            <Briefcase className="icon" /> Empresas
           </Link>
           <Link
             to={`/dashboard/sucursales`}
@@ -101,7 +106,6 @@ export const Convenios = () => {
           >
             <Handshake className="icon" /> Convenios
           </Link>
-
         </nav>
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="logout-btn">
@@ -116,39 +120,51 @@ export const Convenios = () => {
         </header>
 
         <div className="module-content">
-          {!Array.isArray(convenios) || convenios.length === 0 ? (
-            <p>No hay convenios registrados.</p>
+          <div className="filter-bar">
+            <input
+              type="text"
+              placeholder="Filtrar por nombre empresa"
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value)}
+              className="input-filtrar"
+            />
+          </div>
+          {empresasFiltrado.length === 0 ? (
+            <div className="empty-state">
+              <p>No hay convenios con este filtro</p>
+            </div>
           ) : (
-            <ul className="convenios-list">
-              {convenios.map((convenio, index) => (
-                <li key={index} className="convenio-card">
-                  <h3>{convenio.folio}</h3>
-                  <p>
-                    <strong>Folio Interno:</strong> {convenio.folio_interno}
-                  </p>
-                  <p>
-                    <strong>Estado:</strong> {convenio.estado}
-                  </p>
-                  <p>
-                    <strong>Modalidad:</strong> {convenio.modalidad}
-                  </p>
-                  <p>
-                    <strong>Presupuesto:</strong> $
-                    {parseFloat(convenio.presupuesto).toLocaleString('es-CL')}
-                  </p>
-                </li>
-              ))}
-            </ul>
+            <div className='table-container'>
+              <table className='table'>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre Empresa</th>
+                    <th>Folio</th>
+                    <th>Folio Interno</th>
+                    <th>Modalidad</th>
+                    <th>Presupuesto</th>
+                    <th>Activo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {empresasFiltrado.map((convenios, index) => (
+                    <tr key={convenios.id || index}>
+                      <td>{index + 1}</td>
+                      <td>{convenios.nombre_empresa}</td>
+                      <td>{convenios.folio}</td>
+                      <td>{convenios.folio_interno}</td>
+                      <td>{convenios.modalidad}</td>
+                      <td>{convenios.presupuesto}</td>
+                      <td>{convenios.estado}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </main>
-      <Link
-        to={`/dashboard/usuario/crear/${id}`}
-        className="floating-add-btn"
-        title="Agregar usuario"
-      >
-        <Plus />
-      </Link>
     </div>
   )
 }
