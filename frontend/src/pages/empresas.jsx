@@ -219,15 +219,18 @@ export const Empresas = () => {
                       <td className="actions-cell">
                         <Link
                           to={`/dashboard/empresas/agregar/sucursal/${empresas.id}`}
-                          className='btn btn-action btn-icon btn-delete'
+                          className="btn btn-action btn-icon btn-update"
                         >
                           <Plus />
                         </Link>
                       </td>
-                      <td className='actions-cell'>
+                      <td className="actions-cell">
                         <Link
-                        to={`/dashboard/empresas/agregar/convenios/${empresas.id}`}
-                        className='btn btn-action btn-icon'></Link>
+                          to={`/dashboard/empresas/agregar/convenios/${empresas.id}`}
+                          className="btn btn-action btn-icon btn-update"
+                        >
+                          <Plus />
+                        </Link>
                       </td>
                     </tr>
                   ))}
