@@ -159,6 +159,8 @@ export const Empresas = () => {
                     <th>altitud</th>
                     <th>Fecha de creacion</th>
                     <th>Accion</th>
+                    <th>Agregar sucursal</th>
+                    <th>Agregar convenio</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -213,6 +215,19 @@ export const Empresas = () => {
                         >
                           <DeleteIcon />
                         </Link>
+                      </td>
+                      <td className="actions-cell">
+                        <Link
+                          to={`/dashboard/empresas/agregar/sucursal/${empresas.id}`}
+                          className='btn btn-action btn-icon btn-delete'
+                        >
+                          <Plus />
+                        </Link>
+                      </td>
+                      <td className='actions-cell'>
+                        <Link
+                        to={`/dashboard/empresas/agregar/convenios/${empresas.id}`}
+                        className='btn btn-action btn-icon'></Link>
                       </td>
                     </tr>
                   ))}
