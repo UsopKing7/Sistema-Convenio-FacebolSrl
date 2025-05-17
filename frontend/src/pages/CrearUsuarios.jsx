@@ -28,7 +28,7 @@ export const CrearUsuario = () => {
         contrasena,
         nombre_rol,
         descripcion_rol,
-        nombre_permiso: [nombre_permiso],
+        nombre_permiso: [nombre_permiso]
       })
     })
 
@@ -45,59 +45,80 @@ export const CrearUsuario = () => {
     e.preventDefault()
     navigate(-1)
   }
+
   return (
     <form onSubmit={crearUsuario}>
       <h2>Datos del nuevo Usuario</h2>
-      <input
-        type="text"
-        placeholder="nombre"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="correo"
-        value={correo}
-        onChange={(e) => setCorreo(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="telefono"
-        value={telefono}
-        onChange={(e) => setTelefono(e.target.value)}
-        required
-      ></input>
-      <input
-        type="password"
-        placeholder="contraseña"
-        value={contrasena}
-        onChange={(e) => setContrasena(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="nombre del rol"
-        value={nombre_rol}
-        onChange={(e) => setNombreRol(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="descrpcion del rol"
-        value={descripcion_rol}
-        onChange={(e) => setDescripcionRol(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="nombre del permiso"
-        value={nombre_permiso}
-        onChange={(e) => setNombrePermiso(e.target.value)}
-        required
-      ></input>
-      <br />
+      <div className="input-group">
+        <label htmlFor="Nombre">Nombre</label>
+        <input
+          type="text"
+          placeholder="nombre"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Correo">Correo</label>
+        <input
+          type="text"
+          placeholder="correo"
+          value={correo}
+          onChange={(e) => setCorreo(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Telefono">Teléfono</label>
+        <input
+          type="text"
+          placeholder="telefono"
+          value={telefono}
+          onChange={(e) => setTelefono(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Contrasena">Contraseña</label>
+        <input
+          type="password"
+          placeholder="contraseña"
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="NombreRol">Nombre del rol</label>
+        <input
+          type="text"
+          placeholder="nombre del rol"
+          value={nombre_rol}
+          onChange={(e) => setNombreRol(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="DescripcionRol">Descripción del rol</label>
+        <input
+          type="text"
+          placeholder="descrpcion del rol"
+          value={descripcion_rol}
+          onChange={(e) => setDescripcionRol(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="NombrePermiso">Nombre del permiso</label>
+        <input
+          type="text"
+          placeholder="nombre del permiso"
+          value={nombre_permiso}
+          onChange={(e) => setNombrePermiso(e.target.value)}
+          required
+        />
+      </div>
       <button type="submit">Registrar Usuario</button>
       <button onClick={volver}>Volver</button>
     </form>

@@ -65,37 +65,47 @@ export const UpdateEmpresas = () => {
   return (
     <form onSubmit={updateEmpresa}>
       <h2>Datos a actualizar</h2>
-      <p>Descripcion</p>
-      <input
-        type="text"
-        placeholder="Descripcion"
-        value={descripcion}
-        onChange={(e) => setDescripcion(e.target.value)}
-        required
-      ></input>
-      <p>Facebook Url</p>
-      <input
-        type="text"
-        placeholder="Facebook URL"
-        value={facebook}
-        onChange={(e) => setFacebook(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="Linkedin URL"
-        value={linkedin}
-        onChange={(e) => setLinkedin(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="Tiktok"
-        value={tiktok}
-        onChange={(e) => setTiktok(e.target.value)}
-        required
-      ></input>
-      <button type='submit'>Actualizar</button>
+      <div className="input-group">
+        <label htmlFor="Descripcion">Descripcion de la empresa</label>
+        <input
+          type="text"
+          placeholder="Descripcion"
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Url Facebook">Url Facebook</label>
+        <input
+          type="text"
+          placeholder="Facebook URL"
+          value={facebook}
+          onChange={(e) => setFacebook(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Linkedin Url">Url Linkedin</label>
+        <input
+          type="text"
+          placeholder="Linkedin URL"
+          value={linkedin}
+          onChange={(e) => setLinkedin(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="TikTok Url">Url de TikTok</label>
+        <input
+          type="text"
+          placeholder="Tiktok"
+          value={tiktok}
+          onChange={(e) => setTiktok(e.target.value)}
+          required
+        />
+      </div>
+      <button type="submit">Actualizar</button>
       <button onClick={volver}>Volver</button>
     </form>
   )

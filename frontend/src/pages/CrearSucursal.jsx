@@ -45,42 +45,61 @@ export const CrearSucursal = () => {
   return (
     <form onSubmit={crearSucursal}>
       <h2>Datos de la sucursal</h2>
-      <input
-        type="text"
-        placeholder="Nombre de la sede"
-        value={nombre_sede}
-        onChange={(e) => setNombre_sede(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="ciudad"
-        value={ciudad}
-        onChange={(e) => setCiudad(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Nombre del departamento"
-        value={departamento}
-        onChange={(e) => setDepartamento(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Direccion Sucursal"
-        value={direccion}
-        onChange={(e) => setDireccion(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Horario"
-        value={horario}
-        onChange={(e) => setHorario(e.target.value)}
-        required
-      />
-      <br />
+      <div className="input-group">
+        <label htmlFor="nombre_sede">Nombre de la sede</label>
+        <input
+          id="nombre_sede"
+          type="text"
+          placeholder="Nombre de la sede"
+          value={nombre_sede}
+          onChange={(e) => setNombre_sede(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="ciudad">Ciudad</label>
+        <input
+          id="ciudad"
+          type="text"
+          placeholder="Ciudad"
+          value={ciudad}
+          onChange={(e) => setCiudad(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="departamento">Nombre del departamento</label>
+        <input
+          id="departamento"
+          type="text"
+          placeholder="Nombre del departamento"
+          value={departamento}
+          onChange={(e) => setDepartamento(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="direccion">Dirección Sucursal</label>
+        <input
+          id="direccion"
+          type="text"
+          placeholder="Dirección Sucursal"
+          value={direccion}
+          onChange={(e) => setDireccion(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="horario">Horario</label>
+        <input
+          id="horario"
+          type="text"
+          placeholder="Horario"
+          value={horario}
+          onChange={(e) => setHorario(e.target.value)}
+          required
+        />
+      </div>
       <button type="submit">Registrar Sucursal</button>
       <button onClick={volver}>Volver</button>
     </form>

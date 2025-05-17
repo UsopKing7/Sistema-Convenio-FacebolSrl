@@ -156,7 +156,7 @@ export const Empresas = () => {
                     <th>linkedin</th>
                     <th>tiktok</th>
                     <th>longitud</th>
-                    <th>altitud</th>
+                    <th>Latitud</th>
                     <th>Fecha de creacion</th>
                     <th>Accion</th>
                     <th>Agregar sucursal</th>

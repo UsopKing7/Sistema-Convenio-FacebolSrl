@@ -52,7 +52,7 @@ export const UpdateUsuario = () => {
         contrasena,
         nombre_rol,
         descripcion_rol,
-        nombre_permiso,
+        nombre_permiso
       })
     })
 
@@ -69,44 +69,59 @@ export const UpdateUsuario = () => {
     e.preventDefault()
     navigate(-1)
   }
-  
+
   return (
     <form onSubmit={updateUsuario}>
       <h2>datos a actualizar</h2>
-      <input
-        type="text"
-        placeholder="telefono"
-        value={telefono}
-        onChange={(e) => setTelefono(e.target.value)}
-        required
-      ></input>
-      <input
-        type="password"
-        placeholder="contraseña"
-        value={contrasena}
-        onChange={(e) => setContrasena(e.target.value)}
-      ></input>
-      <input
-        type="text"
-        placeholder="nombre del rol"
-        value={nombre_rol}
-        onChange={(e) => setNombreRol(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="descrpcion del rol"
-        value={descripcion_rol}
-        onChange={(e) => setDescripcionRol(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="nombre del permiso"
-        value={nombre_permiso}
-        onChange={(e) => setNombrePermiso(e.target.value)}
-        required
-      ></input>
+      <div className="input-group">
+        <label htmlFor="Telefono">Telfono</label>
+        <input
+          type="text"
+          placeholder="telefono"
+          value={telefono}
+          onChange={(e) => setTelefono(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Contraseña">Contraseña</label>
+        <input
+          type="password"
+          placeholder="contraseña"
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Nombre Rol">Nombre Rol</label>
+        <input
+          type="text"
+          placeholder="nombre del rol"
+          value={nombre_rol}
+          onChange={(e) => setNombreRol(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Descripcion Rol">Descripcion Rol</label>
+        <input
+          type="text"
+          placeholder="descrpcion del rol"
+          value={descripcion_rol}
+          onChange={(e) => setDescripcionRol(e.target.value)}
+          required
+        />
+      </div>
+      <div className='input-group'>
+        <label htmlFor="Nombre Permiso">Nombre del Permiso</label>
+        <input
+          type="text"
+          placeholder="nombre del permiso"
+          value={nombre_permiso}
+          onChange={(e) => setNombrePermiso(e.target.value)}
+          required
+        />
+      </div>
       <button type="submit">Actualizar</button>
       <button onClick={volver}>Volver</button>
     </form>

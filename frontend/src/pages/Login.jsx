@@ -39,26 +39,32 @@ export const Login = () => {
       alert('Error al iniciar sesión')
     }
   }
-
+  
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Ingrese sus credenciasles</h2>
-      <input
-        type="email"
-        placeholder="Correo"
-        value={correo}
-        onChange={(e) => setCorreo(e.target.value)}
-        required
-      />{' '}
-      <br />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={contrasena}
-        onChange={(e) => setContrasena(e.target.value)}
-        required
-      />
-      <br />
+      <h2>Ingrese sus credenciales</h2>
+      <div className="input-group">
+        <label htmlFor="email">Correo corporativo</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="tu@correo.com"
+          value={correo}
+          onChange={(e) => setCorreo(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
+          required
+        />
+      </div>
       <button type="submit">Entrar</button>
     </form>
   )

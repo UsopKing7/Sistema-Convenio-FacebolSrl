@@ -25,9 +25,9 @@ export const DeleteUsuario = () => {
 
   return (
     <form>
-      <h1>¿Desea Eliminar el Usuario?</h1>
-      <button onClick={volver}>no</button>
+      <h2>¿Desea Eliminar el Usuario?</h2>
       <button onClick={deleteUsuario}>si</button>
+      <button onClick={volver}>no</button>
     </form>
   )
 }

@@ -57,80 +57,113 @@ export const CrearEmpresa = () => {
   return (
     <form onSubmit={crearEmpresa}>
       <h2>Datos de la nueva empresa</h2>
-      <input
-        type="text"
-        placeholder="nombre de la empresa"
-        value={nombre_empresa}
-        onChange={(e) => setNombreEmpresa(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="nombre del representante"
-        value={representante}
-        onChange={(e) => setRepresentante(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="telefono"
-        value={celular}
-        onChange={(e) => setCelular(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="correo electronico"
-        value={correo}
-        onChange={(e) => setCorreo(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="descripcion de la empresa"
-        value={descripcion}
-        onChange={(e) => setDescripcion(e.target.value)}
-        required
-      ></input>{' '}
-      <input
-        type="text"
-        placeholder="nit de la empresa"
-        value={nit}
-        onChange={(e) => setNit(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="Url de Facebook"
-        value={facebook}
-        onChange={(e) => setFacebook(e.target.value)}
-      ></input>
-      <input
-        type="text"
-        placeholder="Url de Linkedin"
-        value={linkedin}
-        onChange={(e) => setLinkedin(e.target.value)}
-      ></input>
-      <input
-        type="text"
-        placeholder="Url de Tiktok"
-        value={tiktok}
-        onChange={(e) => setTiktok(e.target.value)}
-        required
-      ></input>
-      <input
-        type="text"
-        placeholder="longitud"
-        value={longitud}
-        onChange={(e) => setLongitud(e.target.value)}
-      ></input>
-      <input
-        type="text"
-        placeholder="altitud"
-        value={altitud}
-        onChange={(e) => setAltitud(e.target.value)}
-        required
-      ></input>
+      <div className="input-group">
+        <label htmlFor="Nombre empresa">Nombre empresa</label>
+        <input
+          type="text"
+          placeholder="nombre de la empresa"
+          value={nombre_empresa}
+          onChange={(e) => setNombreEmpresa(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Representante">Representante</label>
+        <input
+          type="text"
+          placeholder="nombre del representante"
+          value={representante}
+          onChange={(e) => setRepresentante(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Celular">Celular</label>
+        <input
+          type="text"
+          placeholder="Celular"
+          value={celular}
+          onChange={(e) => setCelular(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Correo electronico">Correo Electronico</label>
+        <input
+          type="text"
+          placeholder="correo electronico"
+          value={correo}
+          onChange={(e) => setCorreo(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Descripciòn">Descripciòn de la empresa</label>
+        <input
+          type="text"
+          placeholder="descripcion de la empresa"
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Nit de la empresa">Nit de la empresa</label>
+        <input
+          type="text"
+          placeholder="nit de la empresa"
+          value={nit}
+          onChange={(e) => setNit(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Url Facebook">Red social Facebook</label>
+        <input
+          type="text"
+          placeholder="Url de Facebook"
+          value={facebook}
+          onChange={(e) => setFacebook(e.target.value)}
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Linkedin">Red social Linkedin</label>
+        <input
+          type="text"
+          placeholder="Url de Linkedin"
+          value={linkedin}
+          onChange={(e) => setLinkedin(e.target.value)}
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Url TikTok">Red social TikTok</label>
+        <input
+          type="text"
+          placeholder="Url de Tiktok"
+          value={tiktok}
+          onChange={(e) => setTiktok(e.target.value)}
+          required
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Longitud">Coordenadas de Longitud</label>
+        <input
+          type="text"
+          placeholder="longitud"
+          value={longitud}
+          onChange={(e) => setLongitud(e.target.value)}
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="Latitud">Coordenadas de Latitud</label>
+        <input
+          type="text"
+          placeholder="latitud"
+          value={altitud}
+          onChange={(e) => setAltitud(e.target.value)}
+          required
+        />
+      </div>
       <button type="submit">Registrar Empresa</button>
       <button onClick={volver}>Volver</button>
     </form>

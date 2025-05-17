@@ -26,8 +26,8 @@ export const DeleteEmpresa = () => {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <h2>¿Desea eliminar la empresa?</h2>
-      <button onClick={volver}>no</button>
       <button onClick={(e) => { e.preventDefault(); deleteEmpresa() }}>si</button>
+      <button onClick={volver}>no</button>
     </form>
   )
 }
