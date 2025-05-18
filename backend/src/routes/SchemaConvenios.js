@@ -5,5 +5,5 @@ export const SchemaConvenios = z.object({
   folio: z.string(),
   folio_interno: z.string(),
   modalidad: z.string(),
-  presupuesto: z.number().int().positive()
+  presupuesto: z.number().positive()
 })

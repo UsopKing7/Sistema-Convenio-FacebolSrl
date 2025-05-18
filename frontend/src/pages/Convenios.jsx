@@ -144,7 +144,7 @@ export const Convenios = () => {
                     <th>Folio Interno</th>
                     <th>Modalidad</th>
                     <th>Presupuesto</th>
-                    <th>Activo</th>
+                    <th>Estado</th>
                   </tr>
                 </thead>
                 <tbody>
