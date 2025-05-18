@@ -74,11 +74,11 @@ routerSucursales.post('/sucursales/:id', async (req, res) => {
     })
   }
 })
-
 routerSucursales.get('/sucursales', async (req, res) => {
   try {
     const [branches] = await pool.query(
       `SELECT 
+        b.id AS id,
         e.nombre_empresa,
         bt.nombre_sede,
         p.departamento,

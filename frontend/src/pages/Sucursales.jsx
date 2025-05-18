@@ -7,7 +7,9 @@ import {
   LogOut,
   User2Icon,
   Plus,
-  Briefcase
+  Briefcase,
+  RefreshCcw,
+  DeleteIcon
 } from 'lucide-react'
 import { getInitials } from './Dashboard'
 import '../styles/Dashboard.css'
@@ -162,6 +164,20 @@ export const Sucursales = () => {
                       <td>{sucursales.direccion}</td>
                       <td>{sucursales.horario}</td>
                       <td>{sucursales.estado}</td>
+                      <td className="actions-cell">
+                        <Link
+                          to={`/dashboard/sucursales/UpdateSucursal/${sucursales.id}`}
+                          className="btn btn-action btn-icon btn-update"
+                        >
+                          <RefreshCcw />
+                        </Link>
+                        <Link
+                          to={`/dashboard/sucursales/DeleteSucursal/${sucursales.id}`}
+                          className="btn btn-action btn-icon btn-delete"
+                        >
+                          <DeleteIcon />
+                        </Link>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

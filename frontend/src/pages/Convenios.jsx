@@ -6,7 +6,9 @@ import {
   LogOut,
   User2Icon,
   Plus,
-  Briefcase
+  Briefcase,
+  RefreshCcw,
+  DeleteIcon
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { getInitials } from './Dashboard'
@@ -134,8 +136,8 @@ export const Convenios = () => {
               <p>No hay convenios con este filtro</p>
             </div>
           ) : (
-            <div className='table-container'>
-              <table className='table'>
+            <div className="table-container">
+              <table className="table">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -145,6 +147,7 @@ export const Convenios = () => {
                     <th>Modalidad</th>
                     <th>Presupuesto</th>
                     <th>Estado</th>
+                    <th>accion</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -157,6 +160,20 @@ export const Convenios = () => {
                       <td>{convenios.modalidad}</td>
                       <td>{convenios.presupuesto}</td>
                       <td>{convenios.estado}</td>
+                      <td className="actions-cell">
+                        <Link
+                          to={`/dashboard/convenios/UpdateConvenios/${convenios.id}`}
+                          className="btn btn-action btn-icon btn-update"
+                        >
+                          <RefreshCcw />
+                        </Link>
+                        <Link
+                          to={`/dashboard/convenios/DeleteConvenios/${convenios.id}`}
+                          className="btn btn-action btn-icon btn-delete"
+                        >
+                          <DeleteIcon />
+                        </Link>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

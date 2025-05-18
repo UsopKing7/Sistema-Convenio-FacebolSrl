@@ -9,7 +9,8 @@ export const routerConvenios = Router()
 routerConvenios.get('/convenios', async (req, res) => {
   try {
     const [convenios] = await pool.query(`
-      SELECT 
+      SELECT
+        c.id AS id,
         c.id AS id_convenio,
         c.estado,
         c.folio,

@@ -174,13 +174,13 @@ export const Usuario = () => {
                           className="btn btn-action btn-icon btn-update"
                           title="Editar"
                         >
-                          <RefreshCcw size={16} />
+                          <RefreshCcw />
                         </Link>
                         <Link
                           to={`/dashboard/usuario/delete/${usuario.usuario_id}`}
                           className="btn btn-action btn-icon btn-delete"
                         >
-                          <DeleteIcon size={16} />
+                          <DeleteIcon />
                         </Link>
                       </td>
                     </tr>

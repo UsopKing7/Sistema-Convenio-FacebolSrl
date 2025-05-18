@@ -126,6 +126,7 @@ export const App = () => {
             </PrivateRouter>
           }
         />
+        <Route path="/dashboard/sucursales/UpdateSucursal/:id" />
         <Route
           path="*"
           element={
