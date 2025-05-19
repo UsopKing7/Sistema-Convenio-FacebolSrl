@@ -108,7 +108,7 @@ routerSucursales.get('/sucursales', async (req, res) => {
   }
 })
 
-routerSucursales.delete('/:id', async (req, res) => {
+routerSucursales.delete('/sucursales/:id', async (req, res) => {
   const id = req.params.id
 
   try {
