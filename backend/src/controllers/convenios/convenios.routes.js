@@ -2,7 +2,7 @@
 
 import { Router } from 'express'
 import { pool } from '../../models/db.js'
-import { SchemaConvenios } from '../../routes/SchemaConvenios.js'
+import { SchemaConvenios, schemaUpdateConvenio } from '../../routes/SchemaConvenios.js'
 
 export const routerConvenios = Router()
 
@@ -28,6 +28,24 @@ routerConvenios.get('/convenios', async (req, res) => {
       message: 'Convenios encontrados',
       data: convenios
     })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno en el servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})
+
+routerConvenios.get('/convenio/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [convenio] = await pool.query(
+      'SELECT * FROM convenios WHERE id = ?', [id]
+    )
+
+    if (convenio.length === 0) return res.status(404).json({ message: 'Convenio no econtrado' })
+
+    res.status(200).json(convenio[0])
   } catch (error) {
     return res.status(500).json({
       message: 'Error interno en el servidor',
@@ -89,6 +107,37 @@ routerConvenios.delete('/deleteConvenios/:id', async (req, res) => {
     res.status(200).json({
       message: 'Convenio eliminado',
       data: convenio
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno en el servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})
+
+routerConvenios.patch('/updateConvenios/:id', async (req, res) => {
+  const { id } = req.params
+  const vConvenios = schemaUpdateConvenio.parse(req.body)
+  try {
+    const [convenioExiste] = await pool.query(
+      'SELECT * FROM convenios WHERE id = ?', [id]
+    )
+
+    if (convenioExiste.length === 0) return res.status(404).json({ message: 'Convenio no encontrado' })
+
+    await pool.query(
+      'UPDATE convenios SET folio = ?, folio_interno = ?, modalidad = ?, presupuesto = ?, estado = ? WHERE id = ?', [
+        vConvenios.folio,
+        vConvenios.folio_interno,
+        vConvenios.modalidad,
+        vConvenios.presupuesto,
+        vConvenios.estado
+      ]
+    )
+
+    res.status(200).json({
+      message: 'Convenio actualizado correctamente'
     })
   } catch (error) {
     return res.status(500).json({
