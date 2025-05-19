@@ -3,7 +3,7 @@
 import z from 'zod'
 
 export const SchemaLugar = z.object({
-  estado: z.boolean().default(true),
+  estado: z.string(),
   ciudad: z.string(),
   departamento: z.string(),
   direccion: z.string(),
@@ -30,4 +30,13 @@ export const SchemaUpdateEmpresa = z.object({
   facebook: z.string().nullable().optional(),
   linkedin: z.string().nullable().optional(),
   tiktok: z.string().nullable().optional()
+})
+
+export const schemaSucursalUpdate = z.object({
+  nombre_sede: z.string().optional(),
+  ciudad: z.string().optional(),
+  departamento: z.string().optional(),
+  direccion: z.string().optional(),
+  horario: z.string().optional(),
+  estado: z.string().optional()
 })
