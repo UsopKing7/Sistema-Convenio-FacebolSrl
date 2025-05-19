@@ -76,3 +76,24 @@ routerConvenios.post('/convenios/:id', async (req, res) => {
     })
   }
 })
+
+routerConvenios.delete('/deleteConvenios/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [convenio] = await pool.query(
+      'SELECT * FROM convenios WHERE id = ?', [id]
+    )
+
+    if (convenio.length === 0) return res.status(404).json({ message: 'Convenio no encontrado' })
+
+    res.status(200).json({
+      message: 'Convenio eliminado',
+      data: convenio
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error interno en el servidor',
+      error: error.errors || error.message || error
+    })
+  }
+})
