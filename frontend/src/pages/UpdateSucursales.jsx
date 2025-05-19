@@ -1,21 +1,47 @@
-import { useParams, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
-export const CrearSucursal = () => {
+export const UpdateSucursales = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const [nombre_sede, setNombre_sede] = useState('')
+  const [nombre_sede, setNombreSede] = useState('')
   const [ciudad, setCiudad] = useState('')
   const [departamento, setDepartamento] = useState('')
-  const [direccion, setDireccion] = useState('')
+  const [direccion, setDirreccion] = useState('')
   const [horario, setHorario] = useState('')
   const [estado, setEstado] = useState('')
 
-  const crearSucursal = async (e) => {
+  useEffect(() => {
+    const fetchSucursal = async () => {
+      const res = await fetch(`http://localhost:3333/sucursal/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        setNombreSede(data.nombre_sede || '')
+        setCiudad(data.ciudad || '')
+        setDepartamento(data.departamento || '')
+        setDirreccion(data.direccion || '')
+        setHorario(data.horario || '')
+        setEstado(data.estado || '')
+      } else {
+        alert(data.message || 'No se puede obtener los datos de la sucursal')
+      }
+    }
+    fetchSucursal()
+  }, [id])
+
+  const updateSucursal = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/sucursales/${id}`, {
-      method: 'POST',
+    const res = await fetch(`http://localhost:3333/updateSucursales/${id}`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -31,12 +57,12 @@ export const CrearSucursal = () => {
     })
 
     const data = await res.json()
-    console.log(data)
 
     if (res.ok) {
+      alert('Sucursal actualizada correctamente')
       navigate(-1)
     } else {
-      alert(data.message || 'Error al crear el Usuario')
+      alert(data.message || 'Error al actualizar la sucursla')
     }
   }
 
@@ -46,61 +72,51 @@ export const CrearSucursal = () => {
   }
 
   return (
-    <form onSubmit={crearSucursal}>
-      <h2>Datos de la sucursal</h2>
+    <form onSubmit={updateSucursal}>
+      <h2>Sucursal a actualizar</h2>
       <div className="input-group">
-        <label htmlFor="nombre_sede">Nombre de la sede</label>
+        <label htmlFor="nombre Sede">Nombre Sede</label>
         <input
-          id="nombre_sede"
           type="text"
-          placeholder="Nombre de la sede"
+          placeholder="Nombre sede"
           value={nombre_sede}
-          onChange={(e) => setNombre_sede(e.target.value)}
-          required
+          onChange={(e) => setNombreSede(e.target.value)}
         />
       </div>
       <div className="input-group">
-        <label htmlFor="ciudad">Ciudad</label>
+        <label htmlFor="Ciudad">Ciudad</label>
         <input
-          id="ciudad"
           type="text"
           placeholder="Ciudad"
           value={ciudad}
           onChange={(e) => setCiudad(e.target.value)}
-          required
         />
       </div>
       <div className="input-group">
-        <label htmlFor="departamento">Nombre del departamento</label>
+        <label htmlFor="Departamento">Departamento</label>
         <input
-          id="departamento"
           type="text"
-          placeholder="Nombre del departamento"
+          placeholder="Departamento"
           value={departamento}
           onChange={(e) => setDepartamento(e.target.value)}
-          required
         />
       </div>
       <div className="input-group">
-        <label htmlFor="direccion">Dirección Sucursal</label>
+        <label htmlFor="Dirrecion">Dirrecion</label>
         <input
-          id="direccion"
           type="text"
-          placeholder="Dirección Sucursal"
+          placeholder="Dirrecion"
           value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-          required
+          onChange={(e) => setDirreccion(e.target.value)}
         />
       </div>
       <div className="input-group">
-        <label htmlFor="horario">Horario</label>
+        <label htmlFor="Horrario">Horario</label>
         <input
-          id="horario"
           type="text"
           placeholder="Horario"
           value={horario}
           onChange={(e) => setHorario(e.target.value)}
-          required
         />
       </div>
       <div className="input-group">
@@ -112,7 +128,7 @@ export const CrearSucursal = () => {
           onChange={(e) => setEstado(e.target.value)}
         />
       </div>
-      <button type="submit">Registrar Sucursal</button>
+      <button type="submit">Actualizar</button>
       <button onClick={volver}>Volver</button>
     </form>
   )

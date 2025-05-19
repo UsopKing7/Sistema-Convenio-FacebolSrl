@@ -86,9 +86,10 @@ CREATE TABLE tipos_sede (
 CREATE TABLE lugares (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   estado BOOLEAN DEFAULT TRUE,
-  ciudad VARCHAR(100) UNIQUE,
-  departamento VARCHAR(100) UNIQUE,
-  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  ciudad VARCHAR(100),
+  departamento VARCHAR(100),
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unq_ciudad_departamento (ciudad, departamento)
 );
 
 CREATE TABLE sucursales (
