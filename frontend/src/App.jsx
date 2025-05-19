@@ -8,6 +8,7 @@ import { Empresas } from './pages/empresas'
 import { CrearUsuario } from './pages/CrearUsuarios'
 import { UpdateUsuario } from './pages/UpdateUsuario'
 import { UpdateSucursales } from './pages/UpdateSucursales'
+import { UpdateConvenio } from './pages/UpdateConvenios'
 import { CrearEmpresa } from './pages/CrearEmpresa'
 import { UpdateEmpresas } from './pages/UpdateEMpresas'
 import { DeleteUsuario } from './pages/DeleteUsuarios'
@@ -150,6 +151,14 @@ export const App = () => {
           element={
             <PrivateRouter>
               <UpdateSucursales />
+            </PrivateRouter>
+          }
+        />
+        <Route
+          path='/dashboard/convenios/UpdateConvenios/:id'
+          element={
+            <PrivateRouter>
+              <UpdateConvenio />
             </PrivateRouter>
           }
         />
