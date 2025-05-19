@@ -7,3 +7,11 @@ export const SchemaConvenios = z.object({
   modalidad: z.string(),
   presupuesto: z.number().positive()
 })
+
+export const schemaUpdateConvenio = z.object({
+  folio: z.string().optional(),
+  folio_interno: z.string().optional(),
+  modalidad: z.string().optional(),
+  presupuesto: z.number().positive().optional(),
+  estado: z.string().optional()
+})
