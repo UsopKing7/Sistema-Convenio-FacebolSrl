@@ -159,7 +159,17 @@ export const Convenios = () => {
                       <td>{convenios.folio_interno}</td>
                       <td>{convenios.modalidad}</td>
                       <td>{convenios.presupuesto}</td>
-                      <td>{convenios.estado}</td>
+                      <td>
+                        <span
+                          className={
+                            convenios.estado === 1
+                              ? 'estado-activo'
+                              : 'estado-inactivo'
+                          }
+                        >
+                          {convenios.estado === 1 ? 'Activo' : 'Inactivo'}
+                        </span>
+                      </td>
                       <td className="actions-cell">
                         <Link
                           to={`/dashboard/convenios/UpdateConvenios/${convenios.id}`}

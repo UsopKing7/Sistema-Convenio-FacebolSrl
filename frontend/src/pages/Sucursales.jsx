@@ -163,7 +163,17 @@ export const Sucursales = () => {
                       <td>{sucursales.departamento}</td>
                       <td>{sucursales.direccion}</td>
                       <td>{sucursales.horario}</td>
-                      <td>{sucursales.estado}</td>
+                      <td>
+                        <span
+                          className={
+                            sucursales.estado === 1
+                              ? 'estado-activo'
+                              : 'estado-inactivo'
+                          }
+                        >
+                          {sucursales.estado === 1 ? 'Activo' : 'Inactivo'}
+                        </span>
+                      </td>
                       <td className="actions-cell">
                         <Link
                           to={`/dashboard/sucursales/UpdateSucursal/${sucursales.id}`}
