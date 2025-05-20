@@ -24,7 +24,7 @@ export const CrearConvenio = () => {
         folio_interno,
         modalidad,
         presupuesto: parseFloat(presupuesto),
-        estado
+        estado: parseInt(estado)
       })
     })
 
@@ -70,7 +70,7 @@ export const CrearConvenio = () => {
         <label htmlFor="Presupuesto">Presupuesto</label>
         <input
           type="number"
-          step='any'
+          step="any"
           placeholder="Presupuesto Ej: 100.00"
           value={presupuesto}
           onChange={(e) => setPresupuesto(e.target.value)}
@@ -89,13 +89,15 @@ export const CrearConvenio = () => {
       </div>
       <div className="input-group">
         <label htmlFor="Estado">Estado</label>
-        <input
-          type="text"
-          placeholder="Estado"
+        <select
           value={estado}
           onChange={(e) => setEstado(e.target.value)}
           required
-        />
+        >
+          <option value="">Seleccionar estado</option>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
       </div>
       <button type="submit">Registrar Convenio</button>
       <button onClick={volver}>Volver</button>

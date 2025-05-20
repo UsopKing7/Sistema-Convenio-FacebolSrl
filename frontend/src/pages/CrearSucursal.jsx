@@ -26,7 +26,7 @@ export const CrearSucursal = () => {
         departamento,
         direccion,
         horario,
-        estado
+        estado: parseInt(estado)
       })
     })
 
@@ -105,12 +105,15 @@ export const CrearSucursal = () => {
       </div>
       <div className="input-group">
         <label htmlFor="Estado">Estado</label>
-        <input
-          type="text"
-          placeholder="Estado"
+        <select
           value={estado}
           onChange={(e) => setEstado(e.target.value)}
-        />
+          required
+        >
+          <option value="">Seleccionar estado</option>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
       </div>
       <button type="submit">Registrar Sucursal</button>
       <button onClick={volver}>Volver</button>
