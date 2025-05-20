@@ -47,7 +47,7 @@ export const Empresas = () => {
   }, [])
 
   const handleLogout = async () => {
-    const res = await fetch('http://localhost/logout', {
+    const res = await fetch('http://localhost:3333/logout', {
       method: 'GET',
       credentials: 'include'
     })
