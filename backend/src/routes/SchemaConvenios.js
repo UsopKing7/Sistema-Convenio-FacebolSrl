@@ -1,7 +1,7 @@
 import z from 'zod'
 
 export const SchemaConvenios = z.object({
-  estado: z.number(),
+  estado: z.number().int().min(0).max(1),
   folio: z.string(),
   folio_interno: z.string(),
   modalidad: z.string(),
@@ -13,5 +13,5 @@ export const schemaUpdateConvenio = z.object({
   folio_interno: z.string().optional(),
   modalidad: z.string().optional(),
   presupuesto: z.number().positive().optional(),
-  estado: z.number().optional()
+  estado: z.number().int().min(0).max(1)
 })

@@ -3,7 +3,7 @@
 import z from 'zod'
 
 export const SchemaLugar = z.object({
-  estado: z.string(),
+  estado: z.number().int().min(0).max(1),
   ciudad: z.string(),
   departamento: z.string(),
   direccion: z.string(),
@@ -38,5 +38,5 @@ export const schemaSucursalUpdate = z.object({
   departamento: z.string().optional(),
   direccion: z.string().optional(),
   horario: z.string().optional(),
-  estado: z.string().optional()
+  estado: z.number().int().min(0).max(1)
 })
