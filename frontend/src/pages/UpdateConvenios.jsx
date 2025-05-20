@@ -27,7 +27,7 @@ export const UpdateConvenio = () => {
         setFolioInterno(data.folio_interno || '')
         setModalidad(data.modalidad || '')
         setPresupuesto(data.presupuesto || '')
-        setEstado(data.estado || '')
+        setEstado(data.estado)
       }
     }
     fetchConvenio()
@@ -47,7 +47,7 @@ export const UpdateConvenio = () => {
         folio_interno,
         modalidad,
         presupuesto: parseFloat(presupuesto),
-        estado
+        estado: parseInt(estado)
       })
     })
 
@@ -105,12 +105,15 @@ export const UpdateConvenio = () => {
       </div>
       <div className="input-group">
         <label htmlFor="Estado">Estado</label>
-        <input
-          type="text"
-          placeholder="Estado"
+        <select
           value={estado}
           onChange={(e) => setEstado(e.target.value)}
-        />
+          required
+        >
+          <option value="">Seleccionar estado</option>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
       </div>
       <button type="submit">Actualizar</button>
       <button onClick={volver}>Volver</button>

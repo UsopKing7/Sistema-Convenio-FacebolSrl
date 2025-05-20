@@ -9,7 +9,7 @@ export const UpdateSucursales = () => {
   const [departamento, setDepartamento] = useState('')
   const [direccion, setDirreccion] = useState('')
   const [horario, setHorario] = useState('')
-  const [estado, setEstado] = useState('')
+  const [estado, setEstado] = useState(null)
 
   useEffect(() => {
     const fetchSucursal = async () => {
@@ -29,7 +29,7 @@ export const UpdateSucursales = () => {
         setDepartamento(data.departamento || '')
         setDirreccion(data.direccion || '')
         setHorario(data.horario || '')
-        setEstado(data.estado || '')
+        setEstado(Number(data.estado))
       } else {
         alert(data.message || 'No se puede obtener los datos de la sucursal')
       }
@@ -52,7 +52,7 @@ export const UpdateSucursales = () => {
         departamento,
         direccion,
         horario,
-        estado
+        estado: parseInt(estado)
       })
     })
 
@@ -121,12 +121,15 @@ export const UpdateSucursales = () => {
       </div>
       <div className="input-group">
         <label htmlFor="Estado">Estado</label>
-        <input
-          type="text"
-          placeholder="Estado"
+        <select
           value={estado}
           onChange={(e) => setEstado(e.target.value)}
-        />
+          required
+        >
+          <option value="">Seleccionar estado</option>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
       </div>
       <button type="submit">Actualizar</button>
       <button onClick={volver}>Volver</button>
