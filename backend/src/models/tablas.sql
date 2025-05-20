@@ -79,13 +79,11 @@ CREATE TABLE convenios (
 CREATE TABLE tipos_sede (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   nombre_sede VARCHAR(100) UNIQUE NOT NULL,
-  estado BOOLEAN DEFAULT TRUE,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE lugares (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  estado BOOLEAN DEFAULT TRUE,
   ciudad VARCHAR(100),
   departamento VARCHAR(100),
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -99,6 +97,7 @@ CREATE TABLE sucursales (
   lugar_id CHAR(36) NOT NULL,
   empresa_id CHAR(36) NOT NULL,
   tipo_sede_id CHAR(36) NOT NULL,
+  estado BOOLEAN DEFAULT TRUE,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (lugar_id) REFERENCES lugares(id),
   FOREIGN KEY (empresa_id) REFERENCES empresas(id),
