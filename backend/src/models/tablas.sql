@@ -9,9 +9,9 @@ CREATE TABLE empresas (
   correo VARCHAR(100) UNIQUE NOT NULL,
   descripcion TEXT,
   nit VARCHAR(50) UNIQUE NOT NULL,
-  facebook TEXT,
-  linkedin TEXT,
-  tiktok TEXT,
+  facebook TEXT DEFAULT NULL,
+  linkedin TEXT DEFAULT NULL,
+  tiktok TEXT DEFAULT NULL,
   longitud TEXT,
   altitud TEXT,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -66,7 +66,7 @@ CREATE TABLE usuarios_permisos (
 
 CREATE TABLE convenios (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  estado VARCHAR(50) NOT NULL,
+  estado BOOLEAN DEFAULT TRUE,
   folio VARCHAR(50) NOT NULL,
   folio_interno VARCHAR(50),
   modalidad VARCHAR(100),
