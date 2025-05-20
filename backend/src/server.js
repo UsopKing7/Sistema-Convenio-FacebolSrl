@@ -8,7 +8,7 @@ import cors from 'cors'
 const app = express()
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: true,
   credentials: true
 }))
 
@@ -20,8 +20,8 @@ app.disable('x-powered-by')
 app.use(middleware)
 
 const PORT = process.env.PORT || 3333
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.table({
-    URL: 'http://localhost:' + PORT
+    URL: `http://0.0.0.0:${PORT}`
   })
 })
