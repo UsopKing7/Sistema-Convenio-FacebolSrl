@@ -574,3 +574,21 @@ select option {
   background-color: #fff;
   color: #333;
 }
+
+.estado-activo {
+  color: black;
+  background-color: #80ed99;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.estado-inactivo {
+  color: #fff;
+  background-color: #d00000;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  display: inline-block;
+}
