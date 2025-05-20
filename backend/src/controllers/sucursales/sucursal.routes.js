@@ -18,7 +18,6 @@ routerSucursales.post('/sucursales/:id', async (req, res) => {
       'SELECT * FROM empresas WHERE id = ?',
       [id]
     )
-
     if (empresaExiste.length === 0) {
       return res.status(404).json({ message: 'No existe la empresa' })
     }
@@ -32,15 +31,23 @@ routerSucursales.post('/sucursales/:id', async (req, res) => {
     if (lugarExiste.length > 0) {
       idLugar = lugarExiste[0].id
     } else {
-      const [nuevoLugar] = await pool.query(
-        'INSERT INTO lugares (estado, ciudad, departamento) VALUES (?, ?, ?)',
-        [
-          schemaSucursales.estado,
-          schemaSucursales.ciudad,
-          schemaSucursales.departamento
-        ]
+      await pool.query(
+        'INSERT INTO lugares (ciudad, departamento) VALUES (?, ?)',
+        [schemaSucursales.ciudad, schemaSucursales.departamento]
       )
-      idLugar = nuevoLugar.insertId
+
+      const [nuevoLugar] = await pool.query(
+        'SELECT id FROM lugares WHERE ciudad = ? AND departamento = ? LIMIT 1',
+        [schemaSucursales.ciudad, schemaSucursales.departamento]
+      )
+
+      if (nuevoLugar.length === 0) {
+        return res
+          .status(500)
+          .json({ message: 'Error al recuperar el lugar insertado' })
+      }
+
+      idLugar = nuevoLugar[0].id
     }
 
     const [tipoSedeExiste] = await pool.query(
@@ -52,11 +59,22 @@ routerSucursales.post('/sucursales/:id', async (req, res) => {
     if (tipoSedeExiste.length > 0) {
       idTipoSede = tipoSedeExiste[0].id
     } else {
+      await pool.query('INSERT INTO tipos_sede (nombre_sede) VALUES (?)', [
+        schemaSucursales.nombre_sede
+      ])
+
       const [nuevoTipoSede] = await pool.query(
-        'INSERT INTO tipos_sede (nombre_sede, estado) VALUES (?, ?)',
-        [schemaSucursales.nombre_sede, schemaSucursales.estado]
+        'SELECT id FROM tipos_sede WHERE nombre_sede = ? LIMIT 1',
+        [schemaSucursales.nombre_sede]
       )
-      idTipoSede = nuevoTipoSede.insertId
+
+      if (nuevoTipoSede.length === 0) {
+        return res
+          .status(500)
+          .json({ message: 'Error al recuperar el tipo de sede insertado' })
+      }
+
+      idTipoSede = nuevoTipoSede[0].id
     }
 
     await pool.query(
@@ -97,7 +115,7 @@ routerSucursales.get('/sucursales', async (req, res) => {
         p.ciudad,
         b.direccion,
         b.horario,
-        bt.estado
+        b.estado
       FROM sucursales b
       JOIN empresas e ON b.empresa_id = e.id
       JOIN lugares p ON b.lugar_id = p.id
@@ -125,19 +143,19 @@ routerSucursales.get('/sucursal/:id', async (req, res) => {
   try {
     const [sucursal] = await pool.query(
       `SELECT 
-        b.id AS id,
-        e.nombre_empresa,
-        bt.nombre_sede,
-        p.departamento,
-        p.ciudad,
-        b.direccion,
-        b.horario,
-        bt.estado
-      FROM sucursales b
-      JOIN empresas e ON b.empresa_id = e.id
-      JOIN lugares p ON b.lugar_id = p.id
-      JOIN tipos_sede bt ON b.tipo_sede_id = bt.id
-      WHERE b.id = ?`,
+    b.id AS id,
+    e.nombre_empresa,
+    bt.nombre_sede,
+    p.departamento,
+    p.ciudad,
+    b.direccion,
+    b.horario,
+    b.estado
+  FROM sucursales b
+  JOIN empresas e ON b.empresa_id = e.id
+  JOIN lugares p ON b.lugar_id = p.id
+  JOIN tipos_sede bt ON b.tipo_sede_id = bt.id
+  WHERE b.id = ?`,
       [id]
     )
 
@@ -169,7 +187,6 @@ routerSucursales.patch('/updateSucursales/:id', async (req, res) => {
       return res.status(404).json({ message: 'No existe la sucursal' })
     }
 
-    // Buscar o crear lugar
     let idLugar
     const [lugarExiste] = await pool.query(
       'SELECT id FROM lugares WHERE ciudad = ? AND departamento = ?',
@@ -180,12 +197,8 @@ routerSucursales.patch('/updateSucursales/:id', async (req, res) => {
       idLugar = lugarExiste[0].id
     } else {
       await pool.query(
-        'INSERT INTO lugares (estado, ciudad, departamento) VALUES (?, ?, ?)',
-        [
-          schemaSucursales.estado,
-          schemaSucursales.ciudad,
-          schemaSucursales.departamento
-        ]
+        'INSERT INTO lugares (ciudad, departamento) VALUES (?, ?)',
+        [schemaSucursales.ciudad, schemaSucursales.departamento]
       )
 
       const [nuevoLugar] = await pool.query(
@@ -200,7 +213,6 @@ routerSucursales.patch('/updateSucursales/:id', async (req, res) => {
       idLugar = nuevoLugar[0].id
     }
 
-    // Buscar o crear tipo de sede
     let idTipoSede
     const [tipoSedeExiste] = await pool.query(
       'SELECT id FROM tipos_sede WHERE nombre_sede = ?',
@@ -210,10 +222,9 @@ routerSucursales.patch('/updateSucursales/:id', async (req, res) => {
     if (tipoSedeExiste.length > 0) {
       idTipoSede = tipoSedeExiste[0].id
     } else {
-      await pool.query(
-        'INSERT INTO tipos_sede (nombre_sede, estado) VALUES (?, ?)',
-        [schemaSucursales.nombre_sede, schemaSucursales.estado]
-      )
+      await pool.query('INSERT INTO tipos_sede (nombre_sede) VALUES (?)', [
+        schemaSucursales.nombre_sede
+      ])
 
       const [nuevoTipo] = await pool.query(
         'SELECT id FROM tipos_sede WHERE nombre_sede = ? ORDER BY fecha_creacion DESC LIMIT 1',
@@ -227,14 +238,14 @@ routerSucursales.patch('/updateSucursales/:id', async (req, res) => {
       idTipoSede = nuevoTipo[0].id
     }
 
-    // Actualizar sucursal
     await pool.query(
-      'UPDATE sucursales SET direccion = ?, horario = ?, lugar_id = ?, tipo_sede_id = ? WHERE id = ?',
+      'UPDATE sucursales SET direccion = ?, horario = ?, lugar_id = ?, tipo_sede_id = ?, estado = ? WHERE id = ?',
       [
         schemaSucursales.direccion,
         schemaSucursales.horario,
         idLugar,
         idTipoSede,
+        schemaSucursales.estado,
         id
       ]
     )
@@ -245,7 +256,8 @@ routerSucursales.patch('/updateSucursales/:id', async (req, res) => {
       departamento: schemaSucursales.departamento,
       direccion: schemaSucursales.direccion,
       horario: schemaSucursales.horario,
-      nombreSede: schemaSucursales.nombre_sede
+      nombreSede: schemaSucursales.nombre_sede,
+      estado: schemaSucursales.estado
     })
   } catch (error) {
     return res.status(500).json({
