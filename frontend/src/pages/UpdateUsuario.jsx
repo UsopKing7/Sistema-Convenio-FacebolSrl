@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import '../styles/Login.css'
 import { useEffect } from 'react'
+import { BASE_URL } from '../config.js'
 
 export const UpdateUsuario = () => {
   const { id } = useParams()
@@ -14,7 +15,7 @@ export const UpdateUsuario = () => {
 
   useEffect(() => {
     const fetchUsuario = async () => {
-      const res = await fetch(`http://localhost:3333/usuariosUnico/${id}`, {
+      const res = await fetch(`${BASE_URL}/usuariosUnico/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -41,7 +42,7 @@ export const UpdateUsuario = () => {
   const updateUsuario = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/updateUsuarios/${id}`, {
+    const res = await fetch(`${BASE_URL}/updateUsuarios/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

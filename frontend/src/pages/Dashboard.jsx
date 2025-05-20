@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import '../styles/Dashboard.css'
+import { BASE_URL } from '../config.js'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const getInitials = (name) => {
@@ -34,7 +35,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -55,7 +56,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchSucursalData = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -77,7 +78,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchUsuarioData = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -99,7 +100,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchEmpresasData = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -119,7 +120,7 @@ export const Dashboard = () => {
   }, [])
   const handleLogout = async () => {
     try {
-      const res = await fetch('http://localhost:3333/logout', {
+      const res = await fetch(`${BASE_URL}/logout`, {
         method: 'GET',
         credentials: 'include'
       })

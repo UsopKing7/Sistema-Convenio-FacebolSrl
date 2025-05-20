@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/Login.css'
+import { BASE_URL } from '../config.js'
 
 export const CrearUsuario = () => {
   const [nombre, setNombre] = useState('')
@@ -15,7 +16,7 @@ export const CrearUsuario = () => {
   const crearUsuario = async (e) => {
     e.preventDefault()
 
-    const res = await fetch('http://localhost:3333/register', {
+    const res = await fetch(`${BASE_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

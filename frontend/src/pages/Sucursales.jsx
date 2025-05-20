@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { getInitials } from './Dashboard'
 import '../styles/Dashboard.css'
+import { BASE_URL } from '../config.js'
 
 export const Sucursales = () => {
   const { _id } = useParams()
@@ -25,7 +26,7 @@ export const Sucursales = () => {
   useEffect(() => {
     const fetchSucursales = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -46,7 +47,7 @@ export const Sucursales = () => {
   }, [])
 
   const handleLogout = async () => {
-    const res = await fetch('http://localhost:3333/logout', {
+    const res = await fetch(`${BASE_URL}/logout`, {
       method: 'GET',
       credentials: 'include'
     })

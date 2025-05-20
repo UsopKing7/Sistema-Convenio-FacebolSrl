@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-
+import { BASE_URL } from '../config.js'
 export const CrearSucursal = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -14,7 +14,7 @@ export const CrearSucursal = () => {
   const crearSucursal = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/sucursales/${id}`, {
+    const res = await fetch(`${BASE_URL}/sucursales/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

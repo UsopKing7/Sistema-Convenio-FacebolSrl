@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../config.js'
 
 export const DeleteEmpresa = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
   const deleteEmpresa = async () => {
-    const res = await fetch(`http://localhost:3333/deleteEmpresa/${id}`, {
+    const res = await fetch(`${BASE_URL}/deleteEmpresa/${id}`, {
       method: 'DELETE',
       credentials: 'include'
     })

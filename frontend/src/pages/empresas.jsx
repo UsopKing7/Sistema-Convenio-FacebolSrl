@@ -1,4 +1,5 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../config.js'
 import {
   Home,
   Building,
@@ -26,7 +27,7 @@ export const Empresas = () => {
   useEffect(() => {
     const fetchEmpresas = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -47,7 +48,7 @@ export const Empresas = () => {
   }, [])
 
   const handleLogout = async () => {
-    const res = await fetch('http://localhost:3333/logout', {
+    const res = await fetch(`${BASE_URL}/logout`, {
       method: 'GET',
       credentials: 'include'
     })

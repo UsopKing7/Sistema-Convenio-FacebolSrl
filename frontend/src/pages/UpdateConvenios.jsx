@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { BASE_URL } from '../config.js'
 
 export const UpdateConvenio = () => {
   const { id } = useParams()
@@ -12,7 +13,7 @@ export const UpdateConvenio = () => {
 
   useEffect(() => {
     const fetchConvenio = async () => {
-      const res = await fetch(`http://localhost:3333/convenio/${id}`, {
+      const res = await fetch(`${BASE_URL}/convenio/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -36,7 +37,7 @@ export const UpdateConvenio = () => {
   const updateConvenio = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/updateConvenios/${id}`, {
+    const res = await fetch(`${BASE_URL}/updateConvenios/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

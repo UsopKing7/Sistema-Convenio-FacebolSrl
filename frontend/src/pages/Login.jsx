@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/Login.css'
+import { BASE_URL } from '../config.js'
 
 export const Login = () => {
   const [correo, setCorreo] = useState('')
@@ -10,7 +11,7 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const res = await fetch('http://localhost:3333/login', {
+    const res = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -20,7 +21,7 @@ export const Login = () => {
     })
 
     if (res.ok) {
-      const id = await fetch('http://localhost:3333/id', {
+      const id = await fetch(`${BASE_URL}/id`, {
         credentials: 'include'
       })
       const data = await id.json()

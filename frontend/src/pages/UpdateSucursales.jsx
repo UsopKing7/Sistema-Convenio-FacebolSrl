@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { BASE_URL } from '../config.js'
 
 export const UpdateSucursales = () => {
   const { id } = useParams()
@@ -13,7 +14,7 @@ export const UpdateSucursales = () => {
 
   useEffect(() => {
     const fetchSucursal = async () => {
-      const res = await fetch(`http://localhost:3333/sucursal/${id}`, {
+      const res = await fetch(`${BASE_URL}/sucursal/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -40,7 +41,7 @@ export const UpdateSucursales = () => {
   const updateSucursal = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/updateSucursales/${id}`, {
+    const res = await fetch(`${BASE_URL}/updateSucursales/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

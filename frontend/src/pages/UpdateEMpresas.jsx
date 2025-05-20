@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
+import { BASE_URL } from '../config.js'
 
 export const UpdateEmpresas = () => {
   const { id } = useParams('')
@@ -12,7 +13,7 @@ export const UpdateEmpresas = () => {
 
   useEffect(() => {
     const fetchEmpresa = async () => {
-      const res = await fetch(`http://localhost:3333/empresaUnica/${id}`, {
+      const res = await fetch(`${BASE_URL}/empresaUnica/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -40,7 +41,7 @@ export const UpdateEmpresas = () => {
   const updateEmpresa = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/updateEmpresa/${id}`, {
+    const res = await fetch(`${BASE_URL}/updateEmpresa/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

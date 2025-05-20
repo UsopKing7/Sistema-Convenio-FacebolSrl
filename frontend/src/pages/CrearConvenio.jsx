@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { BASE_URL } from '../config.js'
 
 export const CrearConvenio = () => {
   const { id } = useParams()
@@ -13,7 +14,7 @@ export const CrearConvenio = () => {
   const crearConvenio = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/convenios/${id}`, {
+    const res = await fetch(`${BASE_URL}/convenios/${id}`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'

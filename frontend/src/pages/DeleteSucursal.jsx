@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../config.js'
 
 export const DeleteSucursal = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
   const deleteSucursal = async () => {
-    const res = await fetch(`http://localhost:3333/sucursales/${id}`, {
+    const res = await fetch(`${BASE_URL}/sucursales/${id}`, {
       method: 'DELETE',
       credentials: 'include'
     })

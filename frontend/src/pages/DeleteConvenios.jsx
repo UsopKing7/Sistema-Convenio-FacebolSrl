@@ -1,15 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../config.js'
 
 export const DeleteConvenios = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
   const deleteConvenio = async () => {
-    const res = await fetch(`http://localhost:3333/deleteConvenio/${id}`, {
+    const res = await fetch(`${BASE_URL}/deleteConvenios/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json'
-      }
+      },
+      credentials: 'include'
     })
 
     if (res.ok) {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/Login.css'
+import { BASE_URL } from '../config.js'
 
 export const CrearEmpresa = () => {
   const [nombre_empresa, setNombreEmpresa] = useState('')
@@ -19,7 +20,7 @@ export const CrearEmpresa = () => {
   const crearEmpresa = async (e) => {
     e.preventDefault()
 
-    const res = await fetch('http://localhost:3333/empresas', {
+    const res = await fetch(`${BASE_URL}/empresas`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'

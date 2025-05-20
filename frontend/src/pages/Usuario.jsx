@@ -13,6 +13,7 @@ import {
 import { getInitials } from './Dashboard'
 import { useEffect, useState } from 'react'
 import '../styles/Dashboard.css'
+import { BASE_URL } from '../config.js'
 
 export const Usuario = () => {
   const { _id } = useParams()
@@ -26,7 +27,7 @@ export const Usuario = () => {
   useEffect(() => {
     const fetchUsusarios = async (ruta) => {
       try {
-        const res = await fetch(`http://localhost:3333/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/${ruta}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -46,7 +47,7 @@ export const Usuario = () => {
   }, [])
 
   const handleLogout = async () => {
-    const res = await fetch('http://localhost:3333/logout', {
+    const res = await fetch(`${BASE_URL}/logout`, {
       method: 'GET',
       credentials: 'include'
     })

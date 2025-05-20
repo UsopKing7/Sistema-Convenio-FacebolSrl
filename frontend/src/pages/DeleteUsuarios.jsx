@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../config.js'
 
 export const DeleteUsuario = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
   const deleteUsuario = async () => {
-    const res = await fetch(`http://localhost:3333/usuariosDelete/${id}`, {
+    const res = await fetch(`${BASE_URL}/usuariosDelete/${id}`, {
       method: 'DELETE',
       credentials: 'include'
     })
