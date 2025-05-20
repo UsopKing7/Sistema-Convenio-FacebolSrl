@@ -36,7 +36,7 @@ export const UpdateConvenio = () => {
   const updateConvenio = async (e) => {
     e.preventDefault()
 
-    const res = await fetch(`http://localhost:3333/updateConvenio/${id}`, {
+    const res = await fetch(`http://localhost:3333/updateConvenios/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ export const UpdateConvenio = () => {
         folio,
         folio_interno,
         modalidad,
-        presupuesto,
+        presupuesto: parseFloat(presupuesto),
         estado
       })
     })

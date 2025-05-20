@@ -132,7 +132,8 @@ routerConvenios.patch('/updateConvenios/:id', async (req, res) => {
         vConvenios.folio_interno,
         vConvenios.modalidad,
         vConvenios.presupuesto,
-        vConvenios.estado
+        vConvenios.estado,
+        id
       ]
     )
 
