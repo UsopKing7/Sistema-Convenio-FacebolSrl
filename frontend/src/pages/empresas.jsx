@@ -21,22 +21,23 @@ export const Empresas = () => {
   const location = useLocation()
   const { nombre, correo } = location.state || {}
   const navigate = useNavigate()
+  const [pagina, setPagina] = useState(1)
+  const [totalPaginas, setTotalPaginas] = useState(1)
   const [empresas, setEmpresas] = useState([])
   const [filtro, setFiltro] = useState('')
 
   useEffect(() => {
-    const fetchEmpresas = async (ruta) => {
+    const fetchEmpresas = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/empresas?page=${pagina}`, {
           method: 'GET',
           credentials: 'include'
         })
-
         const json = await res.json()
-        console.log(json)
 
         if (res.ok && Array.isArray(json.data)) {
           setEmpresas(json.data)
+          setTotalPaginas(json.totalPages || 1)
         } else {
           setEmpresas([])
         }
@@ -44,8 +45,8 @@ export const Empresas = () => {
         setEmpresas([])
       }
     }
-    fetchEmpresas('empresas')
-  }, [])
+    fetchEmpresas()
+  }, [pagina])
 
   const handleLogout = async () => {
     const res = await fetch(`${BASE_URL}/logout`, {
@@ -56,7 +57,7 @@ export const Empresas = () => {
     if (res.ok) {
       navigate('/')
     } else {
-      throw new Error('Error al cierre de session')
+      throw new Error('Error al cierre de sesión')
     }
   }
 
@@ -66,6 +67,12 @@ export const Empresas = () => {
         u.nombre_empresa.toLowerCase().includes(filtro.toLowerCase())) ||
       (u.correo && u.correo.toLowerCase().includes(filtro.toLowerCase()))
   )
+
+  const cambiarPagina = (nuevaPagina) => {
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+      setPagina(nuevaPagina)
+    }
+  }
 
   return (
     <div className="dashboard">
@@ -104,8 +111,7 @@ export const Empresas = () => {
             state={{ nombre, correo }}
             className="nav-link"
           >
-            <Building className="icon" />
-            Sucursales
+            <Building className="icon" /> Sucursales
           </Link>
           <Link
             to={`/dashboard/convenios`}
@@ -143,111 +149,172 @@ export const Empresas = () => {
               <p>No hay empresas con este filtro</p>
             </div>
           ) : (
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Representante</th>
-                    <th>Celular</th>
-                    <th>Correo</th>
-                    <th>Nit</th>
-                    <th>facebook</th>
-                    <th>linkedin</th>
-                    <th>tiktok</th>
-                    <th>longitud</th>
-                    <th>Latitud</th>
-                    <th>Fecha de creacion</th>
-                    <th>Accion</th>
-                    <th>Agregar sucursal</th>
-                    <th>Agregar convenio</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {empresasFiltrado.map((empresas, index) => (
-                    <tr key={empresas.id || index}>
-                      <td>{index + 1}</td>
-                      <td>{empresas.nombre_empresa}</td>
-                      <td>{empresas.representante}</td>
-                      <td>{empresas.celular}</td>
-                      <td>{empresas.correo}</td>
-                      <td>{empresas.nit}</td>
-                      <td>
-                        <a
-                          href={empresas.facebook}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FaFacebook size={30} />
-                        </a>
-                      </td>
-                      <td>
-                        <a
-                          href={empresas.linkedin || 'no tiene linkedin'}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FaLinkedin size={30} color="#1877F2" />
-                        </a>
-                      </td>
-                      <td>
-                        <a
-                          href={empresas.tiktok}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FaTiktok size={30} color="black" />
-                        </a>
-                      </td>
-                      <td>{empresas.longitud}</td>
-                      <td>{empresas.altitud}</td>
-                      <td>{empresas.fecha_creacion}</td>
-                      <td className="actions-cell">
-                        <Link
-                          to={`/dashboard/empresas/UpdateEmpresas/${empresas.id}`}
-                          className="btn btn-action btn-icon btn-update"
-                        >
-                          <RefreshCcw />
-                        </Link>
-                        <Link
-                          to={`/dashboard/empresas/deleteEmpresa/${empresas.id}`}
-                          className="btn btn-action btn-icon btn-delete"
-                        >
-                          <DeleteIcon />
-                        </Link>
-                      </td>
-                      <td className="actions-cell">
-                        <Link
-                          to={`/dashboard/empresas/agregar/sucursal/${empresas.id}`}
-                          className="btn btn-action btn-icon btn-update"
-                        >
-                          <Plus />
-                        </Link>
-                      </td>
-                      <td className="actions-cell">
-                        <Link
-                          to={`/dashboard/empresas/agregar/convenios/${empresas.id}`}
-                          className="btn btn-action btn-icon btn-update"
-                        >
-                          <Plus />
-                        </Link>
-                      </td>
+            <>
+              <div className="table-container">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Representante</th>
+                      <th>Celular</th>
+                      <th>Correo</th>
+                      <th>Nit</th>
+                      <th>facebook</th>
+                      <th>linkedin</th>
+                      <th>tiktok</th>
+                      <th>longitud</th>
+                      <th>Latitud</th>
+                      <th>Fecha de creacion</th>
+                      <th>Accion</th>
+                      <th>Agregar sucursal</th>
+                      <th>Agregar convenio</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {empresasFiltrado.map((empresa, index) => (
+                      <tr key={empresa.id || index}>
+                        <td>{(pagina - 1) * 10 + index + 1}</td>
+                        <td>{empresa.nombre_empresa}</td>
+                        <td>{empresa.representante}</td>
+                        <td>{empresa.celular}</td>
+                        <td>{empresa.correo}</td>
+                        <td>{empresa.nit}</td>
+                        <td>
+                          <a
+                            href={empresa.facebook}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaFacebook size={30} />
+                          </a>
+                        </td>
+                        <td>
+                          <a
+                            href={empresa.linkedin || '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaLinkedin size={30} color="#1877F2" />
+                          </a>
+                        </td>
+                        <td>
+                          <a
+                            href={empresa.tiktok}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaTiktok size={30} color="black" />
+                          </a>
+                        </td>
+                        <td>{empresa.longitud}</td>
+                        <td>{empresa.altitud}</td>
+                        <td>{empresa.fecha_creacion}</td>
+                        <td className="actions-cell">
+                          <Link
+                            to={`/dashboard/empresas/UpdateEmpresas/${empresa.id}`}
+                            className="btn btn-action btn-icon btn-update"
+                          >
+                            <RefreshCcw />
+                          </Link>
+                          <Link
+                            to={`/dashboard/empresas/deleteEmpresa/${empresa.id}`}
+                            className="btn btn-action btn-icon btn-delete"
+                          >
+                            <DeleteIcon />
+                          </Link>
+                        </td>
+                        <td className="actions-cell">
+                          <Link
+                            to={`/dashboard/empresas/agregar/sucursal/${empresa.id}`}
+                            className="btn btn-action btn-icon btn-update"
+                          >
+                            <Plus />
+                          </Link>
+                        </td>
+                        <td className="actions-cell">
+                          <Link
+                            to={`/dashboard/empresas/agregar/convenios/${empresa.id}`}
+                            className="btn btn-action btn-icon btn-update"
+                          >
+                            <Plus />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Paginación */}
+              <div className="pagination-wrapper">
+                <nav className="pagination-nav" aria-label="Paginación">
+                  <button
+                    className="pagination-nav__arrow pagination-nav__arrow--prev"
+                    onClick={() => cambiarPagina(pagina - 1)}
+                    disabled={pagina === 1}
+                    aria-label="Página anterior"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                    <span>Anterior</span>
+                  </button>
+
+                  <div className="pagination-numbers">
+                    {[...Array(totalPaginas)].map((_, i) => (
+                      <button
+                        key={i}
+                        className={`pagination-number ${
+                          pagina === i + 1 ? 'pagination-number--active' : ''
+                        }`}
+                        onClick={() => cambiarPagina(i + 1)}
+                        aria-current={pagina === i + 1 ? 'page' : undefined}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    className="pagination-nav__arrow pagination-nav__arrow--next"
+                    onClick={() => cambiarPagina(pagina + 1)}
+                    disabled={pagina === totalPaginas}
+                    aria-label="Página siguiente"
+                  >
+                    <span>Siguiente</span>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </nav>
+              </div>
+            </>
           )}
         </div>
       </main>
-      <Link
-        to={`/dashboard/empresas/crearEmpresa`}
-        className="floating-add-btn"
-        title="Agregar usuario"
-      >
-        <Plus />
-      </Link>
     </div>
   )
 }

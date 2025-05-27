@@ -8,14 +8,24 @@ import {
 export const routerEmpresas = Router()
 
 routerEmpresas.get('/empresas', async (req, res) => {
+  const page = parseInt(req.query.page) || 1
+  const limit = 10
+  const offset = (page - 1) * limit
+
   try {
-    const [empresa] = await pool.query('SELECT * FROM empresas')
+    const [totalResult] = await pool.query('SELECT COUNT(*) AS total FROM empresas')
+    const total = totalResult[0].total
+    const totalPages = Math.ceil(total / limit)
+
+    const [empresa] = await pool.query('SELECT * FROM empresas LIMIT ? OFFSET ?', [limit, offset])
 
     if (empresa.length === 0) return res.status(404).json({ meesage: 'No hay empresas registradas' })
 
     res.status(200).json({
       message: 'Empresas obtenidas correctamente',
-      data: empresa
+      data: empresa,
+      currentPage: page,
+      totalPages
     })
   } catch (error) {
     res.status(500).json({
