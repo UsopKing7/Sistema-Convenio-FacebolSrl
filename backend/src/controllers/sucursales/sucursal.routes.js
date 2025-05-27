@@ -105,7 +105,15 @@ routerSucursales.post('/sucursales/:id', async (req, res) => {
 })
 
 routerSucursales.get('/sucursales', async (req, res) => {
+  const page = parseInt(req.query.page) || 1
+  const limit = 10
+  const offset = (page - 1) * limit
+
   try {
+    const [totalResult] = await pool.query('SELECT COUNT(*) AS total FROM sucursales')
+    const total = totalResult[0].total
+    const totalPages = Math.ceil(total / limit)
+
     const [branches] = await pool.query(
       `SELECT 
         b.id AS id,
@@ -119,7 +127,9 @@ routerSucursales.get('/sucursales', async (req, res) => {
       FROM sucursales b
       JOIN empresas e ON b.empresa_id = e.id
       JOIN lugares p ON b.lugar_id = p.id
-      JOIN tipos_sede bt ON b.tipo_sede_id = bt.id`
+      JOIN tipos_sede bt ON b.tipo_sede_id = bt.id 
+      LIMIT ? OFFSET ?`,
+      [limit, offset]
     )
 
     if (branches.length === 0) {
@@ -128,7 +138,8 @@ routerSucursales.get('/sucursales', async (req, res) => {
 
     return res.status(200).json({
       message: 'Listado de todas las sucursales',
-      data: branches
+      data: branches,
+      totalPages
     })
   } catch (error) {
     return res.status(500).json({

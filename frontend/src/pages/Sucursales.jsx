@@ -1,4 +1,4 @@
-import { useParams, useLocation, Link } from 'react-router-dom'
+import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import {
   Home,
@@ -18,15 +18,18 @@ import { BASE_URL } from '../config.js'
 export const Sucursales = () => {
   const { _id } = useParams()
   const location = useLocation()
+  const navigate = useNavigate()
   const { nombre, correo } = location.state || {}
 
   const [sucursales, setSucursales] = useState([])
   const [filtro, setFiltro] = useState('')
+  const [pagina, setPagina] = useState(1)
+  const [totalPaginas, setTotalPaginas] = useState(1)
 
   useEffect(() => {
-    const fetchSucursales = async (ruta) => {
+    const fetchSucursales = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/sucursales?page=${pagina}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -35,6 +38,7 @@ export const Sucursales = () => {
 
         if (res.ok && Array.isArray(json.data)) {
           setSucursales(json.data)
+          setTotalPaginas(json.totalPages || 1)
         } else {
           setSucursales([])
         }
@@ -43,8 +47,8 @@ export const Sucursales = () => {
       }
     }
 
-    fetchSucursales('sucursales')
-  }, [])
+    fetchSucursales()
+  }, [pagina])
 
   const handleLogout = async () => {
     const res = await fetch(`${BASE_URL}/logout`, {
@@ -53,17 +57,23 @@ export const Sucursales = () => {
     })
 
     if (res.ok) {
-      window.location.href = '/'
+      navigate('/')
     } else {
       throw new Error('Error al cierre de sesión')
     }
   }
 
-  const sucursalFiltrado = sucursales.filter(
-    (u) =>
-      u.nombre_empresa &&
-      u.nombre_empresa.toLowerCase().includes(filtro.toLowerCase())
+  const sucursalesFiltradas = sucursales.filter(
+    (s) =>
+      s.nombre_empresa &&
+      s.nombre_empresa.toLowerCase().includes(filtro.toLowerCase())
   )
+
+  const cambiarPagina = (nuevaPagina) => {
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+      setPagina(nuevaPagina)
+    }
+  }
 
   return (
     <div className="dashboard">
@@ -76,36 +86,32 @@ export const Sucursales = () => {
           <p>{correo || 'correo@ejemplo.com'}</p>
         </div>
         <nav className="nav">
-          <Link
-            to={`/dashboard`}
-            state={{ nombre, correo }}
-            className="nav-link"
-          >
+          <Link to="/dashboard" state={{ nombre, correo }} className="nav-link">
             <Home className="icon" /> Inicio
           </Link>
           <Link
-            to={`/dashboard/usuario`}
+            to="/dashboard/usuario"
             state={{ nombre, correo }}
             className="nav-link"
           >
             <User2Icon className="icon" /> Usuarios
           </Link>
           <Link
-            to={`/dashboard/empresas`}
+            to="/dashboard/empresas"
             state={{ nombre, correo }}
             className="nav-link"
           >
             <Briefcase className="icon" /> Empresas
           </Link>
           <Link
-            to={`/dashboard/sucursales`}
+            to="/dashboard/sucursales"
             state={{ nombre, correo }}
             className="nav-link active"
           >
             <Building className="icon" /> Sucursales
           </Link>
           <Link
-            to={`/dashboard/convenios`}
+            to="/dashboard/convenios"
             state={{ nombre, correo }}
             className="nav-link"
           >
@@ -128,72 +134,141 @@ export const Sucursales = () => {
           <div className="filter-bar">
             <input
               type="text"
-              placeholder="Filtrar por sucursales"
+              placeholder="Filtrar por nombre de la empresa"
+              value={filtro}
               onChange={(e) => setFiltro(e.target.value)}
               className="input-filtrar"
             />
           </div>
 
-          {sucursales.length === 0 ? (
+          {sucursalesFiltradas.length === 0 ? (
             <div className="empty-state">
               <p>No hay sucursales con este filtro</p>
             </div>
           ) : (
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>nombre Empresa</th>
-                    <th>nombre Sede</th>
-                    <th>ciudad</th>
-                    <th>departamento</th>
-                    <th>direccion</th>
-                    <th>horario</th>
-                    <th>estado</th>
-                    <th>accion</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sucursalFiltrado.map((sucursales, index) => (
-                    <tr key={sucursales.id || index}>
-                      <td>{index + 1}</td>
-                      <td>{sucursales.nombre_empresa}</td>
-                      <td>{sucursales.nombre_sede}</td>
-                      <td>{sucursales.ciudad}</td>
-                      <td>{sucursales.departamento}</td>
-                      <td>{sucursales.direccion}</td>
-                      <td>{sucursales.horario}</td>
-                      <td>
-                        <span
-                          className={
-                            sucursales.estado === 1
-                              ? 'estado-activo'
-                              : 'estado-inactivo'
-                          }
-                        >
-                          {sucursales.estado === 1 ? 'Activo' : 'Inactivo'}
-                        </span>
-                      </td>
-                      <td className="actions-cell">
-                        <Link
-                          to={`/dashboard/sucursales/UpdateSucursal/${sucursales.id}`}
-                          className="btn btn-action btn-icon btn-update"
-                        >
-                          <RefreshCcw />
-                        </Link>
-                        <Link
-                          to={`/dashboard/sucursales/DeleteSucursal/${sucursales.id}`}
-                          className="btn btn-action btn-icon btn-delete"
-                        >
-                          <DeleteIcon />
-                        </Link>
-                      </td>
+            <>
+              <div className="table-container">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre Empresa</th>
+                      <th>Nombre Sede</th>
+                      <th>Ciudad</th>
+                      <th>Departamento</th>
+                      <th>Dirección</th>
+                      <th>Horario</th>
+                      <th>Estado</th>
+                      <th>Acción</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {sucursalesFiltradas.map((sucursal, index) => (
+                      <tr key={sucursal.id || index}>
+                        <td>{(pagina - 1) * 10 + index + 1}</td>
+                        <td>{sucursal.nombre_empresa}</td>
+                        <td>{sucursal.nombre_sede}</td>
+                        <td>{sucursal.ciudad}</td>
+                        <td>{sucursal.departamento}</td>
+                        <td>{sucursal.direccion}</td>
+                        <td>{sucursal.horario}</td>
+                        <td>
+                          <span
+                            className={
+                              sucursal.estado === 1
+                                ? 'estado-activo'
+                                : 'estado-inactivo'
+                            }
+                          >
+                            {sucursal.estado === 1 ? 'Activo' : 'Inactivo'}
+                          </span>
+                        </td>
+                        <td className="actions-cell">
+                          <Link
+                            to={`/dashboard/sucursales/UpdateSucursal/${sucursal.id}`}
+                            className="btn btn-action btn-icon btn-update"
+                          >
+                            <RefreshCcw />
+                          </Link>
+                          <Link
+                            to={`/dashboard/sucursales/DeleteSucursal/${sucursal.id}`}
+                            className="btn btn-action btn-icon btn-delete"
+                          >
+                            <DeleteIcon />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Paginación */}
+              <div className="pagination-wrapper">
+                <nav className="pagination-nav" aria-label="Paginación">
+                  <button
+                    className="pagination-nav__arrow pagination-nav__arrow--prev"
+                    onClick={() => cambiarPagina(pagina - 1)}
+                    disabled={pagina === 1}
+                    aria-label="Página anterior"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                    <span>Anterior</span>
+                  </button>
+
+                  <div className="pagination-numbers">
+                    {[...Array(totalPaginas)].map((_, i) => (
+                      <button
+                        key={i}
+                        className={`pagination-number ${
+                          pagina === i + 1 ? 'pagination-number--active' : ''
+                        }`}
+                        onClick={() => cambiarPagina(i + 1)}
+                        aria-current={pagina === i + 1 ? 'page' : undefined}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    className="pagination-nav__arrow pagination-nav__arrow--next"
+                    onClick={() => cambiarPagina(pagina + 1)}
+                    disabled={pagina === totalPaginas}
+                    aria-label="Página siguiente"
+                  >
+                    <span>Siguiente</span>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </nav>
+              </div>
+            </>
           )}
         </div>
       </main>
