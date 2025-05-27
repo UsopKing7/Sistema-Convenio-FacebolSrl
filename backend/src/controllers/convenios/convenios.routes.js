@@ -7,7 +7,13 @@ import { SchemaConvenios, schemaUpdateConvenio } from '../../routes/SchemaConven
 export const routerConvenios = Router()
 
 routerConvenios.get('/convenios', async (req, res) => {
+  const page = parseInt(req.query.page) || 1
+  const limit = 10
+  const offset = (page - 1) * limit
   try {
+    const [totalResult] = await pool.query('SELECT COUNT(*) AS total FROM convenios')
+    const total = totalResult[0].total
+    const totalPages = Math.ceil(total / limit)
     const [convenios] = await pool.query(`
       SELECT
         c.id AS id,
@@ -22,11 +28,14 @@ routerConvenios.get('/convenios', async (req, res) => {
         e.nombre_empresa
       FROM convenios c
       JOIN empresas e ON c.empresa_id = e.id
-    `)
+      LIMIT ? OFFSET ?
+    `, [limit, offset])
 
     res.status(200).json({
       message: 'Convenios encontrados',
-      data: convenios
+      data: convenios,
+      currentPage: page,
+      totalPages
     })
   } catch (error) {
     return res.status(500).json({
