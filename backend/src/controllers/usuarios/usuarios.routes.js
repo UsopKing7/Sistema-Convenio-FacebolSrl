@@ -6,7 +6,15 @@ import bcrypt from 'bcrypt'
 export const routerUsuarios = Router()
 
 routerUsuarios.get('/usuarios', async (req, res) => {
+  const page = parseInt(req.query.page) || 1
+  const limit = 10
+  const offset = (page - 1) * limit
+
   try {
+    const [totalResult] = await pool.query('SELECT COUNT(*) AS total FROM usuarios')
+    const total = totalResult[0].total
+    const totalPages = Math.ceil(total / limit)
+
     const [usuariosExisten] = await pool.query(
       `SELECT 
         u.id AS usuario_id, 
@@ -21,13 +29,15 @@ routerUsuarios.get('/usuarios', async (req, res) => {
       INNER JOIN roles r ON u.rol_id = r.id
       INNER JOIN roles_permisos rp ON r.id = rp.rol_id
       INNER JOIN permisos p ON rp.permiso_id = p.id
-      GROUP BY u.id, u.nombre, u.correo, u.telefono, r.id, r.nombre_rol, r.descripcion_rol`
+      GROUP BY u.id, u.nombre, u.correo, u.telefono, r.id, r.nombre_rol, r.descripcion_rol
+      LIMIT ? OFFSET ?`,
+      [limit, offset]
     )
 
-    if (usuariosExisten.length === 0) return res.status(404).json({ message: 'No se encontraron usuarios en la empresa' })
-
     res.status(200).json({
-      data: usuariosExisten
+      data: usuariosExisten,
+      currentPage: page,
+      totalPages
     })
   } catch (error) {
     return res.status(500).json({
