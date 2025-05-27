@@ -592,3 +592,121 @@ select option {
   font-weight: bold;
   display: inline-block;
 }
+
+/* Contenedor principal */
+.pagination-wrapper {
+  margin: 2.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Nav contenedor */
+.pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Botones numéricos */
+.pagination-numbers {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pagination-number {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--card-bg);
+  color: var(--text-muted);
+  font-family: 'Cascadia Code', monospace;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.pagination-number:hover:not(.pagination-number--active) {
+  background-color: rgba(108, 92, 231, 0.15);
+  color: var(--text-color);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
+}
+
+.pagination-number--active {
+  background-color: var(--primary-color);
+  color: white !important;
+  font-weight: 600;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+}
+
+/* Flechas de navegación */
+.pagination-nav__arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius);
+  background-color: var(--darker-bg);
+  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Cascadia Code', monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.pagination-nav__arrow:hover:not(:disabled) {
+  background-color: rgba(108, 92, 231, 0.2);
+  border-color: var(--primary-color);
+}
+
+.pagination-nav__arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--darker-bg);
+}
+
+.pagination-nav__arrow svg {
+  transition: var(--transition);
+}
+
+.pagination-nav__arrow--prev:hover:not(:disabled) svg {
+  transform: translateX(-2px);
+}
+
+.pagination-nav__arrow--next:hover:not(:disabled) svg {
+  transform: translateX(2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pagination-nav {
+    gap: 0.5rem;
+  }
+  
+  .pagination-number {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .pagination-nav__arrow span {
+    display: none;
+  }
+  
+  .pagination-nav__arrow {
+    padding: 0.65rem;
+  }
+}
+
+/* Efecto al hacer clic */
+.pagination-number:active,
+.pagination-nav__arrow:active {
+  transform: scale(0.96);
+}

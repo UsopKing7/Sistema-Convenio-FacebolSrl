@@ -20,22 +20,24 @@ export const Usuario = () => {
   const location = useLocation()
   const { nombre, correo } = location.state || {}
   const navigate = useNavigate()
+  const [pagina, setPagina] = useState(1)
+  const [totalPaginas, setTotalPaginas] = useState(1)
 
   const [usuario, setUsuarios] = useState([])
   const [filtro, setFiltro] = useState('')
 
   useEffect(() => {
-    const fetchUsusarios = async (ruta) => {
+    const fetchUsusarios = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/${ruta}`, {
+        const res = await fetch(`${BASE_URL}/usuarios?page=${pagina}`, {
           method: 'GET',
           credentials: 'include'
         })
 
         const json = await res.json()
-        console.log(json)
         if (res.ok && Array.isArray(json.data)) {
           setUsuarios(json.data)
+          setTotalPaginas(json.totalPages)
         } else {
           setUsuarios([])
         }
@@ -43,8 +45,8 @@ export const Usuario = () => {
         setUsuarios([])
       }
     }
-    fetchUsusarios('usuarios')
-  }, [])
+    fetchUsusarios()
+  }, [pagina])
 
   const handleLogout = async () => {
     const res = await fetch(`${BASE_URL}/logout`, {
@@ -65,6 +67,12 @@ export const Usuario = () => {
         u.nombre_usuario.toLowerCase().includes(filtro.toLowerCase())) ||
       (u.correo && u.correo.toLowerCase().includes(filtro.toLowerCase()))
   )
+
+  const cambiarPagina = (nuevaPagina) => {
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+      setPagina(nuevaPagina)
+    }
+  }
 
   return (
     <div className="dashboard">
@@ -157,7 +165,7 @@ export const Usuario = () => {
                 <tbody>
                   {usuariosFiltrados.map((usuario, index) => (
                     <tr key={usuario.usuario_id || index}>
-                      <td>{index + 1}</td>
+                      <td>{(pagina - 1) * 10 + index + 1}</td>
                       <td>{usuario.nombre_usuario}</td>
                       <td>{usuario.correo}</td>
                       <td>{usuario.telefono}</td>
@@ -188,6 +196,70 @@ export const Usuario = () => {
                   ))}
                 </tbody>
               </table>
+              <div className="pagination-wrapper">
+                <nav className="pagination-nav" aria-label="Paginación">
+                  <button
+                    className="pagination-nav__arrow pagination-nav__arrow--prev"
+                    onClick={() => cambiarPagina(pagina - 1)}
+                    disabled={pagina === 1}
+                    aria-label="Página anterior"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                    <span>Anterior</span>
+                  </button>
+
+                  <div className="pagination-numbers">
+                    {[...Array(totalPaginas)].map((_, i) => (
+                      <button
+                        key={i}
+                        className={`pagination-number ${
+                          pagina === i + 1 ? 'pagination-number--active' : ''
+                        }`}
+                        onClick={() => cambiarPagina(i + 1)}
+                        aria-current={pagina === i + 1 ? 'page' : undefined}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    className="pagination-nav__arrow pagination-nav__arrow--next"
+                    onClick={() => cambiarPagina(pagina + 1)}
+                    disabled={pagina === totalPaginas}
+                    aria-label="Página siguiente"
+                  >
+                    <span>Siguiente</span>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </nav>
+              </div>
             </div>
           )}
         </div>
