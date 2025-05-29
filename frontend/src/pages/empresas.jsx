@@ -315,6 +315,13 @@ export const Empresas = () => {
           )}
         </div>
       </main>
+      <Link
+        to={`/dashboard/empresas/crearEmpresa`}
+        className="floating-add-btn"
+        title="Agregar usuario"
+      >
+        <Plus />
+      </Link>
     </div>
   )
 }
